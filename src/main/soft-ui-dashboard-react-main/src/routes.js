@@ -36,25 +36,29 @@ Coded by www.creative-tim.com
 */
 
 // Soft UI Dashboard React layouts
+import Dashboard from "layouts/dashboard";
+import Tables from "layouts/tables";
+import Billing from "layouts/billing";
+import VirtualReality from "layouts/virtual-reality";
+import RTL from "layouts/rtl";
+import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import Billing from "layouts/billing";
-import Dashboard from "layouts/dashboard";
-import Profile from "layouts/profile";
-import RTL from "layouts/rtl";
-import Tables from "layouts/tables";
-import VirtualReality from "layouts/virtual-reality";
 
 // Soft UI Dashboard React icons
-import DeptListTbl from "components_jy/Table/DeptListTbl";
-import CreditCard from "examples/Icons/CreditCard";
-import Cube from "examples/Icons/Cube";
-import CustomerSupport from "examples/Icons/CustomerSupport";
-import Document from "examples/Icons/Document";
+import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import Settings from "examples/Icons/Settings";
-import Shop from "examples/Icons/Shop";
+import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
+import CustomerSupport from "examples/Icons/CustomerSupport";
+import CreditCard from "examples/Icons/CreditCard";
+import Cube from "examples/Icons/Cube";
+import Onboarding from "component_sg/onboarding";
+import IssueCards from "component_sg/issueCards/components";
+import RecievedRequest from "layouts/recievedRequest";
+import PaymentsTables from "layouts/payments";
+import Tablesjy from "components_jy/tables";
 
 const routes = [
   {
@@ -81,7 +85,43 @@ const routes = [
     key: "departments",
     route: "/departments",
     icon: <Office size="12px" />,
-    component: <DeptListTbl />,
+    component: <Tablesjy />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "결제 내역",
+    key: "paymentstables",
+    route: "/payments/*",
+    icon: <Office size="12px" />,
+    component: <PaymentsTables />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "결재 요청 내역",
+    key: "requeststables",
+    route: "/recievedRequests/*",
+    icon: <Office size="12px" />,
+    component: <RecievedRequest />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "카드 사용 등록",
+    key: "onboarding",
+    route: "/onboarding",
+    icon: <CreditCard size="12px" />,
+    component: <Onboarding />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "카드 신규 발급",
+    key: "IssueCards",
+    route: "/issue-cards",
+    icon: <CreditCard size="12px" />,
+    component: <IssueCards />,
     noCollapse: true,
   },
   {
