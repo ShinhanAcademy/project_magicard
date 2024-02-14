@@ -46,6 +46,8 @@ import SignUp from "./layouts/authentication/sign-up";
 
 // Soft UI Dashboard React icons
 import Shop from "./examples/Icons/Shop";
+import Check from "./examples/Icons/Check";
+import Money from "./examples/Icons/Money";
 import Office from "./examples/Icons/Office";
 import Settings from "./examples/Icons/Settings";
 import Document from "./examples/Icons/Document";
@@ -53,6 +55,7 @@ import SpaceShip from "./examples/Icons/SpaceShip";
 import CustomerSupport from "./examples/Icons/CustomerSupport";
 import CreditCard from "./examples/Icons/CreditCard";
 import Cube from "./examples/Icons/Cube";
+import DashboardIcon from "./examples/Icons/Dashboard";
 
 import Dashboard from "./component_jw/dashboard";
 import Onboarding from "./component_sg/onboarding";
@@ -61,50 +64,42 @@ import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
 import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
+import CardPlus from "./examples/Icons/CardPlus";
 
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "대시보드",
     key: "dashboard",
     route: "/dashboard",
-    icon: <Shop size="12px" />,
+    icon: <DashboardIcon size="14px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "멤버 관리",
-    key: "employees",
+    key: "member-Management",
     route: "/member-Management",
-    icon: <Member size="12px" />,
+    icon: <Member size="14px" />,
     component: <Employees />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
     name: "결제 내역",
-    key: "paymentstables",
+    key: "payments",
     route: "/payments/*",
-    icon: <Office size="12px" />,
+    icon: <Money size="15px" />,
     component: <PaymentsTables />,
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "결재 요청 내역",
-    key: "requeststables",
-    route: "/recievedRequests/*",
-    icon: <Office size="12px" />,
+    key: "recieved-requests",
+    route: "/recieved-requests",
+    icon: <Check size="15px" />,
     component: <RecievedRequest />,
     noCollapse: true,
   },
@@ -113,17 +108,27 @@ const routes = [
     name: "카드 사용 등록",
     key: "onboarding",
     route: "/onboarding",
-    icon: <CreditCard size="12px" />,
+    icon: <CreditCard size="13px" />,
     component: <Onboarding />,
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "카드 신규 발급",
-    key: "IssueCards",
+    key: "issue-cards",
     route: "/issue-cards",
-    icon: <CreditCard size="12px" />,
+    icon: <CardPlus size="14px" />,
     component: <IssueCards />,
+    noCollapse: true,
+  },
+  { type: "title", title: "안 쓰는 페이지", key: "nono" },
+  {
+    type: "collapse",
+    name: "Tables",
+    key: "tables",
+    route: "/tables",
+    icon: <Office size="12px" />,
+    component: <Tables />,
     noCollapse: true,
   },
   {
@@ -153,7 +158,7 @@ const routes = [
     component: <RTL />,
     noCollapse: true,
   },
-  { type: "title", title: "Account Pages", key: "account-pages" },
+  { type: "title", title: "계정 관리", key: "account-pages" },
   {
     type: "collapse",
     name: "Profile",

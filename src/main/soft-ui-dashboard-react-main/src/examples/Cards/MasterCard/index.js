@@ -27,6 +27,8 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import curved14 from "assets/images/curved-images/curved14.jpg";
 import masterCardLogo from "assets/images/logos/mastercard.png";
+import green from "assets/images/mk/green.png";
+import magicardLogo from "assets/images/mk/magicardLogo.png";
 
 function MasterCard({ color, number, holder, expires }) {
   const numbers = [...`${number}`];
@@ -51,19 +53,21 @@ function MasterCard({ color, number, holder, expires }) {
       }) => ({
         background: gradients[color]
           ? `${linearGradient(
-              rgba(gradients[color].main, 0.8),
-              rgba(gradients[color].state, 0.8)
-            )}, url(${curved14})`
+              rgba(gradients[color].main, 0.0),
+              rgba(gradients[color].state, 0.0)
+            )}, url(${green})`
           : `${linearGradient(
-              rgba(gradients.dark.main, 0.8),
-              rgba(gradients.dark.state, 0.8)
-            )}, url(${curved14})`,
+              rgba(gradients.dark.main, 0.0),
+              rgba(gradients.dark.state, 0.0)
+            )}, url(${green})`,
         boxShadow: xl,
       })}
     >
       <SoftBox p={2}>
         <SoftBox color="white" p={1} lineHeight={0} display="inline-block">
-          <Icon fontSize="default">wifi</Icon>
+          <SoftTypography variant="h6" color="white" fontWeight="medium">
+            DSGray
+          </SoftTypography>
         </SoftBox>
         <SoftTypography variant="h5" color="white" fontWeight="medium" sx={{ mt: 3, mb: 5, pb: 1 }}>
           {num1}&nbsp;&nbsp;&nbsp;{num2}&nbsp;&nbsp;&nbsp;{num3}&nbsp;&nbsp;&nbsp;{num4}
@@ -93,7 +97,7 @@ function MasterCard({ color, number, holder, expires }) {
             </SoftBox>
           </SoftBox>
           <SoftBox display="flex" justifyContent="flex-end" width="20%">
-            <SoftBox component="img" src={masterCardLogo} alt="master card" width="60%" mt={1} />
+            <SoftBox component="img" src={magicardLogo} alt="master card" width="100%" mt={1} />
           </SoftBox>
         </SoftBox>
       </SoftBox>

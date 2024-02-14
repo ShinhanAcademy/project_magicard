@@ -46,7 +46,7 @@ import routes from "routes";
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images
-import brand from "assets/images/logo-ct.png";
+import brand from "assets/images/mk/magicardLogoBlack.png";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -92,7 +92,7 @@ export default function App() {
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
-    if(document.scrollingElement!=null){
+    if (document.scrollingElement != null) {
       document.scrollingElement.scrollTop = 0;
     }
   }, [pathname]);
@@ -143,7 +143,7 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Soft UI Dashboard"
+              brandName="magiCard"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
@@ -167,7 +167,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Soft UI Dashboard"
+            brandName="magiCard"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
