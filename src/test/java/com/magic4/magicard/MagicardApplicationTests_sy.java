@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.magic4.magicard.repository_sy.*;
+import com.magic4.magicard.repository.*;
 import com.magic4.magicard.vo.*;
 
 @SpringBootTest
