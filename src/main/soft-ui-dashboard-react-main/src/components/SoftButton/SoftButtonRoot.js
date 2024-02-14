@@ -191,6 +191,8 @@ export default styled(Button)(({ theme, ownerState }) => {
       sizeValue = pxToRem(25.4);
     } else if (size === "large") {
       sizeValue = pxToRem(52);
+    } else if (size === "extra-large") {
+      sizeValue = pxToRem(96);
     }
 
     // padding value
@@ -200,6 +202,8 @@ export default styled(Button)(({ theme, ownerState }) => {
       paddingValue = pxToRem(4.5);
     } else if (size === "large") {
       paddingValue = pxToRem(16);
+    } else if (size === "extra-large") {
+      paddingValue = pxToRem(24);
     }
 
     return {

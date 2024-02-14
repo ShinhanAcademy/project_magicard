@@ -8,6 +8,7 @@ import PaymentsInfo from "./display/paymentsInfo";
 import RequestAll from "./display/requestAll";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
+import SoftButton from "components/SoftButton";
 
 function PaymentsTables() {
   // 현재 선택된 버튼을 추적하기 위한 상태 설정
@@ -25,36 +26,16 @@ function PaymentsTables() {
     <DashboardLayout>
       <DashboardNavbar />
       <Link to="paymentsInfo">
-        <button
-          className={selectedButton === "paymentsInfo" ? "selected" : ""}
-          onClick={() => handleButtonClick("paymentsInfo")}
-        >
-          결제 내역
-        </button>
+        <SoftButton style={{ width: "150px" }}>결제 내역</SoftButton>
       </Link>
       <Link to="requestAll">
-        <button
-          className={selectedButton === "requestAll" ? "selected" : ""}
-          onClick={() => handleButtonClick("requestAll")}
-        >
-          승인 요청 전체
-        </button>
+        <SoftButton style={{ width: "150px" }}>승인 요청 전체</SoftButton>
       </Link>
       <Link to="requestApprove">
-        <button
-          className={selectedButton === "requestApprove" ? "selected" : ""}
-          onClick={() => handleButtonClick("requestApprove")}
-        >
-          승인
-        </button>
+        <SoftButton style={{ width: "150px" }}>승인</SoftButton>
       </Link>
       <Link to="refuse">
-        <button
-          className={selectedButton === "refuse" ? "selected" : ""}
-          onClick={() => handleButtonClick("refuse")}
-        >
-          반려
-        </button>
+        <SoftButton style={{ width: "150px" }}>반려</SoftButton>
       </Link>
       <Routes>
         <Route path="/paymentsInfo" element={<PaymentsInfo />}></Route>

@@ -8,6 +8,7 @@ import RequestToMe from "./display/requestToMe";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
 import "layouts/recievedRequest/index.css";
+import SoftButton from "components/SoftButton";
 
 function RecievedRequest() {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -22,28 +23,13 @@ function RecievedRequest() {
     <DashboardLayout>
       <DashboardNavbar />
       <Link to="requesetToMe">
-        <button
-          className={selectedButton === "requestToMe" ? "selected" : ""}
-          onClick={() => handleButtonClick("requestToMe")}
-        >
-          전체
-        </button>
+        <SoftButton style={{ width: "150px" }}>전체</SoftButton>
       </Link>
       <Link to="requestApprove">
-        <button
-          className={selectedButton === "requestApprove" ? "selected" : ""}
-          onClick={() => handleButtonClick("requestApprove")}
-        >
-          승인
-        </button>
+        <SoftButton style={{ width: "150px" }}>승인</SoftButton>
       </Link>
       <Link to="refuse">
-        <button
-          className={selectedButton === "refuse" ? "selected" : ""}
-          onClick={() => handleButtonClick("refuse")}
-        >
-          반려
-        </button>
+        <SoftButton style={{ width: "150px" }}>반려</SoftButton>
       </Link>
       <Routes>
         <Route path="/" element={<RequestToMe />}></Route>

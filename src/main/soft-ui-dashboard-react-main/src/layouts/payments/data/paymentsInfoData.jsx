@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 // Soft UI Dashboard React components
+import { Modal } from "@mui/material";
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
 
   useEffect(() => {
     axios({
@@ -19,6 +22,19 @@ const paymentInfoData = () => {
       .catch((err) => {});
   }, []);
 
+  const handleModalOpen = (paymentId) => {
+    // 모달을 열기 위한 로직
+    setIsModalOpen(true);
+    // 추가적인 로직 수행 가능
+    setSelectedPaymentId(paymentId);
+  };
+
+  const handleModalClose = () => {
+    // 모달을 닫기 위한 로직
+    setIsModalOpen(false);
+    // 추가적인 로직 수행 가능
+  };
+
   const columns = [
     { name: "결제일시", align: "center" },
     { name: "사용처", align: "center" },
@@ -30,6 +46,10 @@ const paymentInfoData = () => {
 
   const rows = paymentList.map((payment) => {
     const paymentDate = payment.paymentTime.substr(0, 10);
+    const handleButtonClick = () => {
+      console.log("여기다 => " + payment.paymentId);
+      handleModalOpen(payment.paymentId);
+    };
 
     return {
       결제일시: (
@@ -57,20 +77,10 @@ const paymentInfoData = () => {
           {payment.requestStatus}
         </SoftTypography>
       ),
-      승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
-          {payment.sendRequest}
-        </SoftTypography>
-      ),
+      승인요청: <button onClick={handleButtonClick}>{payment.sendRequest}</button>,
     };
   });
-  return { columns, rows };
+  return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId };
 };
 
 export default paymentInfoData;
