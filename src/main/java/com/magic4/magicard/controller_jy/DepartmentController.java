@@ -1,0 +1,34 @@
+package com.magic4.magicard.controller_jy;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.magic4.magicard.repository_jy.DepartmentRepo;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("/department")
+public class DepartmentController {
+    @Autowired
+    DepartmentRepo deptRepo;
+    @GetMapping("/listall")
+    public List<Map<String, Object>> selectAllList() {
+        Object temp = deptRepo.selectAllList();
+        log.info("********"+temp);
+        List<Map<String, Object>> deptList = deptRepo.selectAllList();
+        return deptList;
+ 
+    }
+    @GetMapping("/detailinfo/{departmentId}")
+    public List<Map<String, Object>> findByDeptId(@PathVariable(name = "departmentId") Integer departmentId){
+        return deptRepo.findByDeptId(departmentId);
+    }
+}
+    
+
