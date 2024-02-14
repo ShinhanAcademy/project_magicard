@@ -16,7 +16,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: "/paymentInfo/getTotalAmount",
+        url: "/request/sendRequest",
       })
         .then((result) => {
           console.log(result.data);
@@ -61,7 +61,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
           <input type="file" />
         </div>
         <button className="closeButton" onClick={closeModal}>
-          Close
+          닫기
         </button>
       </div>
     </div>

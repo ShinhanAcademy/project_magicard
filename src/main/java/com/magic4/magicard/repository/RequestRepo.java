@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RequestRepo extends JpaRepository<Request, Integer>{
     List<Request> findByResponseEmployeeEmailAndApprovalStepsOrderByApprovalStepsAsc(String responseEmployeeEmail, ApprovalSteps approvalSteps);
-    Request findByPaymentInfo(PaymentInfo paymentInfo);
+    List<Request> findByPaymentInfo(PaymentInfo paymentInfo);
     List<Request> findByEmployeeAndRequestLevel(Employee employee, int requestLevel);
     List<Request> findByResponseEmployeeEmail(String responseEmployeeEmail);
 

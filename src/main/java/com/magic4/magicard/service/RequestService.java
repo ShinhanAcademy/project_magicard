@@ -35,10 +35,10 @@ public class RequestService {
     List<Request> requestList = new ArrayList<>();
 
     for(PaymentInfo paymentInfo : paymentInfoList){
-      Request request = requestRepo.findByPaymentInfo(paymentInfo);
-      if(request != null){
-        requestList.add(request);
-      }
+      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+//      if(request != null){
+//        requestList.add(request);
+//      }
     }
 
     List<RequestDto> requestDtoList = new ArrayList<>();

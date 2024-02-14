@@ -29,18 +29,34 @@ public class PaymentInfoService {
     Employee employee = model.map(employeeDto, Employee.class);
     IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
     List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCardOrderByPaymentTimeDesc(issuedCard);
+
     List<PaymentInfoDto> paymentInfoDtoList = new ArrayList<>();
+
     for(PaymentInfo paymentInfo : paymentInfoList){
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
 
+      // issuedCardDto set
       IssuedCardDto issuedCardDto = model.map(issuedCard, IssuedCardDto.class);
       paymentInfoDto.setIssuedCard(issuedCardDto);
 
-      Request request = requestRepo.findByPaymentInfo(paymentInfo);
+      // firstStepStatus set
+      // secondStepStatus set
+      // sendRequest set
+
+      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+
       if(request == null){
-        paymentInfoDto.setRequestStatus("");
-        paymentInfoDto.setSendRequest("요청");
+        // 신청 자체가 없으면
+        paymentInfoDto.setFirstStepStatus("");
+        paymentInfoDto.setSecondStepStatus("");
+        paymentInfoDto.setSendRequest("신청");
       }else {
+        paymentInfoDto.setSendRequest("수정");
+        if(request.size() == 1){
+          // 1단계 신청만 되었으면
+          paymentInfoDto.setSecondStepStatus("");
+        }
+
         Integer step = request.getApprovalSteps().getApprovalStatusCode();
         paymentInfoDto.setRequestStatus(request.getApprovalSteps().getApprovalStep());
         if(step == 1){
