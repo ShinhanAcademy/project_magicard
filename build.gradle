@@ -49,9 +49,7 @@ tasks.named('test') {
 }
 
 //React Build
-//def frontendDir = "$projectDir/src/main/frontend"
-//template
-def frontendDir = "$projectDir/src/main/soft-ui-dashboard-react-main"
+def frontendDir = "$projectDir/src/main/frontend"
 
 sourceSets {
    main {
