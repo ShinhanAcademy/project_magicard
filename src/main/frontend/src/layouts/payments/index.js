@@ -8,7 +8,9 @@ import PaymentsInfo from "./display/paymentsInfo";
 import RequestAll from "./display/requestAll";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
+
 import SoftButton from "components/SoftButton";
+
 
 function PaymentsTables() {
   // 현재 선택된 버튼을 추적하기 위한 상태 설정
@@ -36,6 +38,7 @@ function PaymentsTables() {
       </Link>
       <Link to="refuse">
         <SoftButton style={{ width: "150px" }}>반려</SoftButton>
+
       </Link>
       <Routes>
         <Route path="/paymentsInfo" element={<PaymentsInfo />}></Route>

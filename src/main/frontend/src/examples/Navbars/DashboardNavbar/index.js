@@ -157,7 +157,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         {isMini ? null : (
-          <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
+          <SoftBox sx={(theme) => navbarRow(theme, { isMini })} s>
             <SoftBox pr={1}>
               <SoftInput
                 placeholder="검색어를 입력하세요."

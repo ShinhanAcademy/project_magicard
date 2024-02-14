@@ -8,6 +8,7 @@ import RequestToMe from "./display/requestToMe";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
 import "layouts/recievedRequest/index.css";
+
 import SoftButton from "components/SoftButton";
 
 function RecievedRequest() {
@@ -30,6 +31,7 @@ function RecievedRequest() {
       </Link>
       <Link to="refuse">
         <SoftButton style={{ width: "150px" }}>반려</SoftButton>
+
       </Link>
       <Routes>
         <Route path="/" element={<RequestToMe />}></Route>
