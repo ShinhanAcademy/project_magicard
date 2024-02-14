@@ -1,80 +1,60 @@
-import React from 'react';
-import { 
-  Chart as ChartJS, 
-  CategoryScale, 
-  LinearScale, 
-  BarElement, 
-  Title, 
-  Tooltip, 
-  Legend 
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import React, { useState } from "react";
 
-// ChartJS 모듈 등록
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import ChartByDepartment from "./ChartByDepartment";
+import ChartByDepartment2 from "./ChartByDepartment2";
+import ChartByDepartment3 from "./ChartByDepartment3";
+import '../static/css/Selector.css';
 
-const BarChart = () => {
-  // 차트 데이터 설정
+interface SelectOptionProps {
+    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
 
-  const departmentData = [121000, 215000, 313000, 217000, 500000];
-
-  
-  // 평균 데이터 계산
-  const averageValue = departmentData.reduce((acc, curr) => acc + curr, 0) / departmentData.length;
-  const averageData = new Array(departmentData.length).fill(averageValue);
-
-  const data = {
-    labels: ['영업 부서', '개발 부서', '전략지원 부서', '마케팅 부서', 'R&D 부서'],
-    datasets: [
-        {
-          label: '지출액',
-          data: departmentData, // 부서별 지출액 데이터
-          backgroundColor: [
-            'rgba(255, 159, 64, 1)',
-          ],
-          borderWidth: 1,
-        },
-        {
-            label: '평균 지출액',
-            data: averageData,
-            fill: false,
-            backgroundColor:'rgba(255, 99, 132, 1)',
-          },
-    ],
+function BarChart(props: any) { // 여기서 props의 타입을 any 대신 더 구체적으로 정의할 수 있습니다.
+  const [select, setSelect] = useState<number>(1); // 상태의 타입을 number로 명시
+  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => { // 이벤트 객체의 타입을 명시
+    console.log(e.target.value);
+    setSelect(parseInt(e.target.value, 10)); // e.target.value는 string이므로 number로 변환
   };
-
-  // 차트 옵션 설정
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true 
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: '부서별 지출액',
-      },
-    },
-  };
-
   return (
-    <div style={{ width: '700px' }}>
-      <Bar data={data} options={options} />
-    </div>
-  )
-  };
+  <Card >
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <SelectOption onChange={onChange} ></SelectOption>
+      </Grid> 
+      <Grid item xs={12}>
+        {select === 1 ? <ChartByDepartment /> 
+          : select === 2 ? <ChartByDepartment2 /> 
+          : <ChartByDepartment3 />}
+      </Grid>
+    </Grid>
+  </Card>
+  );
+}
+function dept1() {
+    return <ChartByDepartment/>;
+}
+function dept2() {
+    return <ChartByDepartment2/>;
+}
+function dept3() {    
+    return <ChartByDepartment3/>;
+}
+function SelectOption({ onChange }:SelectOptionProps) {
+    return (
+      <Grid container justifyContent="flex-end" alignItems="center" >
+      <Grid item lg={2} >
+        <select onChange={onChange} className="custom-select">
+          <option value={1}>경영전략본부</option>
+          <option value={2}>디지털본부</option>
+          <option value={3}>인사팀</option>
+        </select>
+        </Grid>
+        </Grid>
+    
+    );
+}
+
 
 export default BarChart;

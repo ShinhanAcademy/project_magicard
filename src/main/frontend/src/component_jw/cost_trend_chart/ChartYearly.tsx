@@ -33,21 +33,21 @@ const ChartYearly = ()=>{
         label: '연도별 지출액',
         data: yearlyData,
         fill: false,
-        borderColor: 'rgba(255, 159, 64, 1)',
-        backgroundColor:'rgba(255, 159, 64, 1)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor:'rgba(54, 162, 235, 1)',
     },
       {
         label: '누적 지출액',
         data: accumulatedData,
         fill: false,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor:'rgba(75, 192, 192, 1)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor:'rgba(255, 99, 132, 1)',
     },
       {
         label: '평균 지출액',
         data: averageData,
         fill: false,
-        borderColor: 'rgba(255, 99, 132, 1)',
+        borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor:'rgba(255, 255, 255, 1)',
         borderDash: [5, 5], // 점선으로 표시
       }
@@ -74,7 +74,7 @@ const ChartYearly = ()=>{
         },
         y: {
           grid: {
-            display: false, // Y축 그리드 라인 숨기기
+            // display: false, // Y축 그리드 라인 숨기기
           }, 
         },
       },
@@ -82,8 +82,8 @@ const ChartYearly = ()=>{
 
   
   return (
-    <div style={{ width: '1000px' }}>
-      <Line data={data} options={options} />
+    <div >
+      <Line data={data} options={options} placeholder={data}/>
     </div>
     )
 }

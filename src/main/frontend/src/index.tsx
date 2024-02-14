@@ -1,21 +1,31 @@
+/**
+=========================================================
+* Soft UI Dashboard React - v4.0.1
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
-import DashBoardMain from "./component_jw/DashBoardMain";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+// Soft UI Dashboard React Context Provider
+import { SoftUIControllerProvider } from "./context";
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
-  <React.StrictMode>
-    <DashBoardMain/>
-  </React.StrictMode>
+  <HashRouter>
+    <SoftUIControllerProvider>
+      <App />
+    </SoftUIControllerProvider>
+  </HashRouter>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

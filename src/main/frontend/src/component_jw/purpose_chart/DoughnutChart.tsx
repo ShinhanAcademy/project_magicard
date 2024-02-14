@@ -2,8 +2,11 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
 
 // Doughnut 차트를 렌더링할 컴포넌트 정의
 const DoughnutChart = () => {
@@ -34,11 +37,15 @@ const DoughnutChart = () => {
       },
     ],
   };
+  const options = {
+    responsive: true,
+    
+  
+  };
 
   return (
-    <div style={{ width: '400px' }} >
-      <Doughnut data={data} />
-    </div>
+          <Doughnut data={data} options={options} placeholder={data}/>
+        
       )
 };
 

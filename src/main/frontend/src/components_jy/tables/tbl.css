@@ -1,0 +1,46 @@
+thead > tr > td {
+  width: 20rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+}
+
+tbody > tr {
+  text-align: center;
+  font-size: 1rem;
+}
+
+tbody > tr > td:nth-child(1) {
+  font-weight: bold;
+}
+
+.detailbtn > button {
+  width: 3rem;
+  height: 1.5rem;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.detailbtn > button:nth-child(1) {
+  background-color: #2f4f4f;
+  color: white;
+}
+
+.detailbtn > button:nth-child(2) {
+  background-color: #ffbbae;
+  color: #b22222;
+}
+
+.depttblbtn {
+  background-color: #2f4f4f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 4rem;
+  height: 2rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}

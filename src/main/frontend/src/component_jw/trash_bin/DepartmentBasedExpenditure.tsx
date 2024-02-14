@@ -69,7 +69,7 @@ const DepartmentBasedExpenditure = () => {
 
   return (
     <div style={{ width: '700px' }}>
-      <Bar data={data} options={options} />
+      <Bar data={data} options={options} placeholder={data}/>
     </div>
   )
   };
