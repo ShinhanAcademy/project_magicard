@@ -1,6 +1,6 @@
 package com.magic4.magicard.repository;
 
-import com.magic4.magicard.mk.dto.EmployeeInfoDto;
+import com.magic4.magicard.dto.EmployeeInfoDto;
 import com.magic4.magicard.vo.Department;
 import com.magic4.magicard.vo.Employee;
 import com.magic4.magicard.vo.EmployeeRank;
