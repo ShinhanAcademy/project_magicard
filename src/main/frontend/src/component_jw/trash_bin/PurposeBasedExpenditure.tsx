@@ -37,7 +37,7 @@ const PurpostBasedExpenditure = () => {
 
   return (
     <div style={{ width: '300px' }} >
-      <Doughnut data={data} />
+      <Doughnut data={data} placeholder={data}/>
     </div>
       )
 };
