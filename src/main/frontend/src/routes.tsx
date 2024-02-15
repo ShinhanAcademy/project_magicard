@@ -69,6 +69,7 @@ import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
 
 import CardPlus from "./examples/Icons/CardPlus";
+import PurposeCategory from "./component_sh/issueCards/components";
 
 const routes = [
   {
@@ -89,7 +90,15 @@ const routes = [
     component: <Employees />,
     noCollapse: true,
   },
-  //TODO:용도 관리 메뉴
+  {
+    type: "collapse",
+    name: "용도 관리",
+    key: "category-Management",
+    route: "/category-Management",
+    icon: <Settings size="14px" />,
+    component: <PurposeCategory />,
+    noCollapse: true,
+  },
   {
     type: "collapse",
 
