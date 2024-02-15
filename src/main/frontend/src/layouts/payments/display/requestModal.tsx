@@ -14,14 +14,20 @@ interface PurposeItem {
   purposeItem: string;
 }
 
-interface RequestInfo {}
+interface Request {
+  paymentId: number;
+  purposeId: number;
+  participant: string;
+  receiptUrl?: File;
+}
 
 const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
-  const [request, setRequest] = useState<RequestInfo | null>(null);
   const [purposeItem, setPurposeItem] = useState<PurposeItem[]>([]);
+  const [request, setRequest] = useState<RequestInfo | null>(null);
   const [selectedPurpose, setSelectedPurpose] = useState<number | null>(null);
   const [participant, setParticipant] = useState<string>("");
+  const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -57,6 +63,38 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
       alert("용도를 선택해주세요.");
       return;
     }
+    const requestData: Request = {
+      paymentId: selectedPaymentId,
+      purposeId: selectedPurpose,
+      participant: participant,
+    };
+
+    if (receiptUrl) {
+      requestData.receiptUrl = receiptUrl;
+    }
+
+    axios({
+      method: "post",
+      url: "requests/sendRequest",
+      data: requestData,
+    })
+      .then((res) => {
+        console.log(res.data === 1 ? "요청 성공" : "요청 실패");
+      })
+      .catch((e) => {
+        console.log("error 입니다.");
+      });
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setReceiptUrl(files[0]);
+    }
+  };
+
+  const handlePurposeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPurpose(parseInt(event.target.value));
   };
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
@@ -79,7 +117,8 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
         </div>
         <div>
           <div>용도</div>
-          <select>
+          <select onChange={handlePurposeChange}>
+            <option value="">선택하세요</option>
             {purposeItem.map((purpose: any) => (
               <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
                 {purpose.purposeCategory} || {purpose.purposeItem}
@@ -97,7 +136,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
         </div>
         <div>
           <div>영수증 첨부</div>
-          <input type="file" />
+          <input type="file" onChange={handleFileChange} />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
           신청

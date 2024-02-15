@@ -14,4 +14,5 @@ public class RequestFormDto {
     private String participant;
     private int purposeItemUid;
     private String receiptUrl;
+    private String memo;
 }

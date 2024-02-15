@@ -2,18 +2,12 @@ package com.magic4.magicard.controller;
 
 import java.util.*;
 
-import com.magic4.magicard.dto.CompanyDto;
-import com.magic4.magicard.dto.EmployeeDto;
-import com.magic4.magicard.dto.PaymentInfoDto;
-import com.magic4.magicard.dto.RequestDto;
+import com.magic4.magicard.dto.*;
 import com.magic4.magicard.service.RequestService;
 
 import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.magic4.magicard.vo.Request;
 
@@ -67,5 +61,11 @@ public class RequestController {
         return requestService.getPaymentInfo(paymentId);
     }
 
+    // 여기 진행중임니당!
+    @PostMapping("/sendRequest")
+    public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
+//        return requestService.sendRequest(requestFormDto, employeeInfo);
+    return 1;
+    }
 
 }

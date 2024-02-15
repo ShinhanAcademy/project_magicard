@@ -249,4 +249,22 @@ public class RequestService {
     PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
     return paymentInfoDto;
   }
+
+  // 신청하기
+  public Integer sendRequest(RequestFormDto requestFormDto, EmployeeDto employeeInfo) {
+    Employee employee = model.map(employeeInfo, Employee.class);
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(requestFormDto.getPaymentId()).orElse(null);
+    PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
+//    Request request = Request.builder()
+//            .employee(employee)
+//            .responseEmployeeEmail()
+//            .paymentInfo(paymentInfo)
+//            .purposeItem(purposeItem)
+//            .participant(requestFormDto.getParticipant())
+//            .receiptUrl(requestFormDto.getReceiptUrl())
+//            .memo(requestFormDto.getMemo())
+//            .
+//                              .build();
+    return 1;
+  }
 }
