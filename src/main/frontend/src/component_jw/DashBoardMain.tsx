@@ -11,7 +11,7 @@ function DashBoardMain() {
         <>
         <div>
             <div>
-                <BasicInformation/><br/><br/>
+                {/* <BasicInformation/><br/><br/> */}
             </div>
             <div className='whole-board'>
                 <div>
@@ -24,8 +24,7 @@ function DashBoardMain() {
                 <div> 
                     <DoughnutChart/>
                 </div>    
-
-                <br/><br/>            
+                <br/><br/>       
             </div>
         </div>
         </> 
