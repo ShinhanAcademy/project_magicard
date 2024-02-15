@@ -27,10 +27,11 @@ import { Card } from "@mui/material";
 
 function VideoBox({ date, id, price, noGutter }) {
   return (
-    <Card sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%", minHeight: "500px" }}>
       <SoftBox
         component="li"
-        display="row"
+        display="flex"
+        flexDirection="column"
         justifyContent="space-between"
         alignItems="center"
         py={1}
@@ -53,11 +54,13 @@ function VideoBox({ date, id, price, noGutter }) {
             textAlign: "left",
           }}
         >
-          법인 카드 사용 전 교육 영상을 필히 시청하시기 바랍니다. <br />
-          카드 사용에 대한 지침, 보안 조치,리워드 프로그램 등<br />
-          주요 약관 사항에 대한 다양한 정보를 포함하고 있습니다. <br />
-          이는 당사의 서비스를 안전하게 이용하고,카드를 효과적으로 <br />
-          활용사실 수 있도록 도움을 드리고자 함입니다.
+          <SoftTypography variant="h6" fontWeight="medium">
+            법인 카드 사용 전 교육 영상을 필히 시청하시기 바랍니다. <br />
+            카드 사용에 대한 지침, 보안 조치,리워드 프로그램 등<br />
+            주요 약관 사항에 대한 다양한 정보를 포함하고 있습니다. <br />
+            이는 당사의 서비스를 안전하게 이용하고,카드를 효과적으로 <br />
+            활용사실 수 있도록 도움을 드리고자 함입니다.
+          </SoftTypography>
         </p>
       </SoftBox>
     </Card>

@@ -25,11 +25,9 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import curved14 from "assets/images/curved-images/curved14.jpg";
-import masterCardLogo from "assets/images/logos/mastercard.png";
 import green from "assets/images/mk/green.png";
 import magicardLogo from "assets/images/mk/magicardLogo.png";
-
+import { Height } from "@mui/icons-material";
 
 function MasterCard({ color, number, holder, expires }) {
   const numbers = [...`${number}`];
@@ -54,12 +52,12 @@ function MasterCard({ color, number, holder, expires }) {
       }) => ({
         background: gradients[color]
           ? `${linearGradient(
-              rgba(gradients[color].main, 0.0),
-              rgba(gradients[color].state, 0.0)
+              rgba(gradients[color].main, 0.2),
+              rgba(gradients[color].state, 0.2)
             )}, url(${green})`
           : `${linearGradient(
-              rgba(gradients.dark.main, 0.0),
-              rgba(gradients.dark.state, 0.0)
+              rgba(gradients.dark.main, 0.8),
+              rgba(gradients.dark.state, 0.8)
             )}, url(${green})`,
         boxShadow: xl,
       })}
