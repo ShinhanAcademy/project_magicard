@@ -89,6 +89,7 @@ const routes = [
     component: <Employees />,
     noCollapse: true,
   },
+  //TODO:용도 관리 메뉴
   {
     type: "collapse",
 
