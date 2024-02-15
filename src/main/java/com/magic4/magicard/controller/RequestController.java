@@ -8,8 +8,10 @@ import com.magic4.magicard.dto.PaymentInfoDto;
 import com.magic4.magicard.dto.RequestDto;
 import com.magic4.magicard.service.RequestService;
 
+import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,6 +62,10 @@ public class RequestController {
         return requestService.getToMeRefuseList(employeeInfo);
     }
 
+    @GetMapping("/paymentInfo/{paymentId}")
+    public PaymentInfoDto getPaymentInfo(@PathVariable Integer paymentId){
+        return requestService.getPaymentInfo(paymentId);
+    }
 
 
 }

@@ -45,33 +45,27 @@ public class PaymentInfoService {
 
       List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
 
-      if(request == null){
+      System.out.println(request.size());
+
+      if(request.size() == 0){
         // 신청 자체가 없으면
         paymentInfoDto.setFirstStepStatus("");
         paymentInfoDto.setSecondStepStatus("");
         paymentInfoDto.setSendRequest("신청");
       }else {
-        paymentInfoDto.setSendRequest("수정");
+        paymentInfoDto.setFirstStepStatus(request.get(0).getApprovalSteps().getApprovalStep());
         if(request.size() == 1){
           // 1단계 신청만 되었으면
           paymentInfoDto.setSecondStepStatus("");
-        }
-
-        Integer step = request.getApprovalSteps().getApprovalStatusCode();
-        paymentInfoDto.setRequestStatus(request.getApprovalSteps().getApprovalStep());
-        if(step == 1){
-          paymentInfoDto.setSendRequest("신청");
-        }else if(step == 2 || step == 4 || step == 5){
-          paymentInfoDto.setSendRequest("요청 수정");
-        }else if(step == 3 || step == 6) {
-          paymentInfoDto.setSendRequest("승인 대기중");
-        }else if(step == 7){
-         paymentInfoDto.setSendRequest("최종 승인");
-        }else if(step == 8){
-          paymentInfoDto.setSendRequest("최종 반려");
+        }else {
+          // 2단계 현황
+          paymentInfoDto.setSecondStepStatus(request.get(1).getApprovalSteps().getApprovalStep());
+          // 신청, 재요청, block
+//          Integer step1 = request.get(0).getApprovalSteps().getApprovalStatusCode();
+//          Integer step2 = request.get(1).getApprovalSteps().getApprovalStatusCode();
+          paymentInfoDto.setSendRequest("확인");
         }
       }
-
       paymentInfoDtoList.add(paymentInfoDto);
     }
     return paymentInfoDtoList;

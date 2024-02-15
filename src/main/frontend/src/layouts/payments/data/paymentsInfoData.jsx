@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 // Soft UI Dashboard React components
-import { Modal } from "@mui/material";
 
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
@@ -10,7 +9,6 @@ const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
-
 
   useEffect(() => {
     axios({
@@ -75,19 +73,18 @@ const paymentInfoData = () => {
       ),
       "1단계": (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {payment.requestStatus}
+          {payment.firstStepStatus}
         </SoftTypography>
       ),
       "2단계": (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {payment.requestStatus}
+          {payment.secondStepStatus}
         </SoftTypography>
       ),
       신청: <button onClick={handleButtonClick}>{payment.sendRequest}</button>,
     };
   });
   return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId };
-
 };
 
 export default paymentInfoData;

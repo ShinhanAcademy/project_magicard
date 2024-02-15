@@ -18,5 +18,5 @@ public interface PaymentInfoRepo extends JpaRepository<PaymentInfo, Integer> {
   @Query("SELECT p FROM PaymentInfo p WHERE p.issuedCard = :issuedCard AND YEAR(p.paymentTime) = YEAR(CURRENT_DATE()) AND MONTH(p.paymentTime) = MONTH(CURRENT_DATE())")
   List<PaymentInfo> findByIssuedCardAndThisMonth(@Param("issuedCard") IssuedCard issuedCard);
 
-  PaymentInfo findByPaymentId(Integer paymentId);
+//  PaymentInfo findByPaymentId(Integer paymentId);
 }

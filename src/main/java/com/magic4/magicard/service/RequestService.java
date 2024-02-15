@@ -47,7 +47,7 @@ public class RequestService {
       RequestDto requestDto = model.map(request, RequestDto.class);
       requestDto.setEmployee(employeeDto);
 
-      PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(request.getPaymentInfo().getPaymentId());
+      PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
       requestDto.setPaymentInfo(paymentInfoDto);
 
@@ -115,7 +115,7 @@ public class RequestService {
     for(Request request : requestList){
       RequestDto requestDto = model.map(request, RequestDto.class);
 
-      PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(request.getPaymentInfo().getPaymentId());
+      PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
       requestDto.setPaymentInfo(paymentInfoDto);
 
@@ -160,7 +160,7 @@ public class RequestService {
       if(req.getApprovalSteps().getApprovalStatusCode() == 7){
         RequestDto requestDto = model.map(req, RequestDto.class);
 
-        PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(req.getPaymentInfo().getPaymentId());
+        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
         PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
         requestDto.setPaymentInfo(paymentInfoDto);
 
@@ -207,7 +207,7 @@ public class RequestService {
       if(req.getApprovalSteps().getApprovalStatusCode() == 8){
         RequestDto requestDto = model.map(req, RequestDto.class);
 
-        PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(req.getPaymentInfo().getPaymentId());
+        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
         PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
         requestDto.setPaymentInfo(paymentInfoDto);
 
@@ -242,5 +242,11 @@ public class RequestService {
     }
 
     return approveRequest;
+  }
+
+  public PaymentInfoDto getPaymentInfo(Integer paymentId) {
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(paymentId).orElse(null);
+    PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+    return paymentInfoDto;
   }
 }
