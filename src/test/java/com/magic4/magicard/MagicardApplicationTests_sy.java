@@ -1,42 +1,52 @@
-//package com.magic4.magicard;
+package com.magic4.magicard;
+
+import java.util.*;
+
+import org.apache.catalina.util.ToStringUtil;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.magic4.magicard.repository.*;
+import com.magic4.magicard.vo.*;
+
+@SpringBootTest
+class MagicardApplicationTests {
 //
-//import java.util.*;
+	@Autowired
+	RequestRepo requestRepo;
 //
-//import org.apache.catalina.util.ToStringUtil;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
+	@Autowired
+	EmployeeRepo employeeRepo;
+
+	@Autowired
+	PurposeCategoryRepo purposeCategoryRepo;
+
+	@Autowired
+	PurposeItemRepo purposeItemRepo;
+
+	@Autowired
+	CompanyRepo companyRepo;
+
+	@Autowired
+	ApprovalStepsRepo approvalStepsRepo;
+
+	@Autowired
+	PaymentInfoRepo paymentInfoRepo;
+
+	@Autowired
+	EmployeeRankRepo employeeRankRepo;
+
+    @Autowired
+    CompanyRegisterRequestRepo companyRegisterRequestRepo;
+
+
+//    @Test
+//    void insertHanati(){
+//        companyRegisterRequestRepo.save(CompanyRegisterRequest.builder().isPass(true).companyEmail("hanati@naver.com").companyName("하나금융티아이").build());
 //
-//import com.magic4.magicard.repository_sy.*;
-//import com.magic4.magicard.vo.*;
-//
-//@SpringBootTest
-//class MagicardApplicationTests {
-//
-//	@Autowired
-//	RequestRepo requestRepo;
-//
-//	@Autowired
-//	EmployeeRepo employeeRepo;
-//
-//	@Autowired
-//	PurposeCategoryRepo purposeCategoryRepo;
-//
-//	@Autowired
-//	PurposeItemRepo purposeItemRepo;
-//
-//	@Autowired
-//	CompanyRepo companyRepo;
-//
-//	@Autowired
-//	ApprovalStepsRepo approvalStepsRepo;
-//
-//	@Autowired
-//	PaymentInfoRepo paymentInfoRepo;
-//
-//	@Autowired
-//	EmployeeRankRepo employeeRankRepo;
-//
+//    }
+
 //	@Test
 //	void contextLoads() {
 //		// insertRequest();
@@ -207,4 +217,4 @@
 //			purposeCategoryRepo.save(purposeCategory);
 //	}
 //
-//}
+}

@@ -2,6 +2,7 @@ package com.magic4.magicard.service;
 
 import java.util.*;
 
+import com.magic4.magicard.dto.EmployeeEmailDto;
 import com.magic4.magicard.vo.Employee;
 import com.magic4.magicard.vo.IssuedCard;
 import com.magic4.magicard.vo.PaymentInfo;
@@ -74,5 +75,21 @@ public class PaymentInfoService {
     }
 
     return totalAmount;
+  }
+
+  public Long selectTotalUses(EmployeeEmailDto employeeEmailDto){
+   return paymentInfoRepo.totalUses(changeDtoToEntity(employeeEmailDto).getEmployeeEmail());
+  }
+
+  public Long selectTotalPayment(EmployeeEmailDto employeeEmailDto) {
+    return paymentInfoRepo.totalPayment(changeDtoToEntity(employeeEmailDto).getEmployeeEmail());
+  }
+
+  public Long selectTotalApproval(EmployeeEmailDto employeeEmailDto) {
+    return paymentInfoRepo.totalApproval(changeDtoToEntity(employeeEmailDto).getEmployeeEmail());
+  }
+  private Employee changeDtoToEntity(EmployeeEmailDto employeeEmailDto) {
+    return Employee.builder().employeeEmail(employeeEmailDto.getEmployeeEmail()).build();
+
   }
 }
