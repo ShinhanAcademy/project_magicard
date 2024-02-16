@@ -69,6 +69,7 @@ import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
 
 import CardPlus from "./examples/Icons/CardPlus";
+import Tablesjy from "./components_jy/tables";
 
 const routes = [
   {
@@ -87,6 +88,15 @@ const routes = [
     route: "/member-Management",
     icon: <Member size="14px" />,
     component: <Employees />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "부서 관리",
+    key: "departments",
+    route: "/departments",
+    icon: <Office size="14px" />,
+    component: <Tablesjy />,
     noCollapse: true,
   },
   {

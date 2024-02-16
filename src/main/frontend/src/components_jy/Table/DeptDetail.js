@@ -1,27 +1,17 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
 
 function DeptDetail(props) {
   const { departmentId } = props;
   const [deptDetail, setDeptDetail] = useState();
-  const navi = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios({
-      method: "put",
-      url: "/rest/empdept/update.do",
-      data: emp,
-    }).then((res) => {
-      console.log(res.data === 0 ? "성공" : "실패");
-      navi("/empdept/list");
-    });
+  const closeBtn = () => {
+    setDeptDetail("");
   };
 
-  //detail 정보를 위한 superdepartment id (상위조직) 추출
   useEffect(() => {
+    console.log("deptDetail랜더링 후 : " + departmentId);
     axios({
       method: "Get",
       url: `/department/detailinfo/${departmentId}`,
@@ -35,13 +25,6 @@ function DeptDetail(props) {
       });
   }, [departmentId]);
 
-  const changeHandler = useCallback(
-    (e) => {
-      setDeptDetail({ ...deptDetail, [e.target.name]: e.target.value });
-    },
-    [deptDetail]
-  );
-
   return (
     <div>
       <div
@@ -49,20 +32,17 @@ function DeptDetail(props) {
       >
         부서 상세조회
       </div>
-      <DeptDetailDisplay
-        dept={deptDetail}
-        changeHandler={changeHandler}
-        handleSubmit={handleSubmit}
-      ></DeptDetailDisplay>
+      {deptDetail && <DeptDetailDisplay dept={deptDetail} closeBtn={closeBtn}></DeptDetailDisplay>}
     </div>
   );
 }
 
 function DeptDetailDisplay(props) {
-  const { dept, changeHandler, handleSubmit } = props;
+  const { closeBtn, dept } = props;
+  console.log(dept);
   return (
     <div style={{ margin: "1.5rem" }}>
-      <Form onSubmit={handleSubmit} style={{ fontSize: "1rem" }}>
+      <Form style={{ fontSize: "1rem" }}>
         <Form.Group as={Row} className="mb-3" controlId="topDepartmentId">
           <Form.Label column sm="1" style={{ fontWeight: "bold" }}>
             부문
@@ -70,9 +50,13 @@ function DeptDetailDisplay(props) {
           <Col sm="8">
             <Form.Control
               type="text"
-              value={dept.topDepartmentName || ""}
+              value={dept.topDepartmentName || "없음"}
               name="topDepartmentName"
               plaintext
+              style={{
+                fontFamily: "ChungBukUniversity",
+                color: dept.topDepartmentName ? "" : "#CBCBCB",
+              }}
             />
           </Col>
         </Form.Group>
@@ -83,9 +67,12 @@ function DeptDetailDisplay(props) {
           <Col sm="8">
             <Form.Control
               type="text"
-              value={dept.superDepartmentName || ""}
+              value={dept.superDepartmentName || "없음"}
               name="superDepartmentName"
-              onChange={changeHandler}
+              style={{
+                fontFamily: "ChungBukUniversity",
+                color: dept.superDepartmentName ? "" : "#CBCBCB",
+              }}
             />
           </Col>
         </Form.Group>
@@ -96,16 +83,20 @@ function DeptDetailDisplay(props) {
           <Col sm="8">
             <Form.Control
               type="text"
-              defaultValue={dept.departmentName || ""}
+              value={dept.departmentName || "없음"}
               name="departmentName"
-              onChange={changeHandler}
+              style={{
+                fontFamily: "ChungBukUniversity",
+                color: dept.departmentName ? "" : "#CBCBCB",
+              }}
             />
           </Col>
         </Form.Group>
 
-        <div style={{ marginLeft: "6rem" }} className="detailbtn">
-          <button type="button">저장</button>
-          <button type="button">삭제</button>
+        <div style={{ marginLeft: "8rem" }} className="detailbtn">
+          <button type="button" onClick={closeBtn}>
+            확인
+          </button>
         </div>
         {/* </Link> */}
       </Form>

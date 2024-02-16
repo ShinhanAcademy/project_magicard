@@ -18,7 +18,15 @@
     "no-param-reassign": "off",
     "jsx-a11y/alt-text": "off",
     "react/react-in-jsx-scope": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react/prop-types": [
+      0,
+      {
+        "ignore": ["ignore"],
+        "customValidators": ["customValidator"],
+        "skipUndeclared": true
+      }
+    ]
   },
   "settings": {
     "react": {
