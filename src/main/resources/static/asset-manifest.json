@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1ca392bc.css",
-    "main.js": "/static/js/main.d50bbf24.js",
+    "main.css": "/static/css/main.c34b60d3.css",
+    "main.js": "/static/js/main.32d2681a.js",
     "static/media/ChungbukUniversity.otf": "/static/media/ChungbukUniversity.ad0f9691528043ec3b72.otf",
     "static/media/home-decor-3.jpg": "/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
@@ -36,7 +36,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.1ca392bc.css",
-    "static/js/main.d50bbf24.js"
+    "static/css/main.c34b60d3.css",
+    "static/js/main.32d2681a.js"
   ]
 }

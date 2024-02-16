@@ -51,8 +51,10 @@ public class PurposeController {
     return  purService.insertCategory(purposeCategory, purposeItem);
     }
 
-    @DeleteMapping("/deleteSubcategory.do")
-    public void deleteSubcategory(@RequestBody String subcategory,@RequestBody String category) {
-        purService.deleteSubcategory(subcategory,category);
+    @DeleteMapping("/deletepurposeItem.do")
+    public void deleteSubcategory(@RequestBody PurposeDto purposedto) {
+        String purposeCategory = purposedto.getPurposeCategory();
+        String purposeItem = purposedto.getPurposeItem();
+        purService.deleteSubcategory(purposeCategory,purposeItem);
     }
 }

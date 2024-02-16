@@ -24,9 +24,18 @@ import IssueSubForm from "../Invoice";
 import Form from "react-bootstrap/Form";
 import PurposeCategoryInputForm from "../PurposeCategoryInputForm";
 import PurposeList from "../CategoryDisplay";
+import { useState } from "react";
+import PurposeModal from "component_sh/issueCards/Purpose/PurposeModal";
+import { Button } from "react-bootstrap";
+
 // Billing page components
 
 function CateogryListMain() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = () => {
+    setModalOpen(true);
+  };
   return (
     <Card id="delete-account" sx={{ height: "100%" }}>
       <SoftBox
@@ -43,12 +52,14 @@ function CateogryListMain() {
           기업의 지출 항목를 확인하고 추가, 수정, 삭제를 할 수 있습니다.
         </SoftTypography>
       </SoftBox>
-      <SoftBox>
+      <SoftBox display="flex" alignItems="center" justifyContent="space-between" p={3}>
         <SoftTypography variant="h6" fontWeight="light" color="secondary">
           상위 항목
         </SoftTypography>
-        <PurposeList />
+        <SoftButton onClick={showModal}> 추가하기 </SoftButton>
+        {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
+      <PurposeList />
     </Card>
   );
 }

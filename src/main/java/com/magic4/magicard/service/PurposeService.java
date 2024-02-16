@@ -31,7 +31,7 @@ public class PurposeService {
 
 
     @SuppressWarnings("null")
-    public void deleteSubcategory(String subcategory,String category){
+    public void deleteSubcategory(String purposeCategory,String purposeItem){
       Company company = Company.builder()
       .companyTicker("SHDS").build();
 
@@ -42,7 +42,7 @@ public class PurposeService {
       PurposeItem purposeitem = null;
 
       for(int i = 0 ;  i < cateList.size() ; i++){
-         if( cateList.get(i).getPurposeCategory().equals(category)){
+         if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
           purposecategory  =   cateList.get(i);
           break;
          }
@@ -51,7 +51,7 @@ public class PurposeService {
       List<PurposeItem> purposeitemlist = purItemRepo.findByPurposeCategory(purposecategory);
 
       for(int i = 0 ; i <purposeitemlist.size() ; i++){
-        if(purposeitemlist.get(i).getPurposeItem().equals(subcategory)){
+        if(purposeitemlist.get(i).getPurposeItem().equals(purposeItem)){
           purposeitem =  purposeitemlist.get(i);
         }
       }

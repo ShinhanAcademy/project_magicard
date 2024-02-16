@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, Grid } from "@mui/material";
+import { Alert, Card, Grid } from "@mui/material";
 import axios from "axios";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
@@ -11,7 +11,15 @@ function PurposeList(props) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedpurposeItem, setSelectedpurposeItem] = useState(null);
+  const [isMouseOver, setIsMouseOver] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsMouseOver(true);
+  };
+  const handleMouseLeave = () => {
+    setIsMouseOver(false);
+  };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -21,19 +29,20 @@ function PurposeList(props) {
     setNewCategory(e.target.value);
   };
 
-  const handleDeleteSubcategory = (subcategory) => {
-    setSelectedSubCategory(subcategory);
-    deleteSubcategory();
+  const handleDeletepurposeItem = (purposeItem) => {
+    setSelectedpurposeItem(purposeItem);
+    deletepurposeItem(purposeItem);
   };
-  const deleteSubcategory = () => {
+  const deletepurposeItem = (purposeItem) => {
     alert("삭제 하시겠습니까?");
+    console.log(selectedCategory, purposeItem);
     axios({
       method: "delete",
-      url: "/pur/deleteSubcategory.do",
-      data: { category: selectedCategory, subcategory: selectedSubCategory },
+      url: "/pur/deletepurposeItem.do",
+      data: { purposeCategory: selectedCategory, purposeItem: purposeItem },
     })
       .then((res) => {
-        console.log("소분류 삭제 성공 삭제 성공 삭제 성공 삭제 성공");
+        setNewCategory(Date.now().toString()); // list를 다시 불러오기 위해 무작위 값을 변경
       })
       .catch((err) => {
         console.log(err);
@@ -46,13 +55,10 @@ function PurposeList(props) {
       url: "/pur/list.do",
     })
       .then((res) => {
-        console.log(res.data);
-        console.log("성공 성공 성공 성공 성공 성공");
         setPurList(res.data);
       })
       .catch((err) => {
         console.log(err);
-        console.log("실패 실패 실패 실패 실패 실패");
       });
   }, [newCategory]);
 
@@ -68,7 +74,7 @@ function PurposeList(props) {
 
     return selectedCategoryItems.map((item, index) => ({
       소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
-      삭제: <SoftButton onClick={() => handleDeleteSubcategory(item)}>삭제</SoftButton>,
+      삭제: <SoftButton onClick={() => handleDeletepurposeItem(item)}>삭제</SoftButton>,
     }));
   };
 
@@ -82,12 +88,24 @@ function PurposeList(props) {
         handleCategoryClick={handleCategoryClick}
         columns={columns}
         rows={generateRows()}
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
+        isMouseOver={isMouseOver}
       />
     </div>
   );
 }
 
-function CategoryDisplay({ purList, selectedCategory, handleCategoryClick, columns, rows }) {
+function CategoryDisplay({
+  purList,
+  selectedCategory,
+  handleCategoryClick,
+  columns,
+  rows,
+  handleMouseEnter,
+  handleMouseLeave,
+  isMouseOver,
+}) {
   return (
     <Card id="delete-account" sx={{ height: "100%" }}>
       <Grid container spacing={2}>
@@ -109,7 +127,14 @@ function CategoryDisplay({ purList, selectedCategory, handleCategoryClick, colum
                 backgroundColor: selectedCategory === pur.purposeCategory ? "lightblue" : "white",
               }}
             >
-              <SoftButton style={{ width: "150px" }}>{pur.purposeCategory}</SoftButton>
+              <SoftButton
+                style={{ width: "150px" }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {pur.purposeCategory}
+                {isMouseOver && <span>x</span>}
+              </SoftButton>
             </SoftBox>
           </Grid>
         ))}
