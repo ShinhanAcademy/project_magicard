@@ -2,7 +2,6 @@ package com.magic4.magicard;
 
 import java.util.*;
 
-import org.apache.catalina.util.ToStringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +38,20 @@ class MagicardApplicationTests {
 
 	@Autowired
 	CompanyRegisterRequestRepo companyRegisterRequestRepo;
+
+	@Test
+	void purposeTest() {
+		String companyTicker = "SHDS";
+		Company company = companyRepo.findById(companyTicker).orElse(null);
+
+		assert (company != null);
+
+		List<PurposeCategory> purposeCategories = purposeCategoryRepo.findByCompany(company);
+
+		for (PurposeCategory purposeCategory : purposeCategories) {
+			System.out.println(purposeCategory);
+		}
+	}
 
 	// @Test
 	// void insertHanati(){
