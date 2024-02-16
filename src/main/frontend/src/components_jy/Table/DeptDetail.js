@@ -26,14 +26,23 @@ function DeptDetail(props) {
   }, [departmentId]);
 
   return (
-    <div>
-      <div
-        style={{ fontSize: "1.25rem", fontWeight: "bold", marginLeft: "1rem", color: "#2F4F4F" }}
-      >
-        부서 상세조회
-      </div>
-      {deptDetail && <DeptDetailDisplay dept={deptDetail} closeBtn={closeBtn}></DeptDetailDisplay>}
-    </div>
+    <>
+      {deptDetail && (
+        <div className="deptDetailTbl">
+          <div
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: "bold",
+              marginLeft: "1rem",
+              color: "#2F4F4F",
+            }}
+          >
+            부서 상세조회
+          </div>
+          <DeptDetailDisplay dept={deptDetail} closeBtn={closeBtn}></DeptDetailDisplay>{" "}
+        </div>
+      )}
+    </>
   );
 }
 
