@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.UUID;
 
+import com.magic4.magicard.dto.EmployeeEmailDto;
+import com.magic4.magicard.vo.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,5 +95,18 @@ public class IssuedCardService {
         }
 
         return cardNumber.toString();
+    }
+
+    public Long totalCards(EmployeeEmailDto employeeEmail){
+        return issuedCardRepo.totalCards(changeDtoToEntity(employeeEmail).getEmployeeEmail());
+    }
+
+    private Employee changeDtoToEntity(EmployeeEmailDto employeeEmail) {
+        Employee employeeEmailEntity= Employee
+                .builder()
+                .employeeEmail(employeeEmail.getEmployeeEmail())
+                .build();
+
+        return employeeEmailEntity;
     }
 }
