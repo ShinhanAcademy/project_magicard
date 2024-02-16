@@ -15,22 +15,24 @@
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
-  padding: 20px;
+  padding: 25px;
   border: 1px solid #888;
-  width: 80%;
+  /* width: 80%; */
+  height: auto;
+  width: 781px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Style for close button */
-.modal-content button {
+/* .modal-content button {
   color: #fff;
   background-color: #007bff;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 4px;
-}
+} */
 
 /* Close button hover effect */
 .modal-content button:hover {
@@ -46,4 +48,79 @@
 /* Style for modal body */
 .modal-content p {
   font-size: 1rem;
+}
+
+.modal-title {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+hr {
+  color: rgb(217, 217, 217, 0.5);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-title-img {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.modal-title-img > img {
+  margin-right: 1rem;
+}
+
+.modal-title-img > div > h1 {
+  color: #2f4f4f;
+}
+
+.modal-input {
+  display: flex;
+  align-items: center;
+  color: black;
+  margin-right: 3rem;
+}
+
+.modal-input > img {
+  margin-right: 0.5rem;
+}
+
+.modal-item {
+  display: flex;
+  margin: 2rem;
+}
+
+.modal-item > input {
+  border: none;
+  font-size: 1.2rem;
+}
+
+.ness {
+  color: #e92222;
+}
+
+.modal-item div {
+  font-size: 1rem;
+}
+
+.inputbox {
+  border: 1px solid #8e8e8e;
+  width: 500px;
+  border-radius: 8px;
+  height: 100px;
+}
+
+.submitButton > img {
+  width: 450px;
+  height: 50px;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  margin-left: 15%;
 }
