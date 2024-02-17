@@ -14,11 +14,13 @@ interface PurposeItem {
   purposeItem: string;
 }
 
+// 신청할 request
 interface Request {
   paymentId: number;
-  purposeId: number;
+  purposeItemUid: number;
   participant: string;
   receiptUrl?: File;
+  memo: string;
 }
 
 const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
@@ -28,6 +30,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
   const [selectedPurpose, setSelectedPurpose] = useState<number | null>(null);
   const [participant, setParticipant] = useState<string>("");
   const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
+  const [memo, setMemo] = useState<string>("");
 
   useEffect(() => {
     if (isOpen) {
@@ -65,8 +68,9 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
     }
     const requestData: Request = {
       paymentId: selectedPaymentId,
-      purposeId: selectedPurpose,
+      purposeItemUid: selectedPurpose,
       participant: participant,
+      memo: memo,
     };
 
     if (receiptUrl) {
@@ -137,6 +141,14 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
         <div>
           <div>영수증 첨부</div>
           <input type="file" onChange={handleFileChange} />
+        </div>
+        <div>
+          <div>메모</div>
+          <input
+            placeholder="기타 특이사항을 입력하세요."
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
           신청

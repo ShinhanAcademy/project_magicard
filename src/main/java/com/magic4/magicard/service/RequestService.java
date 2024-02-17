@@ -255,16 +255,31 @@ public class RequestService {
     Employee employee = model.map(employeeInfo, Employee.class);
     PaymentInfo paymentInfo = paymentInfoRepo.findById(requestFormDto.getPaymentId()).orElse(null);
     PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
-//    Request request = Request.builder()
-//            .employee(employee)
-//            .responseEmployeeEmail()
-//            .paymentInfo(paymentInfo)
-//            .purposeItem(purposeItem)
-//            .participant(requestFormDto.getParticipant())
-//            .receiptUrl(requestFormDto.getReceiptUrl())
-//            .memo(requestFormDto.getMemo())
-//            .
-//                              .build();
+    // 내가 상급 관리자인지 확인
+    // 우리 회사에 
+    
+    // 해당 paymentId 에 해당하는 request가 있으면 재요청인지,, 수정인지,, 확인해야한다.. 
+    // 어떻게 하면 재사용성이 좋게 모달을 사용할 수 있을까 
+
+//    private int paymentId;
+//    private int purposeItemUid;
+//    private String participant;
+//    private String receiptUrl;
+//    private String memo;
+    
+    // 여기도 다시 하자
+    ApprovalSteps approvalSteps = ApprovalSteps.builder().build();
+
+    Request request = Request.builder()
+            .employee(employee)
+            .responseEmployeeEmail(null)
+            .paymentInfo(paymentInfo)
+            .purposeItem(purposeItem)
+            .participant(requestFormDto.getParticipant())
+            .receiptUrl(requestFormDto.getReceiptUrl())
+            .memo(requestFormDto.getMemo())
+            .approvalSteps(approvalSteps)
+            .build();
     return 1;
   }
 }

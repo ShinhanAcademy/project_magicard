@@ -11,8 +11,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class RequestFormDto {
     private int paymentId;
-    private String participant;
     private int purposeItemUid;
+    private String participant;
     private String receiptUrl;
     private String memo;
+    private int requestLevel;
 }
