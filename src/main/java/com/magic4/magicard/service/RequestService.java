@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class RequestService {
   private final IssuedCardRepo issuedCardRepo;
   private final PaymentInfoRepo paymentInfoRepo;
   private final PurposeItemRepo purposeItemRepo;
+  private final EmployeeRepo employeeRepo;
   private ModelMapper model = new ModelMapper();
 
   // 전체 내가 신청 내역 가져오기
@@ -244,42 +246,72 @@ public class RequestService {
     return approveRequest;
   }
 
-  public PaymentInfoDto getPaymentInfo(Integer paymentId) {
+  public PaymentInfoDto getPaymentInfo(Integer paymentId) { // 신청 아무것도 안했을 때
     PaymentInfo paymentInfo = paymentInfoRepo.findById(paymentId).orElse(null);
     PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+
     return paymentInfoDto;
   }
 
   // 신청하기
-  public Integer sendRequest(RequestFormDto requestFormDto, EmployeeDto employeeInfo) {
-    Employee employee = model.map(employeeInfo, Employee.class);
+  public Integer sendRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
     PaymentInfo paymentInfo = paymentInfoRepo.findById(requestFormDto.getPaymentId()).orElse(null);
     PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
-    // 내가 상급 관리자인지 확인
-    // 우리 회사에 
-    
-    // 해당 paymentId 에 해당하는 request가 있으면 재요청인지,, 수정인지,, 확인해야한다.. 
-    // 어떻게 하면 재사용성이 좋게 모달을 사용할 수 있을까 
 
-//    private int paymentId;
-//    private int purposeItemUid;
-//    private String participant;
-//    private String receiptUrl;
-//    private String memo;
-    
-    // 여기도 다시 하자
-    ApprovalSteps approvalSteps = ApprovalSteps.builder().build();
+    System.out.println("느아아아 머리가 아파" + purposeItem.getPurposeItemUid());
+
+    ApprovalSteps approvalSteps = approvalStepsRepo.findById(1).orElse(null);
 
     Request request = Request.builder()
             .employee(employee)
-            .responseEmployeeEmail(null)
             .paymentInfo(paymentInfo)
             .purposeItem(purposeItem)
             .participant(requestFormDto.getParticipant())
             .receiptUrl(requestFormDto.getReceiptUrl())
             .memo(requestFormDto.getMemo())
             .approvalSteps(approvalSteps)
+            .requestLevel(1)
             .build();
+
+    // 내가 우리 회사의 상급자인지 확인하기
+    List<Integer> sameDept = new ArrayList<>();
+    List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
+    System.out.println("여기다아아아아" + sameDeptEmployees.size());
+    for(Employee emp : sameDeptEmployees){
+      sameDept.add(emp.getEmployeeRank().getRankPriority());
+    }
+    Collections.sort(sameDept);
+    String superEmp = "";
+    if(sameDept.get(0) == employee.getEmployeeRank().getRankPriority()){
+      // 내가 상위관리자면 상위 부서의 상급 관리자 찾기
+      Department superDepartment = employee.getDepartment();
+      List<Integer> superDept = new ArrayList<>();
+      List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
+      System.out.println("그 다음 여기다아ㅏ" + superDeptEmployees.size());
+      for(Employee emp : superDeptEmployees) {
+        superDept.add(emp.getEmployeeRank().getRankPriority());
+      }
+      Collections.sort(superDept);
+      for(Employee emp : superDeptEmployees){
+        if(emp.getEmployeeRank().getRankPriority() == superDept.get(0)){
+          superEmp = emp.getEmployeeEmail();
+          request.setResponseEmployeeEmail(superEmp);
+          break;
+        }
+      }
+    } else {
+      for(Employee emp : sameDeptEmployees){
+        if(emp.getEmployeeRank().getRankPriority() == sameDept.get(0)){
+          superEmp = emp.getEmployeeEmail();
+          request.setResponseEmployeeEmail(superEmp);
+          break;
+        }
+      }
+    }
+
+    requestRepo.save(request);
+
     return 1;
   }
 }

@@ -20,9 +20,9 @@ public class RequestController {
     private final RequestService requestService;
     CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
     EmployeeDto employeeInfo = EmployeeDto.builder()
-            .employeeEmail("aa15@naver.com")
-            .employeeName("박지원")
-            .phone("01012344321")
+            .employeeEmail("aa4@naver.com")
+            .employeeName("정주영")
+            .phone("33333333333333")
             .company(companyDto)
             .build();
 
@@ -61,11 +61,10 @@ public class RequestController {
         return requestService.getPaymentInfo(paymentId);
     }
 
-    // 여기 진행중임니당!
     @PostMapping("/sendRequest")
     public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
-//        return requestService.sendRequest(requestFormDto, employeeInfo);
-    return 1;
+        System.out.println("tmqjㄴㅇㄹㅇㄴㅇㄹ" + requestFormDto.getPurposeItemUid());
+        return requestService.sendRequest(requestFormDto, employeeInfo);
     }
 
 }

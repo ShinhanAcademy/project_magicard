@@ -15,5 +15,4 @@ public class RequestFormDto {
     private String participant;
     private String receiptUrl;
     private String memo;
-    private int requestLevel;
 }
