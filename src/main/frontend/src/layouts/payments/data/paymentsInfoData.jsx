@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
-// Soft UI Dashboard React components
-
 import axios from "axios";
+import CheckContext from "component_sy/modal/checkModal";
+import RequestContext from "component_sy/modal/requestModal";
+import UpdateContext from "component_sy/modal/updateModal";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
@@ -23,17 +23,28 @@ const paymentInfoData = () => {
   }, []);
 
   const handleModalOpen = (paymentId) => {
-    // 모달을 열기 위한 로직
     setIsModalOpen(true);
-    // 추가적인 로직 수행 가능
     setSelectedPaymentId(paymentId);
   };
 
   const handleModalClose = () => {
-    // 모달을 닫기 위한 로직
     setIsModalOpen(false);
-    // 추가적인 로직 수행 가능
+    window.location.reload();
   };
+
+  const renderContext = (paymentId, sendRequest) => {
+    switch (sendRequest) {
+      case "신청":
+        return <RequestContext paymentId={paymentId} />;
+      case "수정":
+        return <UpdateContext paymentId={paymentId} />;
+      case "조회":
+        return <CheckContext paymentId={paymentId} />;
+      default:
+        return null;
+    }
+  };
+
   const columns = [
     { name: "결제일시", align: "center" },
     { name: "사용처", align: "center" },
@@ -81,7 +92,7 @@ const paymentInfoData = () => {
           {payment.secondStepStatus}
         </SoftTypography>
       ),
-      신청: <button onClick={handleButtonClick}>{payment.sendRequest}</button>,
+      신청: <button onClick={handleButtonClick}>{payment.sendRequest} </button>,
     };
   });
   return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId };

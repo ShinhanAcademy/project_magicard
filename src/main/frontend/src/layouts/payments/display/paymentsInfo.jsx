@@ -12,13 +12,11 @@ import leftMoney from "assets/images/payment-images/leftMoney.png";
 import "layouts/payments/display/paymentsInfo.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import ModalContext from "./requestModal";
+import ModalContext from "component_sy/modal/requestModal";
 
 function PaymentsInfo() {
   const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId } =
     paymentInfoData();
-
 
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -75,7 +73,6 @@ function PaymentsInfo() {
         closeModal={handleModalClose}
         selectedPaymentId={selectedPaymentId}
       />
-
     </>
   );
 }
