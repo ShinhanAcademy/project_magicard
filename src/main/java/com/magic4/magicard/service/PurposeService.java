@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.crypto.KeySelector.Purpose;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import com.magic4.magicard.dto.PurposeAllDto;
 import com.magic4.magicard.dto.PurposeDto;
-import com.magic4.magicard.dto.PurposeDto2;
 import com.magic4.magicard.repository.PurposeCategoryRepo;
 import com.magic4.magicard.repository.PurposeItemRepo;
 import com.magic4.magicard.vo.Company;
@@ -31,67 +30,50 @@ public class PurposeService {
     PurposeItemRepo purItemRepo;
 
 
+    //대분류 소분류 삭제
     @SuppressWarnings("null")
     public void deletAll(String purposeCategory ){
-    //   Company company = Company.builder()
-    //   .companyTicker("SHDS").build();
+  
+        Company company = Company.builder().companyTicker("SHDS").build();
 
-    //   List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
-
-    //   PurposeCategory purposecategory = null ;
-    //   Integer purposecategoryId= null;
-      
-    //   for(int i = 0 ;  i < cateList.size() ; i++){
-    //     if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
-    //      purposecategory  =   cateList.get(i);
-    //      purposecategoryId = cateList.get(i).getPurposeCategoryId();
-    //      break;
-    //     }
-    //  }
-    //   purItemRepo.deleteByPurposeItemUid(purposecategoryId);
-    //   purCateRepo.delete(purposecategory);
-    Company company = Company.builder().companyTicker("SHDS").build();
-
-    Optional<PurposeCategory> optionalCategory = purCateRepo.findByCompanyAndPurposeCategory(company,
-            purposeCategory);
-    if (optionalCategory.isPresent()) {
-        PurposeCategory category = optionalCategory.get();
-        List<PurposeItem> itemList = purItemRepo.findByPurposeCategory(category);
-        purItemRepo.deleteAll(itemList);
-        purCateRepo.delete(category);
-    }
- 
-      
+        Optional<PurposeCategory> optionalCategory = purCateRepo.findByCompanyAndPurposeCategory(company,
+                purposeCategory);
+        if (optionalCategory.isPresent()) {
+            PurposeCategory category = optionalCategory.get();
+            List<PurposeItem> itemList = purItemRepo.findByPurposeCategory(category);
+            purItemRepo.deleteAll(itemList);
+            purCateRepo.delete(category);
+          }
     }
 
 
      //소분류 삭제
     @SuppressWarnings("null")
     public void deleteSubcategory(String purposeCategory,String purposeItem){
-      Company company = Company.builder()
-      .companyTicker("SHDS").build();
+          Company company = Company.builder()
+          .companyTicker("SHDS").build();
 
-      List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
+          List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
 
-      PurposeCategory purposecategory = null ;
+          PurposeCategory purposecategory = null ;
 
-      PurposeItem purposeitem = null;
+          PurposeItem purposeitem = null;
 
-      for(int i = 0 ;  i < cateList.size() ; i++){
-         if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
-          purposecategory  =   cateList.get(i);
-          break;
-         }
-      }
+          for(int i = 0 ;  i < cateList.size() ; i++){
+            if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
+              purposecategory  =   cateList.get(i);
+              break;
+            }
+          }
 
-      List<PurposeItem> purposeitemlist = purItemRepo.findByPurposeCategory(purposecategory);
+          List<PurposeItem> purposeitemlist = purItemRepo.findByPurposeCategory(purposecategory);
 
-      for(int i = 0 ; i <purposeitemlist.size() ; i++){
-        if(purposeitemlist.get(i).getPurposeItem().equals(purposeItem)){
-          purposeitem =  purposeitemlist.get(i);
-        }
-      }
-      purItemRepo.delete(purposeitem);
+          for(int i = 0 ; i <purposeitemlist.size() ; i++){
+            if(purposeitemlist.get(i).getPurposeItem().equals(purposeItem)){
+              purposeitem =  purposeitemlist.get(i);
+            }
+          }
+          purItemRepo.delete(purposeitem);
     }
 
     //대분류 조회
@@ -114,9 +96,9 @@ public class PurposeService {
     }
 
       // 대분류 , 소분류 조회
-    public List<PurposeDto2> getAllCateList(){
+    public List<PurposeAllDto> getAllCateList(){
 
-      List<PurposeDto2> purposeDtoList = new ArrayList<>();
+      List<PurposeAllDto> purposeDtoList = new ArrayList<>();
 
       Company company = Company.builder().companyTicker("SHDS").build();
 
@@ -127,7 +109,7 @@ public class PurposeService {
 
       for(int i = 0  ; i < cateList.size() ; i ++){
 
-        PurposeDto2 purposeDto2 = new PurposeDto2();
+        PurposeAllDto purposeDto2 = new PurposeAllDto();
         purposeDto2.setPurposeCategory(cateList.get(i).getPurposeCategory());
 
         List<String> itemlist2 = new ArrayList<>();
@@ -140,8 +122,6 @@ public class PurposeService {
         purposeDto2.setPurposeItem(itemlist2);
         purposeDtoList.add(purposeDto2);
     }
-
-
       return purposeDtoList;
     };
 

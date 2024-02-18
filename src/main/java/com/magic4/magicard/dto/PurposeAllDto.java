@@ -20,7 +20,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurposeDto2 {
+public class PurposeAllDto {
         private String purposeCategory;
         private List<String> purposeItem;
 }

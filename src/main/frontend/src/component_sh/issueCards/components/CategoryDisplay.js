@@ -32,36 +32,41 @@ function PurposeList() {
   };
 
   const deleteAll = (categorytest) => {
-    alert("전체 삭제 ");
-    console.log(categorytest);
-    console.log("여기까지는 오는것인가>>");
-    axios({
-      method: "delete",
-      url: "/pur/deleteAll",
-      data: { purposeCategory: categorytest },
-    })
-      .then((res) => {
-        setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+    const confirmed = window.confirm("전체 삭제 하시겠습니까?");
+    if (confirmed) {
+      axios({
+        method: "delete",
+        url: "/pur/deleteAll",
+        data: { purposeCategory: categorytest },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("취소되었습니다.");
+    }
   };
 
   const deletepurposeItem = (purposeItem) => {
-    alert("삭제 하시겠습니까?");
-    console.log(selectedCategory, purposeItem);
-    axios({
-      method: "delete",
-      url: "/pur/deletepurposeItem",
-      data: { purposeCategory: selectedCategory, purposeItem: purposeItem },
-    })
-      .then((res) => {
-        setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+    const confirmed = window.confirm(" 삭제 하시겠습니까?");
+    if (confirmed) {
+      axios({
+        method: "delete",
+        url: "/pur/deletepurposeItem",
+        data: { purposeCategory: selectedCategory, purposeItem: purposeItem },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("취소되었습니다.");
+    }
   };
 
   useEffect(() => {
@@ -109,7 +114,7 @@ function PurposeList() {
         rows={generateRows()}
         deleteElement={deleteElement}
         handleDeletepurposeItem={handleDeletepurposeItem}
-        deleteAll={deleteAll} // deleteAll 함수를 props로 전달
+        deleteAll={deleteAll}
       />
     </div>
   );
@@ -201,7 +206,7 @@ function CategoryItem({
             className="allDeteleBtn"
             onClick={(e) => {
               e.stopPropagation(); // 이벤트 버블링 방지
-              handleDeleteAll(); // 대분류 정보를 전달하여 handleDeleteAll 함수 호출
+              handleDeleteAll();
             }}
           >
             <img src="image_sh/deleteButton.png" alt="Delete" />

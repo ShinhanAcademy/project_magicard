@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+// PurposeModal.tsx
+import React, { useState, useEffect } from "react";
 import "./PurposeModal.css";
 import { Button } from "react-bootstrap";
 import axios from "axios";
@@ -46,6 +47,7 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
         } else {
           alert("성공");
         }
+        loadListData();
       })
       .catch((err) => {
         console.log(err);
@@ -81,11 +83,11 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
         <PurposeSelect
           propsname="selectCategory"
           purList={purList}
-          initialValue={selectValue}
+          initialValue={selectedCategory}
           setSelectValue={setSelectValue}
           setSelectedValue={setSelectedCategory}
           setInputValues={setInputValues}
-          inputValues={{}}
+          inputValues={inputValues}
         />
         <p> 추가할 대분류 지출 항목</p>
         <span> * 기존 항목에 없는 항목을 입력할 수 있습니다.</span>

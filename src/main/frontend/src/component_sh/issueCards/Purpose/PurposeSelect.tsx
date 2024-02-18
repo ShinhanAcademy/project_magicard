@@ -1,5 +1,7 @@
+// PurposeSelect.tsx
 import React from "react";
 import "./PurposeSelect.css";
+
 interface SelectProps {
   purList: { purposeCategory: string }[];
   initialValue?: string;
@@ -21,9 +23,9 @@ const PurposeSelect: React.FC<SelectProps> = ({
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
-    setSelectValue(selectedValue); // 부모에게 전달
-    setSelectedValue(selectedValue); // 현재
-    setInputValues({ ...inputValues, [propsname]: selectedValue }); // inputValues 업데이트
+    setSelectValue(selectedValue);
+    setSelectedValue(selectedValue);
+    setInputValues({ ...inputValues, [propsname]: selectedValue });
   };
 
   return (
