@@ -43,22 +43,6 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
   }, [isOpen]);
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const filePath = URL.createObjectURL(files[0]);
-      setReceiptUrl(filePath);
-    }
-  };
-
-  const handlePurposeChange = (event) => {
-    const selectedPurposeItemUid = event.target.value;
-    const selectedPurpose = purposeItem.find(
-      (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
-    );
-    setSelectedPurpose(selectedPurpose);
-  };
-
   if (!isOpen || !requestInfo || !purposeItem) return null;
 
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
@@ -66,7 +50,7 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        <h1>결재 요청</h1>
+        <h1>결재 확인</h1>
         <div>
           <div>결제일시</div>
           <input value={paymentDate} readOnly />
@@ -81,40 +65,29 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>용도</div>
-          <select
-            value={selectedPurpose ? selectedPurpose.purposeItemUid : ""}
-            onChange={handlePurposeChange}
-          >
-            {purposeItem.map((purpose) => (
-              <option
-                key={purpose.purposeItemUid}
-                value={purpose.purposeItemUid}
-                selected={selectedPurpose === purpose.purposeItemUid ? "selected" : ""}
-              >
-                {purpose.purposeCategory} || {purpose.purposeItem}
-              </option>
-            ))}
-          </select>
+          {purposeItem.map(
+            (purpose) =>
+              selectedPurpose === purpose.purposeItemUid && (
+                <input
+                  key={purpose.purposeItemUid}
+                  type="text"
+                  value={`${purpose.purposeCategory || ""} || ${purpose.purposeItem}`}
+                  readOnly
+                />
+              )
+          )}
         </div>
         <div>
           <div>참석자</div>
-          <input
-            placeholder="참석자를 입력하세요."
-            value={requestInfo.participant}
-            onChange={(e) => setParticipant(e.target.value)}
-          />
+          <input value={requestInfo.participant} readOnly />
         </div>
         <div>
           <div>영수증 첨부</div>
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" />
         </div>
         <div>
           <div>메모</div>
-          <input
-            placeholder="기타 특이사항을 입력하세요."
-            value={requestInfo.memo}
-            onChange={(e) => setMemo(e.target.value)}
-          />
+          <input value={requestInfo.memo} readOnly />
         </div>
         <button className="closeButton" onClick={closeModal}>
           닫기
