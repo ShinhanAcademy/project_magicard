@@ -45,6 +45,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       return;
     }
     const requestData = {
+      requestId: 0,
       paymentId: selectedPaymentId,
       purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
@@ -84,7 +85,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   };
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = paymentInfo.paymentTime;
+  const paymentDate = paymentInfo.paymentTime.substr(0, 10);
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>

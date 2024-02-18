@@ -9,6 +9,7 @@ const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
     axios({
@@ -32,18 +33,18 @@ const paymentInfoData = () => {
     window.location.reload();
   };
 
-  const renderContext = (paymentId, sendRequest) => {
-    switch (sendRequest) {
-      case "신청":
-        return <RequestContext paymentId={paymentId} />;
-      case "수정":
-        return <UpdateContext paymentId={paymentId} />;
-      case "조회":
-        return <CheckContext paymentId={paymentId} />;
-      default:
-        return null;
-    }
-  };
+  // const renderContext = (paymentId, sendRequest) => {
+  //   switch (sendRequest) {
+  //     case "신청":
+  //       return <RequestContext paymentId={paymentId} />;
+  //     case "수정":
+  //       return <UpdateContext paymentId={paymentId} />;
+  //     case "조회":
+  //       return <CheckContext paymentId={paymentId} />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   const columns = [
     { name: "결제일시", align: "center" },
@@ -59,6 +60,7 @@ const paymentInfoData = () => {
     const paymentDate = payment.paymentTime.substr(0, 10);
 
     const handleButtonClick = () => {
+      setSendRequest(payment.sendRequest);
       handleModalOpen(payment.paymentId);
     };
     return {
@@ -95,7 +97,15 @@ const paymentInfoData = () => {
       신청: <button onClick={handleButtonClick}>{payment.sendRequest} </button>,
     };
   });
-  return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId };
+  return {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  };
 };
 
 export default paymentInfoData;

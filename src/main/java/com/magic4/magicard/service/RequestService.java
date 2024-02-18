@@ -259,8 +259,6 @@ public class RequestService {
     PaymentInfo paymentInfo = paymentInfoRepo.findById(requestFormDto.getPaymentId()).orElse(null);
     PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
 
-    System.out.println("느아아아 머리가 아파" + purposeItem.getPurposeItemUid());
-
     ApprovalSteps approvalSteps = approvalStepsRepo.findById(1).orElse(null);
 
     Request request = Request.builder()
@@ -309,6 +307,51 @@ public class RequestService {
         }
       }
     }
+
+    requestRepo.save(request);
+
+    return 1;
+  }
+
+  // requestInfo 불러오기, 수정, 조회, 확인
+  public RequestDto getRequestInfo(Integer paymentId) { // 신청 아무것도 안했을 때
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(paymentId).orElse(null);
+    PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+    System.out.println(paymentInfoDto.getPaymentTime());
+    System.out.println(paymentInfoDto.getPayAmount());
+
+    List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+
+    RequestDto requestDto = null;
+PurposeItem purposeItem = null;
+PurposeItemDto purposeItemDto = null;
+    System.out.println("얌ㅇㄴㅁ아러니마ㅓㄹ나ㅣㅓㄹ" + request.get(0).getPurposeItem().getPurposeItemUid());
+    if(request.size() == 1){
+      requestDto = model.map(request.get(0), RequestDto.class);
+      purposeItem = purposeItemRepo.findById(request.get(0).getPurposeItem().getPurposeItemUid()).orElse(null);
+      purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
+      purposeItemDto.setPurposeCategory(purposeItem.getPurposeCategory().getPurposeCategory());
+    }else if(request.size() == 2){
+      requestDto = model.map(request.get(1), RequestDto.class);
+      purposeItem = purposeItemRepo.findById(request.get(1).getPurposeItem().getPurposeItemUid()).orElse(null);
+      purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
+      purposeItemDto.setPurposeCategory(purposeItem.getPurposeCategory().getPurposeCategory());
+    }
+    requestDto.setPaymentInfo(paymentInfoDto);
+    requestDto.setPurposeItem(purposeItemDto);
+
+    return requestDto;
+  }
+
+
+  public Integer updateRequest(RequestFormDto requestFormDto, EmployeeDto employeeInfo) {
+    Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
+    PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
+
+    request.setPurposeItem(purposeItem);
+    request.setParticipant(requestFormDto.getParticipant());
+    request.setReceiptUrl(requestFormDto.getReceiptUrl());
+    request.setMemo(requestFormDto.getMemo());
 
     requestRepo.save(request);
 

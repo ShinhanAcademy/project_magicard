@@ -3,28 +3,32 @@ import "./requestModal.css";
 import axios from "axios";
 
 const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
-  const [paymentInfo, setPaymentInfo] = useState(null);
+  const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
+  const [requestId, setRequestId] = useState(0);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState(null);
+  const [receiptUrl, setReceiptUrl] = useState("");
   const [memo, setMemo] = useState("");
 
   useEffect(() => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/paymentInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/${selectedPaymentId}`,
       })
         .then((result) => {
           console.log(result.data);
-          setPaymentInfo(result.data);
+          setRequestInfo(result.data);
+          setSelectedPurpose(result.data.purposeItem.purposeItemUid);
+          setRequestId(result.data.requestId);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.error("Error fetching data:", err);
+        });
     }
   }, [isOpen]);
 
-  // 용도 목적, 가져오기
   useEffect(() => {
     if (isOpen) {
       axios({
@@ -35,7 +39,9 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           console.log(result.data);
           setPurposeItem(result.data);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.error("Error fetching data:", err);
+        });
     }
   }, [isOpen]);
 
@@ -44,24 +50,25 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       alert("용도를 선택해주세요.");
       return;
     }
+
     const requestData = {
+      requestId: requestId,
       paymentId: selectedPaymentId,
-      purposeItemUid: selectedPurpose,
+      purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
+      receiptUrl: receiptUrl,
       memo: memo,
     };
 
-    if (receiptUrl) {
-      requestData.receiptUrl = receiptUrl;
-    }
-
     axios({
       method: "post",
-      url: "requests/sendRequest",
+      url: "requests/updateRequest",
       data: requestData,
     })
       .then((res) => {
-        console.log(res.data === 1 ? "요청 성공" : "요청 실패");
+        alert(res.data === 1 ? "요청 성공" : "요청 실패");
+
+        closeModal();
       })
       .catch((e) => {
         console.log("error 입니다.");
@@ -71,21 +78,26 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const handleFileChange = (event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setReceiptUrl(files[0]);
+      const filePath = URL.createObjectURL(files[0]);
+      setReceiptUrl(filePath);
     }
   };
 
   const handlePurposeChange = (event) => {
-    setSelectedPurpose(parseInt(event.target.value));
+    const selectedPurposeItemUid = event.target.value;
+    const selectedPurpose = purposeItem.find(
+      (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
+    );
+    setSelectedPurpose(selectedPurpose);
   };
 
-  if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = paymentInfo.paymentTime;
+  if (!isOpen || !requestInfo || !purposeItem) return null;
+
+  const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        <h1>UpdateContext 입니다.</h1>
         <h1>결재 요청</h1>
         <div>
           <div>결제일시</div>
@@ -93,18 +105,24 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>사용금액</div>
-          <input value={paymentInfo.payAmount} readOnly />
+          <input value={requestInfo.paymentInfo.payAmount} readOnly />
         </div>
         <div>
           <div>사용처</div>
-          <input value={paymentInfo.merchant} readOnly />
+          <input value={requestInfo.paymentInfo.merchant} readOnly />
         </div>
         <div>
           <div>용도</div>
-          <select onChange={handlePurposeChange}>
-            <option value="">선택하세요</option>
+          <select
+            value={selectedPurpose ? selectedPurpose.purposeItemUid : ""}
+            onChange={handlePurposeChange}
+          >
             {purposeItem.map((purpose) => (
-              <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
+              <option
+                key={purpose.purposeItemUid}
+                value={purpose.purposeItemUid}
+                selected={selectedPurpose === purpose.purposeItemUid ? "selected" : ""}
+              >
                 {purpose.purposeCategory} || {purpose.purposeItem}
               </option>
             ))}
@@ -114,7 +132,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           <div>참석자</div>
           <input
             placeholder="참석자를 입력하세요."
-            value={participant}
+            value={requestInfo.participant}
             onChange={(e) => setParticipant(e.target.value)}
           />
         </div>
@@ -126,12 +144,12 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           <div>메모</div>
           <input
             placeholder="기타 특이사항을 입력하세요."
-            value={memo}
+            value={requestInfo.memo}
             onChange={(e) => setMemo(e.target.value)}
           />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
-          신청
+          수정
         </button>
         <button className="closeButton" onClick={closeModal}>
           닫기

@@ -63,8 +63,18 @@ public class RequestController {
 
     @PostMapping("/sendRequest")
     public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
-        System.out.println("tmqjㄴㅇㄹㅇㄴㅇㄹ" + requestFormDto.getPurposeItemUid());
         return requestService.sendRequest(requestFormDto, employeeInfo);
+    }
+
+    @GetMapping("/requestInfo/{paymentId}")
+    public RequestDto getRequestInfo(@PathVariable Integer paymentId){
+        return requestService.getRequestInfo(paymentId);
+    }
+
+    @PostMapping("/updateRequest")
+    public Integer updateRequest(@RequestBody RequestFormDto requestFormDto){
+        System.out.println("왔다장보리" + requestFormDto.getRequestId());
+        return requestService.updateRequest(requestFormDto, employeeInfo);
     }
 
 }
