@@ -1,7 +1,4 @@
 import axios from "axios";
-import CheckContext from "component_sy/modal/checkModal";
-import RequestContext from "component_sy/modal/requestModal";
-import UpdateContext from "component_sy/modal/updateModal";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
@@ -32,19 +29,6 @@ const paymentInfoData = () => {
     setIsModalOpen(false);
     window.location.reload();
   };
-
-  // const renderContext = (paymentId, sendRequest) => {
-  //   switch (sendRequest) {
-  //     case "신청":
-  //       return <RequestContext paymentId={paymentId} />;
-  //     case "수정":
-  //       return <UpdateContext paymentId={paymentId} />;
-  //     case "조회":
-  //       return <CheckContext paymentId={paymentId} />;
-  //     default:
-  //       return null;
-  //   }
-  // };
 
   const columns = [
     { name: "결제일시", align: "center" },

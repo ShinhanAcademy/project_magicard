@@ -30,24 +30,11 @@ public class RequestService {
 
   // 전체 내가 신청 내역 가져오기
   public List<RequestDto> getRequestAll(EmployeeDto employeeDto){
-    Employee employee = model.map(employeeDto, Employee.class);
-    IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
-    List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCardOrderByPaymentTimeDesc(issuedCard);
-
-    List<Request> requestList = new ArrayList<>();
-
-    for(PaymentInfo paymentInfo : paymentInfoList){
-      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
-//      if(request != null){
-//        requestList.add(request);
-//      }
-    }
-
-    List<RequestDto> requestDtoList = new ArrayList<>();
-
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+    List<Request> requestList = requestRepo.findByEmployeeAndRequestLevelOrderBYPaymentTime(employee.getEmployeeEmail(), 1);
+    List<RequestDto> result = new ArrayList<>();
     for(Request request : requestList){
       RequestDto requestDto = model.map(request, RequestDto.class);
-      requestDto.setEmployee(employeeDto);
 
       PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
@@ -62,21 +49,15 @@ public class RequestService {
       requestDto.setApprovalSteps(approvalStepsDto);
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
-      if(step == 1){
-        requestDto.setSendRequest("신청");
-      }else if(step == 2 || step == 4 || step == 5){
-        requestDto.setSendRequest("요청 수정");
-      }else if(step == 3 || step == 6) {
-        requestDto.setSendRequest("승인 대기중");
-      }else if(step == 7){
-        requestDto.setSendRequest("최종 승인");
-      }else if(step == 8){
-        requestDto.setSendRequest("최종 반려");
+      if(step == 1 || step == 2 || step == 4) {
+        requestDto.setSendRequest("수정");
+      }else if(step == 5) {
+        requestDto.setSendRequest("조회");
       }
-      requestDtoList.add(requestDto);
-    }
 
-    return requestDtoList;
+      result.add(requestDto);
+    }
+    return result;
   }
 
   public List<RequestDto> getRequestList(EmployeeDto employeeDto) {
@@ -89,7 +70,7 @@ public class RequestService {
     List<RequestDto> requestDtoList = new ArrayList<>();
 
     for(RequestDto requestDto : allRequest){
-      if(requestDto.getApprovalSteps().getApprovalStatusCode() == 7){
+      if(requestDto.getApprovalSteps().getApprovalStatusCode() == 2){
         requestDtoList.add(requestDto);
       }
     }
@@ -102,7 +83,7 @@ public class RequestService {
     List<RequestDto> requestDtoList = new ArrayList<>();
 
     for(RequestDto requestDto : allRequest){
-      if(requestDto.getApprovalSteps().getApprovalStatusCode() == 8){
+      if(requestDto.getApprovalSteps().getApprovalStatusCode() == 5){
         requestDtoList.add(requestDto);
       }
     }
