@@ -59,7 +59,9 @@ function CateogryListMain() {
         <SoftButton onClick={showModal}> 추가하기 </SoftButton>
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
-      <PurposeList />
+      <SoftBox>
+        <PurposeList />
+      </SoftBox>
     </Card>
   );
 }

@@ -32,8 +32,8 @@ function PurposeCategory() {
   const styles = {
     container: {
       display: "flex",
-      justifyContent: "center", // 이미지를 가로 방향으로 중앙에 정렬
-      gap: "120px", // 이미지 간의 간격
+      justifyContent: "center",
+      gap: "120px",
     },
   };
 

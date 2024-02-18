@@ -16,6 +16,9 @@ public interface PurposeItemRepo extends JpaRepository<PurposeItem,Integer>{
     //해당 Item이 DB에 존재하는지
     PurposeItem findByPurposeItem(String purposeItem);
 
+    //소분류 삭제
+    void deleteByPurposeItemUid(Integer purposeItemUid);
+
     
 
 }

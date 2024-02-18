@@ -3,6 +3,7 @@ package com.magic4.magicard.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,6 +17,8 @@ public interface PurposeCategoryRepo extends JpaRepository<PurposeCategory,Integ
 
         //해당 카테고리가 DB에 존재하는지
         PurposeCategory findByPurposeCategory(String purposeCategory);
+
+        Optional<PurposeCategory> findByCompanyAndPurposeCategory(Company company, String purposeCategory);
 
       
   

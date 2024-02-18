@@ -21,8 +21,8 @@ const PurposeSelect: React.FC<SelectProps> = ({
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
-    setSelectValue(selectedValue);
-    setSelectedValue(selectedValue);
+    setSelectValue(selectedValue); // 부모에게 전달
+    setSelectedValue(selectedValue); // 현재
     setInputValues({ ...inputValues, [propsname]: selectedValue }); // inputValues 업데이트
   };
 

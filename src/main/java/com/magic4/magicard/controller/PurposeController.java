@@ -32,29 +32,38 @@ public class PurposeController {
 
 
     //대분류만 가져오기
-     @GetMapping("/catelist.do")
+     @GetMapping("/catelist")
      public List<PurposeDto> getCateList1(){
         return purService.getCateList1();
      };
 
     // 대분류 소분류  가져오기
-    @GetMapping("/list.do")
+    @GetMapping("/list")
     public List<PurposeDto2> getAllCateList(){
         return purService.getAllCateList();
     };
 
   
-    @PostMapping("/insert.do")
+    //대분류 소분류 추가
+    @PostMapping("/insert")
     public int inserCategory(@RequestBody Map<String, String> requestData){
     String purposeCategory = requestData.get("purposeCategory");
     String purposeItem = requestData.get("purposeItem");
     return  purService.insertCategory(purposeCategory, purposeItem);
     }
 
-    @DeleteMapping("/deletepurposeItem.do")
+    //소분류 삭제
+    @DeleteMapping("/deletepurposeItem")
     public void deleteSubcategory(@RequestBody PurposeDto purposedto) {
         String purposeCategory = purposedto.getPurposeCategory();
         String purposeItem = purposedto.getPurposeItem();
         purService.deleteSubcategory(purposeCategory,purposeItem);
+    }
+
+    @DeleteMapping("/deleteAll")
+    public void deleteAll(@RequestBody PurposeDto purposedto){
+        String purposeCategory = purposedto.getPurposeCategory();
+        purService.deletAll(purposeCategory);
+
     }
 }

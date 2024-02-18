@@ -2,6 +2,7 @@ package com.magic4.magicard.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.crypto.KeySelector.Purpose;
 
@@ -31,6 +32,41 @@ public class PurposeService {
 
 
     @SuppressWarnings("null")
+    public void deletAll(String purposeCategory ){
+    //   Company company = Company.builder()
+    //   .companyTicker("SHDS").build();
+
+    //   List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
+
+    //   PurposeCategory purposecategory = null ;
+    //   Integer purposecategoryId= null;
+      
+    //   for(int i = 0 ;  i < cateList.size() ; i++){
+    //     if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
+    //      purposecategory  =   cateList.get(i);
+    //      purposecategoryId = cateList.get(i).getPurposeCategoryId();
+    //      break;
+    //     }
+    //  }
+    //   purItemRepo.deleteByPurposeItemUid(purposecategoryId);
+    //   purCateRepo.delete(purposecategory);
+    Company company = Company.builder().companyTicker("SHDS").build();
+
+    Optional<PurposeCategory> optionalCategory = purCateRepo.findByCompanyAndPurposeCategory(company,
+            purposeCategory);
+    if (optionalCategory.isPresent()) {
+        PurposeCategory category = optionalCategory.get();
+        List<PurposeItem> itemList = purItemRepo.findByPurposeCategory(category);
+        purItemRepo.deleteAll(itemList);
+        purCateRepo.delete(category);
+    }
+ 
+      
+    }
+
+
+     //소분류 삭제
+    @SuppressWarnings("null")
     public void deleteSubcategory(String purposeCategory,String purposeItem){
       Company company = Company.builder()
       .companyTicker("SHDS").build();
@@ -58,11 +94,6 @@ public class PurposeService {
       purItemRepo.delete(purposeitem);
     }
 
-    
-
-    
-
-
     //대분류 조회
     public List<PurposeDto> getCateList1(){
 
@@ -84,28 +115,6 @@ public class PurposeService {
 
       // 대분류 , 소분류 조회
     public List<PurposeDto2> getAllCateList(){
-
-      
-      // // 대분류  + 소분류 DTO List
-      // List<PurposeDto> purposeDtoList = new ArrayList<>();
-
-      // //Login 한 Company 정보 
-      // Company company = Company.builder()
-      // .companyTicker("SHDS").build();
-
-  
-      // //대분류 조회
-      // List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
-
-      // List<PurposeItem> itemList = purItemRepo.findAllByPurposeCategoryIn(cateList);
-
-
-      // for(int i = 0 ;  i < itemList.size() ; i ++){
-      //      PurposeDto purposeDto = new PurposeDto();
-      //      purposeDto.setPurposeCategory(itemList.get(i).getPurposeCategory().getPurposeCategory());
-      //      purposeDto.setPurposeItem(itemList.get(i).getPurposeItem());
-      //      purposeDtoList.add(purposeDto);
-      // }
 
       List<PurposeDto2> purposeDtoList = new ArrayList<>();
 
@@ -138,8 +147,8 @@ public class PurposeService {
 
 
 
-
-
+    // 대분류 입력
+    @SuppressWarnings("null")
     public int insertCategory(String purposeCategory, String  purposeItem){
 
          Company company = Company.builder().companyTicker("SHDS").build();
@@ -173,10 +182,6 @@ public class PurposeService {
          else {
           return 0;
          }
-
-
-
-
     }
     
 }

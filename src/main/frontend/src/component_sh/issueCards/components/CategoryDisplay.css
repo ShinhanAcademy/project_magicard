@@ -1,0 +1,18 @@
+.allDeteleBtn {
+  position: absolute;
+  top: -14%;
+  left: 27%;
+  color: black;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.allDeteleBtn img {
+  width: 15px;
+  height: 15px;
+}
