@@ -3,7 +3,7 @@
 import React from "react";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
-import "./CategoryDisplay.css";
+import "./CategoryDelete.css";
 
 function CategoryDelete({ pur, selectedCategory, handleCategoryClick, deleteElement, deleteAll }) {
   const handleDeleteAll = () => {

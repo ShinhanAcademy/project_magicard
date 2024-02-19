@@ -1,18 +1,17 @@
 /* 모달 컨테이너 */
 .container {
   width: 800px;
-  height: 600px; /* 더 긴 세로 길이로 조정합니다. */
+  height: 600px;
   z-index: 999;
-  position: fixed; /* 모달이 화면에 고정되도록 설정합니다. */
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과를 추가합니다. */
-  overflow: auto; /* 내용이 넘칠 경우 스크롤이 생기도록 설정합니다. */
-  border-radius: 5px;
+  overflow: auto;
 }
+
 .container span {
   font-size: 18px;
   color: gray;
@@ -66,7 +65,7 @@
   justify-content: space-around;
   border: none;
   border-radius: 5px;
-  background-color: darkblue;
+  background-color: #2f4f4f;
   color: #ffffff;
   font-size: 20px;
 }
@@ -79,6 +78,10 @@
 
 .categoryform p {
   margin-bottom: 10px;
+}
+.categoryform img {
+  width: 50%;
+  height: 20%;
 }
 
 .title {

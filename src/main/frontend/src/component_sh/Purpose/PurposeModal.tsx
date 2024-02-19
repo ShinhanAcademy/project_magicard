@@ -3,6 +3,7 @@ import "./PurposeModal.css";
 import axios from "axios";
 import PurposeInput from "./PurposeInput";
 import PurposeSelect from "./PurposeSelect";
+import receiptImg from "assets/images/request_img/reciept.png";
 
 interface ModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,29 +70,48 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
 
   return (
     <div className="container">
-      <button className="close" onClick={closeModal}>
-        x
-      </button>
-      <p className="title"> 항목 추가 </p>
+      <div className="modal-title">
+        <div className="modal-title-img">
+          <img src={receiptImg}></img>
+          <div>
+            <h1>항목 추가</h1>
+            <p> 이제 새로운 항목을 추가하거나 기존 항목을 관리할 수 있습니다. </p>
+          </div>
+        </div>
+        <span
+          className="material-icons-round notranslate MuiIcon-root MuiIcon-fontSizeInherit css-fnit94-MuiIcon-root"
+          aria-hidden="true"
+          style={{ cursor: "pointer" }}
+          onClick={closeModal}
+        >
+          close
+        </span>
+      </div>
       <form onSubmit={handleFormSubmit} className="categoryform">
-        <p>기존 지출 항목</p>
-        <PurposeSelect
-          propsname="selectCategory"
-          purList={purList} // 선택할 수 있는 목적 카테고리의 목록을 나타냄
-          initialValue={selectedCategory} // 선택 상자의 초기 값으로 사용됨
-          setSelectedValue={setSelectedCategory} // 선택된 값을 업데이트하는 함수
-          setInputValues={setInputValues} // 선택된 값을 inputValues 객체에 업데이트하는 함수
-          inputValues={inputValues} // 다른 입력 값들을 포함하는 객체
-        />
-        <p> 추가할 대분류 지출 항목</p>
-        <span> * 기존 항목에 없는 항목을 입력할 수 있습니다.</span>
-        <PurposeInput
-          propsname="purposeCategory"
-          getResult={getResult}
-          initialValue={selectedCategory}
-        />
-        <p> 추가할 소분류 지출 항목</p>
-        <PurposeInput propsname="purposeItem" getResult={getResult} />
+        <div>
+          <p>기존 지출 항목</p>
+          <PurposeSelect
+            propsname="selectCategory"
+            purList={purList} // 선택할 수 있는 목적 카테고리의 목록을 나타냄
+            initialValue={selectedCategory} // 선택 상자의 초기 값으로 사용됨
+            setSelectedValue={setSelectedCategory} // 선택된 값을 업데이트하는 함수
+            setInputValues={setInputValues} // 선택된 값을 inputValues 객체에 업데이트하는 함수
+            inputValues={inputValues} // 다른 입력 값들을 포함하는 객체
+          />
+        </div>
+        <div>
+          <p> 추가할 지출 항목</p>
+          <span> * 기존 항목에 없는 항목을 입력할 수 있습니다.</span>
+          <PurposeInput
+            propsname="purposeCategory"
+            getResult={getResult}
+            initialValue={selectedCategory}
+          />
+        </div>
+        <div>
+          <p> 추가 지출 항목</p>
+          <PurposeInput propsname="purposeItem" getResult={getResult} />
+        </div>
         <button className="add-btn" type="submit">
           등록하기
         </button>

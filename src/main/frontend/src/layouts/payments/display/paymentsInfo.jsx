@@ -17,9 +17,6 @@ import UpdateContext from "component_sy/modal/updateModal";
 import CheckContext from "component_sy/modal/checkModal";
 
 function PaymentsInfo() {
-  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId } =
-    paymentInfoData();
-
   const {
     columns,
     rows,
@@ -106,12 +103,6 @@ function PaymentsInfo() {
         </SoftBox>
       </SoftBox>
       <Footer />
-      <ModalContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
-
       {modalComponent}
     </>
   );
