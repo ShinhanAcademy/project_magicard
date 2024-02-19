@@ -5,22 +5,20 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.magic4.magicard.dto.GptResultDto;
 import com.magic4.magicard.service.GptService;
 
 @RestController
-public class GptTestController {
+public class GptController {
     @Autowired
     private GptService gptService;
 
-    @GetMapping("/gpt/test")
-    public String gptTest() {
-        return gptService.getGptResponse();
+    @GetMapping("/gpt/recommend/{paymentId}")
+    public List<GptResultDto> gptRecommend(@PathVariable("paymentId") Integer paymentId) {
+        return gptService.getGptResponse(paymentId);
     }
 
-    @GetMapping("/gpt/test/purpose")
-    public List<Map<String, Object>> gptTestPurpose() {
-        return gptService.getPurposes();
-    }
 }
