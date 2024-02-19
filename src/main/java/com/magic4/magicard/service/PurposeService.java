@@ -65,26 +65,31 @@ public class PurposeService {
     //대분류 조회
     public List<PurposeDto> getCateList1(){
 
-      List<PurposeDto> purposeDtoList = new ArrayList<>();
-
       Company company = Company.builder().companyTicker("SHDS").build();
+
+      List<PurposeDto> purposeDtoList = new ArrayList<>();
 
       List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
 
-      for(int i = 0 ;  i < cateList.size() ; i ++){
-        PurposeDto purposeDto = new PurposeDto();
-        purposeDto.setPurposeCategory(cateList.get(i).getPurposeCategory());
-        purposeDtoList.add(purposeDto);
-       }
+      for(PurposeCategory category : cateList){
+        PurposeDto purposedto = new PurposeDto();
+        purposedto.setPurposeCategory(category.getPurposeCategory());
+        purposeDtoList.add(purposedto);
+      }
       return purposeDtoList;
+      // for(int i = 0 ;  i < cateList.size() ; i ++){
+      //   PurposeDto purposeDto = new PurposeDto();
+      //   purposeDto.setPurposeCategory(cateList.get(i).getPurposeCategory());
+      //   purposeDtoList.add(purposeDto);
+      //  }
     }
 
      // 대분류 , 소분류 조회
     public List<PurposeAllDto> getAllCateList(){
 
-      List<PurposeAllDto> purposeDtoList = new ArrayList<>();
-
       Company company = Company.builder().companyTicker("SHDS").build();
+
+      List<PurposeAllDto> purposeDtoList = new ArrayList<>();
 
       List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
 
