@@ -31,32 +31,6 @@ jobs:
       - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
       - run: cat ./src/main/resources/application.properties
 
-      - name: Delete Old Artifacts
-        uses: actions/github-script@v6
-        id: artifact
-        with:
-          github-token: ${{ process.env.WORKFLOW_TOKEN }}
-          script: |
-            const github = require('@actions/github');
-            const octokit = github.getOctokit(github-token);
-            const context = github.context;
-
-            async function deleteArtifacts() {
-              const res = await octokit.actions.listArtifactsForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              });
-
-            res.data.artifacts
-              .filter(({ name }) => name === 'package')
-              .forEach(({ id }) => {
-                github.rest.actions.deleteArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: id,
-                })
-              })
-
       - name: Gradle grant permission
         run: chmod +x gradlew
 
