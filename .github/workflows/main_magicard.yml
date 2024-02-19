@@ -37,7 +37,7 @@ jobs:
         
         uses: remagpie/gha-remove-artifact@v1
         with:
-            permissions: GITHUB_TOKEN
+            permissions: 'GITHUB_TOKEN'
             GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         
       - name: Gradle grant permission
