@@ -51,17 +51,33 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   }, [isOpen]);
 
   // 용도 목적, 가져오기
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     axios({
+  //       method: "get",
+  //       url: "/purpose/getList",
+  //     })
+  //       .then((result) => {
+  //         console.log(result.data);
+  //         setPurposeItem(result.data);
+  //       })
+  //       .catch((err) => {});
+  //   }
+  // }, [isOpen]);
+  //gpt 용도 연결
   useEffect(() => {
     if (isOpen) {
       axios({
-        method: "get",
-        url: "/purpose/getList",
+        method: "Get",
+        url: `/gpt/recommend/${selectedPaymentId}`,
       })
-        .then((result) => {
-          console.log(result.data);
-          setPurposeItem(result.data);
+        .then((res) => {
+          console.log("gpt id : " + selectedPaymentId);
+          setPurposeItem(res.data);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [isOpen]);
 
@@ -167,7 +183,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               용도
               <span className="ness"> * </span> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
-            <SelectPurpose />
+            <SelectPurpose purposeItem={purposeItem} />
           </div>
 
           <div className="modal-item">
@@ -214,14 +230,11 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
 
 export default RequestContext;
 
-const SelectPurpose = () => {
-  const gptResult = ["식비", "교통비", "접대비"];
+const SelectPurpose = ({ purposeItem }) => {
+  const gptResult = { purposeItem };
   var [ind, setInd] = useState(0);
   // var ind: number = 0; //인덱스 초기값
   var selectedPurpose = gptResult[0]; //추천 초기값
-
-  //click 이벤트
-  function handleClick() {}
 
   function cntInd() {
     ind++;
