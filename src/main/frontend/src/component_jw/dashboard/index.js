@@ -79,7 +79,8 @@ function Dashboard() {
         </SoftBox>
         
         <SoftBox mb={3}>
-          지출 추이 
+          지출 추이
+          (전 년도 대비 지출)
           <Grid >
             <CumulativeSpendingChart/>
             </Grid>
