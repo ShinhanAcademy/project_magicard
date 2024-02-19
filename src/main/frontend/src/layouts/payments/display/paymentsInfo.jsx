@@ -17,10 +17,6 @@ import UpdateContext from "component_sy/modal/updateModal";
 import CheckContext from "component_sy/modal/checkModal";
 
 function PaymentsInfo() {
-<<<<<<< HEAD
-  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId } =
-    paymentInfoData();
-=======
   const {
     columns,
     rows,
@@ -30,7 +26,6 @@ function PaymentsInfo() {
     selectedPaymentId,
     sendRequest,
   } = paymentInfoData();
->>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
 
   const [totalAmount, setTotalAmount] = useState(0);
   useEffect(() => {
@@ -108,15 +103,7 @@ function PaymentsInfo() {
         </SoftBox>
       </SoftBox>
       <Footer />
-<<<<<<< HEAD
-      <ModalContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
-=======
       {modalComponent}
->>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
     </>
   );
 }

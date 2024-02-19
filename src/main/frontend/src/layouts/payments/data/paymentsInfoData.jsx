@@ -21,11 +21,6 @@ const paymentInfoData = () => {
   }, []);
 
   const handleModalOpen = (paymentId) => {
-<<<<<<< HEAD
-    // 모달을 열기 위한 로직
-
-=======
->>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
     setIsModalOpen(true);
     setSelectedPaymentId(paymentId);
   };
@@ -93,10 +88,7 @@ const paymentInfoData = () => {
     handleModalOpen,
     handleModalClose,
     selectedPaymentId,
-<<<<<<< HEAD
-=======
     sendRequest,
->>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
   };
 };
 
