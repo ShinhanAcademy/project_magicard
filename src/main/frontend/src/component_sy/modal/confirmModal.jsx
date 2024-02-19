@@ -3,7 +3,7 @@ import "./requestModal.css";
 import axios from "axios";
 
 const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
-  const [paymentInfo, setPaymentInfo] = useState(null);
+  const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
@@ -14,11 +14,11 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/paymentInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/${selectedPaymentId}`,
       })
         .then((result) => {
           console.log(result.data);
-          setPaymentInfo(result.data);
+          setRequestInfo(result.data);
         })
         .catch((err) => {});
     }
@@ -79,13 +79,15 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     setSelectedPurpose(parseInt(event.target.value));
   };
 
+  const handleRefuseSubmit = () => {};
+
   if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = paymentInfo.paymentTime;
+  const paymentDate = requestInfo.paymentInfo.paymentTime;
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        <h1>ConfirmContext 입니다.</h1>
+        <div>반려 사유 : {requestInfo.refuseMessage}</div>
         <h1>결재 요청</h1>
         <div>
           <div>결제일시</div>
@@ -93,11 +95,11 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>사용금액</div>
-          <input value={paymentInfo.payAmount} readOnly />
+          <input value={requestInfo.paymentInfo.payAmount} readOnly />
         </div>
         <div>
           <div>사용처</div>
-          <input value={paymentInfo.merchant} readOnly />
+          <input value={requestInfo.paymentInfo.merchant} readOnly />
         </div>
         <div>
           <div>용도</div>
@@ -112,11 +114,7 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>참석자</div>
-          <input
-            placeholder="참석자를 입력하세요."
-            value={participant}
-            onChange={(e) => setParticipant(e.target.value)}
-          />
+          <input placeholder="참석자를 입력하세요." value={requestInfo.participant} readOnly />
         </div>
         <div>
           <div>영수증 첨부</div>
@@ -124,14 +122,13 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>메모</div>
-          <input
-            placeholder="기타 특이사항을 입력하세요."
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-          />
+          <input placeholder="기타 특이사항을 입력하세요." value={requestInfo.memo} readOnly />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
-          신청
+          승인
+        </button>
+        <button className="refuseButton" onClick={handleRefuseSubmit}>
+          거절
         </button>
         <button className="closeButton" onClick={closeModal}>
           닫기

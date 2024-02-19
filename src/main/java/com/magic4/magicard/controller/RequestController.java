@@ -41,9 +41,14 @@ public class RequestController {
         return requestService.getRefuseList(employeeInfo);
     }
 
-    @GetMapping("/toMe/getAllList")
+    @GetMapping("/toMe/getList")
     public List<RequestDto> getToMeRequestList(HttpSession session) {
         return requestService.getToMeRequestList(employeeInfo);
+    }
+
+    @GetMapping("/toMe/getRequestList")
+    public List<RequestDto> getToTopRequestList(HttpSession session) {
+        return requestService.getToTopRequestList(employeeInfo);
     }
 
     @GetMapping("/toMe/getApproveList")
