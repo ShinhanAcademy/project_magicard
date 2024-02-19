@@ -51,5 +51,6 @@ public class Request {
     @ColumnDefault("0")
     private Integer refuseCount;
     private Integer requestLevel;
+    private String refuseMessage;
 
 }

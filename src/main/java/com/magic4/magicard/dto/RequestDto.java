@@ -24,4 +24,5 @@ public class RequestDto {
     private Integer requestLevel;
     private ApprovalStepsDto approvalSteps;
     private String sendRequest;
+    private String refuseMessage;
 }

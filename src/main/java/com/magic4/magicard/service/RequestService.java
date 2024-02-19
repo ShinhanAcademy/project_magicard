@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +27,13 @@ public class RequestService {
   private final PaymentInfoRepo paymentInfoRepo;
   private final PurposeItemRepo purposeItemRepo;
   private final EmployeeRepo employeeRepo;
+  private final DepartmentRepo departmentRepo;
   private ModelMapper model = new ModelMapper();
 
   // 전체 내가 신청 내역 가져오기
   public List<RequestDto> getRequestAll(EmployeeDto employeeDto){
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
-    List<Request> requestList = requestRepo.findByEmployeeAndRequestLevelOrderBYPaymentTime(employee.getEmployeeEmail(), 1);
+    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(employee.getEmployeeEmail(), 1);
     List<RequestDto> result = new ArrayList<>();
     for(Request request : requestList){
       RequestDto requestDto = model.map(request, RequestDto.class);
@@ -90,9 +92,10 @@ public class RequestService {
     return requestDtoList;
   }
 
+  // 내게 온 요청 리스트
   public List<RequestDto> getToMeRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
-    List<Request> requestList = requestRepo.findByResponseEmployeeEmailOrderBYPaymentTime(responseEmployeeEmail);
+    List<Request> requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 1);
 
     List<RequestDto> requestDtoList = new ArrayList<>();
     for(Request request : requestList){
@@ -117,15 +120,9 @@ public class RequestService {
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
       if(step == 1){
-        requestDto.setSendRequest("신청");
-      }else if(step == 2 || step == 4 || step == 5){
-        requestDto.setSendRequest("요청 수정");
-      }else if(step == 3 || step == 6) {
-        requestDto.setSendRequest("승인 대기중");
-      }else if(step == 7){
-        requestDto.setSendRequest("최종 승인");
-      }else if(step == 8){
-        requestDto.setSendRequest("최종 반려");
+        requestDto.setSendRequest("확인");
+      }else {
+        requestDto.setSendRequest("조회");
       }
       requestDtoList.add(requestDto);
     }
@@ -133,98 +130,118 @@ public class RequestService {
     return requestDtoList;
   }
 
-  public List<RequestDto> getToMeApproveList(EmployeeDto employeeDto) {
-    Employee emp = model.map(employeeDto, Employee.class);
-    // requestEmployeeEmail == 나 자신, requestLevel == 2
-    List<Request> request = requestRepo.findByEmployeeAndRequestLevel(emp, 2);
+  public List<RequestDto> getToMeAllRequestList(EmployeeDto employeeDto) {
+    String responseEmployeeEmail = employeeDto.getEmployeeEmail();
+    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(employeeDto.getEmployeeEmail(), 2);
 
-    List<RequestDto> approveRequest = new ArrayList<>();
-    for(Request req : request){
-      if(req.getApprovalSteps().getApprovalStatusCode() == 7){
-        RequestDto requestDto = model.map(req, RequestDto.class);
+    List<RequestDto> requestDtoList = new ArrayList<>();
+    for(Request request : requestList){
+      RequestDto requestDto = model.map(request, RequestDto.class);
 
-        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
-        PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
-        requestDto.setPaymentInfo(paymentInfoDto);
+      PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
+      PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+      requestDto.setPaymentInfo(paymentInfoDto);
 
-        // employee는 카드 긁은 사람으로다가 보여지게 해야함
-        Employee employee = paymentInfo.getIssuedCard().getEmployee();
-        EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
-        requestDto.setEmployee(sendEmpDto);
+      // employee는 카드 긁은 사람으로다가 보여지게 해야함
+      Employee employee = paymentInfo.getIssuedCard().getEmployee();
+      EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
+      requestDto.setEmployee(sendEmpDto);
 
-        PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(req.getPurposeItem().getPurposeItem());
-        PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
-        requestDto.setPurposeItem(purposeItemDto);
+      PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(request.getPurposeItem().getPurposeItem());
+      PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
+      requestDto.setPurposeItem(purposeItemDto);
 
-        ApprovalSteps approvalSteps = approvalStepsRepo.findById(req.getApprovalSteps().getApprovalStatusCode()).orElse(null);
-        ApprovalStepsDto approvalStepsDto = model.map(approvalSteps, ApprovalStepsDto.class);
-        requestDto.setApprovalSteps(approvalStepsDto);
+      ApprovalSteps approvalSteps = approvalStepsRepo.findById(request.getApprovalSteps().getApprovalStatusCode()).orElse(null);
+      ApprovalStepsDto approvalStepsDto = model.map(approvalSteps, ApprovalStepsDto.class);
+      requestDto.setApprovalSteps(approvalStepsDto);
 
-        Integer step = req.getApprovalSteps().getApprovalStatusCode();
-        if(step == 1){
-          requestDto.setSendRequest("신청");
-        }else if(step == 2 || step == 4 || step == 5){
-          requestDto.setSendRequest("요청 수정");
-        }else if(step == 3 || step == 6) {
-          requestDto.setSendRequest("승인 대기중");
-        }else if(step == 7){
-          requestDto.setSendRequest("최종 승인");
-        }else if(step == 8){
-          requestDto.setSendRequest("최종 반려");
-        }
-
-        approveRequest.add(requestDto);
+      Integer step = request.getApprovalSteps().getApprovalStatusCode();
+      if(step == 2){
+        requestDto.setSendRequest("확인");
+      }else {
+        requestDto.setSendRequest("조회");
       }
+      requestDtoList.add(requestDto);
     }
 
-    return approveRequest;
+    return requestDtoList;
   }
 
-  public List<RequestDto> getToMeRefuseList(EmployeeDto employeeDto) {
-    Employee emp = model.map(employeeDto, Employee.class);
-    // requestEmployeeEmail == 나 자신, requestLevel == 2
-    List<Request> request = requestRepo.findByEmployeeAndRequestLevel(emp, 2);
+  // 재무부에게 요청한 리스트
+  public List<RequestDto> getToTopRequestList(EmployeeDto employeeDto) {
+    return getToMeAllRequestList(employeeDto);
+  }
 
-    List<RequestDto> approveRequest = new ArrayList<>();
-    for(Request req : request){
-      if(req.getApprovalSteps().getApprovalStatusCode() == 8){
-        RequestDto requestDto = model.map(req, RequestDto.class);
+  // 내가 재요청한 것 중 승인된 것
+  public List<RequestDto> getToMeApproveList(EmployeeDto employeeDto) {
+    List<RequestDto> requestDtoList = getToMeAllRequestList(employeeDto);
+    List<RequestDto> result = new ArrayList<>();
 
-        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
-        PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
-        requestDto.setPaymentInfo(paymentInfoDto);
-
-        // employee는 카드 긁은 사람으로다가 보여지게 해야함
-        Employee employee = paymentInfo.getIssuedCard().getEmployee();
-        EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
-        requestDto.setEmployee(sendEmpDto);
-
-        PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(req.getPurposeItem().getPurposeItem());
-        PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
-        requestDto.setPurposeItem(purposeItemDto);
-
-        ApprovalSteps approvalSteps = approvalStepsRepo.findById(req.getApprovalSteps().getApprovalStatusCode()).orElse(null);
-        ApprovalStepsDto approvalStepsDto = model.map(approvalSteps, ApprovalStepsDto.class);
-        requestDto.setApprovalSteps(approvalStepsDto);
-
-        Integer step = req.getApprovalSteps().getApprovalStatusCode();
-        if(step == 1){
-          requestDto.setSendRequest("신청");
-        }else if(step == 2 || step == 4 || step == 5){
-          requestDto.setSendRequest("요청 수정");
-        }else if(step == 3 || step == 6) {
-          requestDto.setSendRequest("승인 대기중");
-        }else if(step == 7){
-          requestDto.setSendRequest("최종 승인");
-        }else if(step == 8){
-          requestDto.setSendRequest("최종 반려");
-        }
-
-        approveRequest.add(requestDto);
+    for(RequestDto requestDto : requestDtoList) {
+      int step = requestDto.getApprovalSteps().getApprovalStatusCode();
+      if(step == 2 || step == 3){
+        result.add(requestDto);
       }
     }
+    return result;
+//    Employee emp = model.map(employeeDto, Employee.class);
+//    // requestEmployeeEmail == 나 자신, requestLevel == 2
+//    List<Request> request = requestRepo.findByEmployeeAndRequestLevel(emp, 2);
+//
+//    List<RequestDto> approveRequest = new ArrayList<>();
+//    for(Request req : request){
+//      if(req.getApprovalSteps().getApprovalStatusCode() == 7){
+//        RequestDto requestDto = model.map(req, RequestDto.class);
+//
+//        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
+//        PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+//        requestDto.setPaymentInfo(paymentInfoDto);
+//
+//        // employee는 카드 긁은 사람으로다가 보여지게 해야함
+//        Employee employee = paymentInfo.getIssuedCard().getEmployee();
+//        EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
+//        requestDto.setEmployee(sendEmpDto);
+//
+//        PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(req.getPurposeItem().getPurposeItem());
+//        PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
+//        requestDto.setPurposeItem(purposeItemDto);
+//
+//        ApprovalSteps approvalSteps = approvalStepsRepo.findById(req.getApprovalSteps().getApprovalStatusCode()).orElse(null);
+//        ApprovalStepsDto approvalStepsDto = model.map(approvalSteps, ApprovalStepsDto.class);
+//        requestDto.setApprovalSteps(approvalStepsDto);
+//
+//        Integer step = req.getApprovalSteps().getApprovalStatusCode();
+//        if(step == 1){
+//          requestDto.setSendRequest("신청");
+//        }else if(step == 2 || step == 4 || step == 5){
+//          requestDto.setSendRequest("요청 수정");
+//        }else if(step == 3 || step == 6) {
+//          requestDto.setSendRequest("승인 대기중");
+//        }else if(step == 7){
+//          requestDto.setSendRequest("최종 승인");
+//        }else if(step == 8){
+//          requestDto.setSendRequest("최종 반려");
+//        }
+//
+//        approveRequest.add(requestDto);
+//      }
+//    }
+//
+//    return approveRequest;
+  }
 
-    return approveRequest;
+  // 내가 재요청한 것 중 거절된 것
+  public List<RequestDto> getToMeRefuseList(EmployeeDto employeeDto) {
+    List<RequestDto> requestDtoList = getToMeAllRequestList(employeeDto);
+    List<RequestDto> result = new ArrayList<>();
+
+    for(RequestDto requestDto : requestDtoList) {
+      int step = requestDto.getApprovalSteps().getApprovalStatusCode();
+      if(step == 4 || step == 5){
+        result.add(requestDto);
+      }
+    }
+    return result;
   }
 
   public PaymentInfoDto getPaymentInfo(Integer paymentId) { // 신청 아무것도 안했을 때
@@ -256,7 +273,6 @@ public class RequestService {
     // 내가 우리 회사의 상급자인지 확인하기
     List<Integer> sameDept = new ArrayList<>();
     List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
-    System.out.println("여기다아아아아" + sameDeptEmployees.size());
     for(Employee emp : sameDeptEmployees){
       sameDept.add(emp.getEmployeeRank().getRankPriority());
     }
@@ -267,7 +283,6 @@ public class RequestService {
       Department superDepartment = employee.getDepartment();
       List<Integer> superDept = new ArrayList<>();
       List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
-      System.out.println("그 다음 여기다아ㅏ" + superDeptEmployees.size());
       for(Employee emp : superDeptEmployees) {
         superDept.add(emp.getEmployeeRank().getRankPriority());
       }
@@ -306,7 +321,6 @@ public class RequestService {
     RequestDto requestDto = null;
 PurposeItem purposeItem = null;
 PurposeItemDto purposeItemDto = null;
-    System.out.println("얌ㅇㄴㅁ아러니마ㅓㄹ나ㅣㅓㄹ" + request.get(0).getPurposeItem().getPurposeItemUid());
     if(request.size() == 1){
       requestDto = model.map(request.get(0), RequestDto.class);
       purposeItem = purposeItemRepo.findById(request.get(0).getPurposeItem().getPurposeItemUid()).orElse(null);
@@ -336,6 +350,41 @@ PurposeItemDto purposeItemDto = null;
 
     requestRepo.save(request);
 
+    return 1;
+  }
+
+  public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+
+    Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
+    ApprovalSteps approvalSteps3 = approvalStepsRepo.findById(2).orElse(null);
+    request.setApprovalSteps(approvalSteps3);
+    requestRepo.save(request);
+
+    ApprovalSteps approvalSteps1 = approvalStepsRepo.findById(1).orElse(null);
+    request.setApprovalSteps(approvalSteps3);
+
+    Department superDept = departmentRepo.findById(17).orElse(null);
+    List<Employee> superEmp = employeeRepo.findByDepartment(superDept);
+
+    Random random = new Random();
+    String superEmployeeEmail = superEmp.get(random.nextInt(superEmp.size())).getEmployeeEmail();
+
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
+    PurposeItem purposeItem = purposeItemRepo.findById(request.getPurposeItem().getPurposeItemUid()).orElse(null);
+    Request sendRequest = Request.builder()
+            .employee(employee)
+            .responseEmployeeEmail(superEmployeeEmail)
+            .paymentInfo(paymentInfo)
+            .purposeItem(purposeItem)
+            .participant(requestFormDto.getParticipant())
+            .receiptUrl(requestFormDto.getReceiptUrl())
+            .memo(requestFormDto.getMemo())
+            .approvalSteps(approvalSteps1)
+            .refuseCount(0)
+            .requestLevel(2)
+            .build();
+    requestRepo.save(sendRequest);
     return 1;
   }
 }

@@ -21,9 +21,6 @@ public class RequestController {
     CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
     EmployeeDto employeeInfo = EmployeeDto.builder()
             .employeeEmail("aa4@naver.com")
-            .employeeName("정주영")
-            .phone("33333333333333")
-            .company(companyDto)
             .build();
 
     @GetMapping("/fromMe/getRequestList")
@@ -41,9 +38,14 @@ public class RequestController {
         return requestService.getRefuseList(employeeInfo);
     }
 
-    @GetMapping("/toMe/getAllList")
+    @GetMapping("/toMe/getList")
     public List<RequestDto> getToMeRequestList(HttpSession session) {
         return requestService.getToMeRequestList(employeeInfo);
+    }
+
+    @GetMapping("/toMe/getRequestList")
+    public List<RequestDto> getToTopRequestList(HttpSession session) {
+        return requestService.getToTopRequestList(employeeInfo);
     }
 
     @GetMapping("/toMe/getApproveList")
@@ -73,8 +75,12 @@ public class RequestController {
 
     @PostMapping("/updateRequest")
     public Integer updateRequest(@RequestBody RequestFormDto requestFormDto){
-        System.out.println("왔다장보리" + requestFormDto.getRequestId());
         return requestService.updateRequest(requestFormDto, employeeInfo);
+    }
+
+    @PostMapping("/sendToFinanceDept")
+    public Integer confirmRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.confirmRequest(requestFormDto, employeeInfo);
     }
 
 }

@@ -23,9 +23,6 @@ public class PaymentInfoController {
   CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
   EmployeeDto employeeInfo = EmployeeDto.builder()
           .employeeEmail("aa4@naver.com")
-          .employeeName("정주영")
-          .phone("33333333333333")
-          .company(companyDto)
           .build();
 
   @GetMapping("/getList")
