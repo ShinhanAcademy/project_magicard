@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Run Artifact Cleanup
-        uses: ./artifact_cleanup.yml
+        uses: ./.github/workflows/artifact_cleanup.yml
 
   build:
     needs: cleanup
