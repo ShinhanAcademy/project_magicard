@@ -22,6 +22,14 @@ public interface RequestRepo extends JpaRepository<Request, Integer>{
             value = "SELECT r.*, p.payment_time " +
                     "FROM request r LEFT JOIN payment_info p " +
                     "on r.payment_id = p.payment_id " +
+                    "where r.request_employee_email = ? and r.request_level = ? " +
+                    "order by p.payment_time desc")
+    List<Request> findByEmployeeAndRequestLevelOrderBYPaymentTime(String responseEmployeeEmail, int requestLevel);
+
+    @Query(nativeQuery = true,
+            value = "SELECT r.*, p.payment_time " +
+                    "FROM request r LEFT JOIN payment_info p " +
+                    "on r.payment_id = p.payment_id " +
                     "where r.response_employee_email = ? " +
                     "order by p.payment_time desc")
     List<Request> findByResponseEmployeeEmailOrderBYPaymentTime(String responseEmployeeEmail);

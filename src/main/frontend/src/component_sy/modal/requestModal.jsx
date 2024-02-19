@@ -2,32 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./requestModal.css";
 import axios from "axios";
 
-interface PaymentInfo {
-  paymentTime: string;
-  payAmount: number;
-  merchant: string;
-}
-
-interface PurposeItem {
-  purposeItemUid: number;
-  purposeCategory: string;
-  purposeItem: string;
-}
-
-interface Request {
-  paymentId: number;
-  purposeId: number;
-  participant: string;
-  receiptUrl?: File;
-}
-
-const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
-  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
-  const [purposeItem, setPurposeItem] = useState<PurposeItem[]>([]);
-  const [request, setRequest] = useState<RequestInfo | null>(null);
-  const [selectedPurpose, setSelectedPurpose] = useState<number | null>(null);
-  const [participant, setParticipant] = useState<string>("");
-  const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
+const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+  const [paymentInfo, setPaymentInfo] = useState(null);
+  const [purposeItem, setPurposeItem] = useState([]);
+  const [selectedPurpose, setSelectedPurpose] = useState(null);
+  const [participant, setParticipant] = useState("");
+  const [receiptUrl, setReceiptUrl] = useState("");
+  const [memo, setMemo] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -63,15 +44,14 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
       alert("용도를 선택해주세요.");
       return;
     }
-    const requestData: Request = {
+    const requestData = {
+      requestId: 0,
       paymentId: selectedPaymentId,
-      purposeId: selectedPurpose,
+      purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
+      receiptUrl: receiptUrl,
+      memo: memo,
     };
-
-    if (receiptUrl) {
-      requestData.receiptUrl = receiptUrl;
-    }
 
     axios({
       method: "post",
@@ -79,26 +59,34 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
       data: requestData,
     })
       .then((res) => {
-        console.log(res.data === 1 ? "요청 성공" : "요청 실패");
+        alert(res.data === 1 ? "요청 성공" : "요청 실패");
+
+        closeModal();
       })
       .catch((e) => {
         console.log("error 입니다.");
       });
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      setReceiptUrl(files[0]);
+      const filePath = URL.createObjectURL(files[0]);
+      setReceiptUrl(filePath);
     }
   };
 
-  const handlePurposeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPurpose(parseInt(event.target.value));
+  const handlePurposeChange = (event) => {
+    const selectedPurposeItemUid = event.target.value;
+    const selectedPurpose = purposeItem.find(
+      (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
+    );
+    setSelectedPurpose(selectedPurpose);
   };
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = paymentInfo.paymentTime.substring(0, 10);
+  const paymentDate = paymentInfo.paymentTime.substr(0, 10);
+
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
@@ -119,7 +107,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
           <div>용도</div>
           <select onChange={handlePurposeChange}>
             <option value="">선택하세요</option>
-            {purposeItem.map((purpose: any) => (
+            {purposeItem.map((purpose) => (
               <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
                 {purpose.purposeCategory} || {purpose.purposeItem}
               </option>
@@ -138,6 +126,14 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
           <div>영수증 첨부</div>
           <input type="file" onChange={handleFileChange} />
         </div>
+        <div>
+          <div>메모</div>
+          <input
+            placeholder="기타 특이사항을 입력하세요."
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
+        </div>
         <button className="submitButton" onClick={handleSubmit}>
           신청
         </button>
@@ -149,4 +145,4 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
   );
 };
 
-export default ModalContext;
+export default RequestContext;

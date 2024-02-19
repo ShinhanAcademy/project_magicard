@@ -10,9 +10,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestFormDto {
+    private int requestId;
     private int paymentId;
-    private String participant;
     private int purposeItemUid;
+    private String participant;
     private String receiptUrl;
     private String memo;
 }
