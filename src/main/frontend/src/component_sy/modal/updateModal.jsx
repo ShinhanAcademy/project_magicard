@@ -98,6 +98,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
+        <div>반려 사유 : {requestInfo.refuseMessage}</div>
         <h1>결재 요청</h1>
         <div>
           <div>결제일시</div>

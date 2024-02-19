@@ -113,7 +113,7 @@ const routes = [
     type: "collapse",
     name: "결재 요청 내역",
     key: "recieved-requests",
-    route: "/recieved-requests",
+    route: "/recieved-requests/*",
     icon: <Check size="15px" />,
     component: <RecievedRequest />,
     noCollapse: true,

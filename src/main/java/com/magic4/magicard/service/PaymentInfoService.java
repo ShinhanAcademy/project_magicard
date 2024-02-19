@@ -3,6 +3,7 @@ package com.magic4.magicard.service;
 import java.util.*;
 
 import com.magic4.magicard.dto.EmployeeEmailDto;
+import com.magic4.magicard.repository.EmployeeRepo;
 import com.magic4.magicard.vo.Employee;
 import com.magic4.magicard.vo.IssuedCard;
 import com.magic4.magicard.vo.PaymentInfo;
@@ -25,9 +26,11 @@ public class PaymentInfoService {
   private final IssuedCardRepo issuedCardRepo;
   private final PaymentInfoRepo paymentInfoRepo;
   private final RequestRepo requestRepo;
+  private final EmployeeRepo employeeRepo;
   private ModelMapper model = new ModelMapper();
   public List<PaymentInfoDto> getPaymentInfoList(EmployeeDto employeeDto) {
-    Employee employee = model.map(employeeDto, Employee.class);
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+
     IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
     List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCardOrderByPaymentTimeDesc(issuedCard);
 
@@ -79,7 +82,7 @@ public class PaymentInfoService {
 
   public int getTotalAmount(EmployeeDto employeeDto) {
     int totalAmount = 0;
-    Employee employee = model.map(employeeDto, Employee.class);
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
     IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
     List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCardAndThisMonth(issuedCard);
 

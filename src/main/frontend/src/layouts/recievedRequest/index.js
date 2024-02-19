@@ -10,6 +10,7 @@ import Refuse from "./display/refuse";
 import "layouts/recievedRequest/index.css";
 
 import SoftButton from "components/SoftButton";
+import RequestAll from "./display/requestAll";
 
 function RecievedRequest() {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -24,6 +25,9 @@ function RecievedRequest() {
     <DashboardLayout>
       <DashboardNavbar />
       <Link to="requesetToMe">
+        <SoftButton style={{ width: "150px" }}>결재 요청 내역</SoftButton>
+      </Link>
+      <Link to="requesetAll">
         <SoftButton style={{ width: "150px" }}>전체</SoftButton>
       </Link>
       <Link to="requestApprove">
@@ -31,11 +35,11 @@ function RecievedRequest() {
       </Link>
       <Link to="refuse">
         <SoftButton style={{ width: "150px" }}>반려</SoftButton>
-
       </Link>
       <Routes>
         <Route path="/" element={<RequestToMe />}></Route>
         <Route path="/requesetToMe" element={<RequestToMe />}></Route>
+        <Route path="/requestAll" element={<RequestAll />}></Route>
         <Route path="/requestApprove" element={<RequestApprove />}></Route>
         <Route path="/refuse" element={<Refuse />}></Route>
       </Routes>

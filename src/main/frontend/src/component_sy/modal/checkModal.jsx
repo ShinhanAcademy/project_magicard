@@ -6,9 +6,6 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
-  const [participant, setParticipant] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState("");
-  const [memo, setMemo] = useState("");
 
   useEffect(() => {
     if (isOpen) {
