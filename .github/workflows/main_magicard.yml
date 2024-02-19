@@ -10,16 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  cleanup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Run Artifact Cleanup
-        uses: ${{ github.workspace }}/.github/workflows/main_magicard.yml
-
   build:
-    needs: cleanup
     runs-on: ubuntu-latest
 
     steps:
