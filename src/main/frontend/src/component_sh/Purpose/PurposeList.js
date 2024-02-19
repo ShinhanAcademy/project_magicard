@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import { Card, Grid } from "@mui/material";
-import axios from "axios";
-import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
-import SoftTypography from "components/SoftTypography";
-import Table from "examples/Tables/Table";
 import React, { useEffect, useState } from "react";
-import "./CategoryDisplay.css";
+import axios from "axios";
+import { Card, Grid } from "@mui/material";
+import SoftTypography from "components/SoftTypography";
+import SoftButton from "components/SoftButton";
+import SoftBox from "components/SoftBox";
+import Table from "examples/Tables/Table";
+import CategoryDelete from "./CategoryDelete";
 
-function PurposeList() {
+function PurposeList({ modalOpen }) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -80,14 +80,14 @@ function PurposeList() {
       .catch((err) => {
         console.log(err);
       });
-  }, [newCategory]);
+  }, [modalOpen]);
 
   const columns = [
     { name: "소분류", align: "center" },
     { name: "삭제", align: "center" },
   ];
 
-  const generateRows = () => {
+  const rows = () => {
     if (!selectedCategory) return [];
     const selectedCategoryItems =
       purList.find((pur) => pur.purposeCategory === selectedCategory)?.purposeItem || [];
@@ -103,34 +103,6 @@ function PurposeList() {
   };
 
   return (
-    <div>
-      <CategoryDisplay
-        purList={purList}
-        handleChange={handleChange}
-        newCategory={newCategory}
-        selectedCategory={selectedCategory}
-        handleCategoryClick={handleCategoryClick}
-        columns={columns}
-        rows={generateRows()}
-        deleteElement={deleteElement}
-        handleDeletepurposeItem={handleDeletepurposeItem}
-        deleteAll={deleteAll}
-      />
-    </div>
-  );
-}
-
-function CategoryDisplay({
-  purList,
-  selectedCategory,
-  handleCategoryClick,
-  columns,
-  rows,
-  deleteElement,
-  handleDeletepurposeItem,
-  deleteAll,
-}) {
-  return (
     <Card id="delete-account" sx={{ height: "100%" }}>
       <Grid container spacing={2}>
         {purList.map((pur, index) => (
@@ -141,7 +113,7 @@ function CategoryDisplay({
             key={index}
             onClick={() => handleCategoryClick(pur.purposeCategory)}
           >
-            <CategoryItem
+            <CategoryDelete
               pur={pur}
               selectedCategory={selectedCategory}
               handleCategoryClick={handleCategoryClick}
@@ -163,57 +135,10 @@ function CategoryDisplay({
             },
           }}
         >
-          <Table columns={columns} rows={rows} />
+          <Table columns={columns} rows={rows()} />
         </SoftBox>
       </div>
     </Card>
-  );
-}
-
-function CategoryItem({
-  pur,
-  selectedCategory,
-  handleCategoryClick,
-  deleteElement,
-  handleDeletepurposeItem,
-  deleteAll,
-}) {
-  const handleDeleteAll = () => {
-    deleteAll(pur.purposeCategory); // 대분류 정보를 함께 전달하여 deleteAll 함수 호출
-  };
-
-  return (
-    <>
-      <SoftBox
-        borderRadius="lg"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p={1}
-        style={{
-          backgroundColor: selectedCategory === pur.purposeCategory ? "lightblue" : "white",
-          position: "relative",
-        }}
-      >
-        <SoftButton
-          style={{ width: "150px" }}
-          onClick={() => handleCategoryClick(pur.purposeCategory)}
-        >
-          {pur.purposeCategory}
-        </SoftButton>
-        {selectedCategory === pur.purposeCategory && deleteElement === pur.purposeCategory && (
-          <button
-            className="allDeteleBtn"
-            onClick={(e) => {
-              e.stopPropagation(); // 이벤트 버블링 방지
-              handleDeleteAll();
-            }}
-          >
-            <img src="image_sh/deleteButton.png" alt="Delete" />
-          </button>
-        )}
-      </SoftBox>
-    </>
   );
 }
 

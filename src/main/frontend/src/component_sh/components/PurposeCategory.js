@@ -23,10 +23,7 @@ import SoftBox from "components/SoftBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-
-import CateogryForm from "./Invoices";
-import CateogryList from "./Invoices";
-import CateogryListMain from "./Invoices";
+import CateogryListMain from "./CateogryListMain";
 
 function PurposeCategory() {
   const styles = {

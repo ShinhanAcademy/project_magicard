@@ -19,6 +19,6 @@ public interface PurposeItemRepo extends JpaRepository<PurposeItem,Integer>{
     //소분류 삭제
     void deleteByPurposeItemUid(Integer purposeItemUid);
 
-    
+    List<PurposeItem> findByPurposeCategoryAndPurposeItem(PurposeCategory purposeCategory, String purposeItem);
 
 }

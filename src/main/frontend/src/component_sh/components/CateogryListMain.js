@@ -20,15 +20,10 @@ import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
-import IssueSubForm from "../Invoice";
-import Form from "react-bootstrap/Form";
-import PurposeCategoryInputForm from "../PurposeCategoryInputForm";
-import PurposeList from "../CategoryDisplay";
-import { useState } from "react";
-import PurposeModal from "component_sh/issueCards/Purpose/PurposeModal";
-import { Button } from "react-bootstrap";
 
-// Billing page components
+import { useState } from "react";
+import PurposeModal from "component_sh/Purpose/PurposeModal";
+import PurposeList from "component_sh/Purpose/PurposeList";
 
 function CateogryListMain() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,7 +55,7 @@ function CateogryListMain() {
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
       <SoftBox>
-        <PurposeList />
+        <PurposeList modalOpen={modalOpen} />
       </SoftBox>
     </Card>
   );

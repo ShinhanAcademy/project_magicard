@@ -50,30 +50,16 @@ public class PurposeService {
      //소분류 삭제
     @SuppressWarnings("null")
     public void deleteSubcategory(String purposeCategory,String purposeItem){
-          Company company = Company.builder()
-          .companyTicker("SHDS").build();
 
-          List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
+      Company company = Company.builder().companyTicker("SHDS").build();
 
-          PurposeCategory purposecategory = null ;
+      Optional<PurposeCategory> optionalCategory = purCateRepo.findByCompanyAndPurposeCategory(company, purposeCategory);
 
-          PurposeItem purposeitem = null;
-
-          for(int i = 0 ;  i < cateList.size() ; i++){
-            if( cateList.get(i).getPurposeCategory().equals(purposeCategory)){
-              purposecategory  =   cateList.get(i);
-              break;
-            }
-          }
-
-          List<PurposeItem> purposeitemlist = purItemRepo.findByPurposeCategory(purposecategory);
-
-          for(int i = 0 ; i <purposeitemlist.size() ; i++){
-            if(purposeitemlist.get(i).getPurposeItem().equals(purposeItem)){
-              purposeitem =  purposeitemlist.get(i);
-            }
-          }
-          purItemRepo.delete(purposeitem);
+      if(optionalCategory.isPresent()){
+        PurposeCategory category = optionalCategory.get();
+        List<PurposeItem> itemList = purItemRepo.findByPurposeCategoryAndPurposeItem(category, purposeItem);
+        itemList.forEach(subcategory -> purItemRepo.delete(subcategory));
+      }
     }
 
     //대분류 조회
@@ -81,8 +67,7 @@ public class PurposeService {
 
       List<PurposeDto> purposeDtoList = new ArrayList<>();
 
-      Company company = Company.builder()
-      .companyTicker("SHDS").build();
+      Company company = Company.builder().companyTicker("SHDS").build();
 
       List<PurposeCategory> cateList =   purCateRepo.findByCompany(company);
 
@@ -91,11 +76,10 @@ public class PurposeService {
         purposeDto.setPurposeCategory(cateList.get(i).getPurposeCategory());
         purposeDtoList.add(purposeDto);
        }
-
       return purposeDtoList;
     }
 
-      // 대분류 , 소분류 조회
+     // 대분류 , 소분류 조회
     public List<PurposeAllDto> getAllCateList(){
 
       List<PurposeAllDto> purposeDtoList = new ArrayList<>();
@@ -106,11 +90,10 @@ public class PurposeService {
 
       List<PurposeItem> itemList = purItemRepo.findAllByPurposeCategoryIn(cateList);
 
-
       for(int i = 0  ; i < cateList.size() ; i ++){
 
-        PurposeAllDto purposeDto2 = new PurposeAllDto();
-        purposeDto2.setPurposeCategory(cateList.get(i).getPurposeCategory());
+        PurposeAllDto PurposeAllDto = new PurposeAllDto();
+        PurposeAllDto.setPurposeCategory(cateList.get(i).getPurposeCategory());
 
         List<String> itemlist2 = new ArrayList<>();
         for(int j = 0 ; j < itemList.size() ; j++){
@@ -118,9 +101,8 @@ public class PurposeService {
             itemlist2.add(itemList.get(j).getPurposeItem());
            }
         }
-
-        purposeDto2.setPurposeItem(itemlist2);
-        purposeDtoList.add(purposeDto2);
+        PurposeAllDto.setPurposeItem(itemlist2);
+        purposeDtoList.add(PurposeAllDto);
     }
       return purposeDtoList;
     };
@@ -133,30 +115,20 @@ public class PurposeService {
 
          Company company = Company.builder().companyTicker("SHDS").build();
 
-
          PurposeCategory  existingCategory  = purCateRepo.findByPurposeCategory(purposeCategory);
 
          PurposeItem existingItem = purItemRepo.findByPurposeItem(purposeItem);
 
-
          if(existingCategory == null && existingItem == null){
-
           PurposeCategory category = PurposeCategory.builder().company(company).purposeCategory(purposeCategory).build();
           purCateRepo.save(category);
-
-
           PurposeItem item = PurposeItem.builder().purposeCategory(category).purposeItem(purposeItem).build();
           purItemRepo.save(item);
-
           return 2;
-
          }
          else if(existingCategory != null  && existingItem == null){
-
           PurposeItem item = PurposeItem.builder().purposeCategory(existingCategory).purposeItem(purposeItem).build();
-          
           purItemRepo.save(item);
-
           return 1;
          }
          else {
