@@ -69,6 +69,7 @@ import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
 
 import CardPlus from "./examples/Icons/CardPlus";
+import Tablesjy from "./components_jy/tables";
 
 const routes = [
   {
@@ -91,6 +92,15 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "부서 관리",
+    key: "departments",
+    route: "/departments",
+    icon: <Office size="14px" />,
+    component: <Tablesjy />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
 
     name: "결제 내역",
     key: "payments",
@@ -103,7 +113,7 @@ const routes = [
     type: "collapse",
     name: "결재 요청 내역",
     key: "recieved-requests",
-    route: "/recieved-requests",
+    route: "/recieved-requests/*",
     icon: <Check size="15px" />,
     component: <RecievedRequest />,
     noCollapse: true,

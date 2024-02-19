@@ -5,17 +5,35 @@ import Card from "@mui/material/Card";
 import Table from "examples/Tables/Table";
 import Footer from "examples/Footer";
 import RequestApproveData from "../data/requestApproveData";
+import CheckContext from "component_sy/modal/checkModal";
 
 function RequestApprove() {
-  const { columns, rows } = RequestApproveData();
+  const {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  } = RequestApproveData();
+
+  let modalComponent;
+  if (sendRequest === "수정") {
+    modalComponent = (
+      <CheckContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  }
   return (
     <>
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              {/* <SoftTypography variant="h5">이번 달 결제 금액</SoftTypography>
-              <SoftTypography variant="h5">이번 달 잔액</SoftTypography> */}
               <SoftTypography variant="h4">승인 내역</SoftTypography>
             </SoftBox>
             <SoftBox
@@ -34,6 +52,7 @@ function RequestApprove() {
         </SoftBox>
       </SoftBox>
       <Footer />
+      {modalComponent}
     </>
   );
 }

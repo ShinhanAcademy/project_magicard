@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Data
 @AllArgsConstructor
@@ -46,7 +48,9 @@ public class Request {
     @JoinColumn(name = "approval_status_code")
     private ApprovalSteps approvalSteps;
 
+    @ColumnDefault("0")
     private Integer refuseCount;
     private Integer requestLevel;
+    private String refuseMessage;
 
 }

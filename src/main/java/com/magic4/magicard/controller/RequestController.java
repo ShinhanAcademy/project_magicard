@@ -20,10 +20,7 @@ public class RequestController {
     private final RequestService requestService;
     CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
     EmployeeDto employeeInfo = EmployeeDto.builder()
-            .employeeEmail("aa15@naver.com")
-            .employeeName("박지원")
-            .phone("01012344321")
-            .company(companyDto)
+            .employeeEmail("aa4@naver.com")
             .build();
 
     @GetMapping("/fromMe/getRequestList")
@@ -41,9 +38,14 @@ public class RequestController {
         return requestService.getRefuseList(employeeInfo);
     }
 
-    @GetMapping("/toMe/getAllList")
+    @GetMapping("/toMe/getList")
     public List<RequestDto> getToMeRequestList(HttpSession session) {
         return requestService.getToMeRequestList(employeeInfo);
+    }
+
+    @GetMapping("/toMe/getRequestList")
+    public List<RequestDto> getToTopRequestList(HttpSession session) {
+        return requestService.getToTopRequestList(employeeInfo);
     }
 
     @GetMapping("/toMe/getApproveList")
@@ -61,11 +63,24 @@ public class RequestController {
         return requestService.getPaymentInfo(paymentId);
     }
 
-    // 여기 진행중임니당!
     @PostMapping("/sendRequest")
     public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
-//        return requestService.sendRequest(requestFormDto, employeeInfo);
-    return 1;
+        return requestService.sendRequest(requestFormDto, employeeInfo);
+    }
+
+    @GetMapping("/requestInfo/{paymentId}")
+    public RequestDto getRequestInfo(@PathVariable Integer paymentId){
+        return requestService.getRequestInfo(paymentId);
+    }
+
+    @PostMapping("/updateRequest")
+    public Integer updateRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.updateRequest(requestFormDto, employeeInfo);
+    }
+
+    @PostMapping("/sendToFinanceDept")
+    public Integer confirmRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.confirmRequest(requestFormDto, employeeInfo);
     }
 
 }

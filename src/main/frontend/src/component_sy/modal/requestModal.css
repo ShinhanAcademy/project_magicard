@@ -1,0 +1,179 @@
+/* Style for backdrop */
+.openModal {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Style for modal content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 25px;
+  border: 1px solid #888;
+  /* width: 80%; */
+  height: auto;
+  width: 781px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for close button */
+/* .modal-content button {
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+} */
+
+/* Close button hover effect */
+
+/* Style for modal title */
+.modal-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Style for modal body */
+.modal-content p {
+  font-size: 1rem;
+}
+
+.modal-title {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+hr {
+  color: rgb(217, 217, 217, 0.5);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-title-img {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.modal-title-img > img {
+  margin-right: 1rem;
+}
+
+.modal-title-img > div > h1 {
+  color: #2f4f4f;
+}
+
+.modal-title-img p {
+  color: rgb(142, 142, 142);
+  font-size: 0.8rem;
+}
+
+.modal-input {
+  display: flex;
+  align-items: center;
+  color: black;
+  margin-right: 3rem;
+}
+
+.modal-input > img {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+}
+
+.modal-item {
+  display: flex;
+  margin: 2rem;
+}
+
+.modal-item > input {
+  border: none;
+  font-size: 1.2rem;
+}
+
+.ness {
+  color: #e92222;
+}
+
+.modal-item div {
+  font-size: 1rem;
+}
+
+.inputbox {
+  border: 1px solid #8e8e8e;
+  width: 500px;
+  border-radius: 8px;
+  height: 100px;
+}
+
+.submitButton > img {
+  width: 450px;
+  height: 50px;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  margin-left: 15%;
+}
+
+input {
+  font-family: ChungBukUniversity;
+  padding: 0.5rem;
+}
+
+.inputbox {
+  padding: 0.5rem;
+}
+
+.refreshBtn {
+  border: none;
+  background-color: rgb(203, 225, 212);
+  margin: 1rem;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refreshBtn > img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.refresh-notion {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.refresh-notion > span {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.refresh-content {
+  display: flex;
+  align-items: center;
+}
+
+.refresh-content > p {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: black;
+  padding: 0.5rem;
+}

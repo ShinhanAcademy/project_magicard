@@ -2,7 +2,7 @@ import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
-const RequestToMeData = () => {
+const RequestAllData = () => {
   const [requestList, setRequestList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
@@ -105,4 +105,4 @@ const RequestToMeData = () => {
   };
 };
 
-export default RequestToMeData;
+export default RequestAllData;
