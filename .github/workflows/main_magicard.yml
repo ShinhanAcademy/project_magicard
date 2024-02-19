@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Run Artifact Cleanup
-        uses: ./.github/workflows/artifact_cleanup.yml
+        uses: ${{ github.workspace }}/.github/workflows/main_magicard.yml
 
   build:
     needs: cleanup
