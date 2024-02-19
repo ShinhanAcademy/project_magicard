@@ -35,10 +35,10 @@ jobs:
         uses: actions/github-script@v6
         id: artifact
         with:
-          github-token: ${{ secrets.WORKFLOW_TOKEN }}
+          github-token: ${{ process.env.WORKFLOW_TOKEN }}
           script: |
             const github = require('@actions/github');
-            const octokit = github.getOctokit('${{ secrets.WORKFLOW_TOKEN }}');
+            const octokit = github.getOctokit(github-token);
             const context = github.context;
 
             async function deleteArtifacts() {
