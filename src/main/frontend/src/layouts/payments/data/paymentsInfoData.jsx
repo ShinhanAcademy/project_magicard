@@ -3,7 +3,7 @@
 
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
@@ -24,6 +24,7 @@ const paymentInfoData = () => {
 
   const handleModalOpen = (paymentId) => {
     // 모달을 열기 위한 로직
+
     setIsModalOpen(true);
     // 추가적인 로직 수행 가능
     setSelectedPaymentId(paymentId);
@@ -34,6 +35,7 @@ const paymentInfoData = () => {
     setIsModalOpen(false);
     // 추가적인 로직 수행 가능
   };
+
   const columns = [
     { name: "결제일시", align: "center" },
     { name: "사용처", align: "center" },
@@ -84,7 +86,14 @@ const paymentInfoData = () => {
       신청: <button onClick={handleButtonClick}>{payment.sendRequest}</button>,
     };
   });
-  return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId };
+  return {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+  };
 };
 
 export default paymentInfoData;

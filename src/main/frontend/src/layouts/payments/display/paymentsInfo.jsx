@@ -19,7 +19,6 @@ function PaymentsInfo() {
   const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId } =
     paymentInfoData();
 
-
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
@@ -75,7 +74,6 @@ function PaymentsInfo() {
         closeModal={handleModalClose}
         selectedPaymentId={selectedPaymentId}
       />
-
     </>
   );
 }

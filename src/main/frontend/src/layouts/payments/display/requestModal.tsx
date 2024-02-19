@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./requestModal.css";
 import axios from "axios";
 import receiptImg from "assets/images/request_img/reciept.png";
@@ -10,6 +10,7 @@ import joinImg from "assets/images/request_img/join.png";
 import picImg from "assets/images/request_img/pic.png";
 import penImg from "assets/images/request_img/pen.png";
 import submitbtn from "assets/images/request_img/submitbtn.png";
+import refresh from "assets/images/request_img/refresh.png";
 
 interface PaymentInfo {
   paymentTime: string;
@@ -37,6 +38,22 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
   const [selectedPurpose, setSelectedPurpose] = useState<number | null>(null);
   const [participant, setParticipant] = useState<string>("");
   const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
+
+  //esc keyEvent 추가
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isOpen, closeModal]);
 
   useEffect(() => {
     if (isOpen) {
@@ -102,10 +119,6 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
     }
   };
 
-  const modalClose = () => {
-    // 모달 닫힘 코드 구현 예정
-  };
-
   const handlePurposeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPurpose(parseInt(event.target.value));
   };
@@ -120,16 +133,14 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
             <img src={receiptImg}></img>
             <div>
               <h1>결재 요청</h1>
-              <p style={{ color: "#8e8e8e", fontSize: "0.8rem" }}>
-                {" "}
-                결제 정보가 자동으로 연동됩니다. 필수 정보를 모두 입력해주세요.{" "}
-              </p>
+              <p> 결제 정보가 자동으로 연동됩니다. 필수 정보를 모두 입력해주세요. </p>
             </div>
           </div>
           <span
             className="material-icons-round notranslate MuiIcon-root MuiIcon-fontSizeInherit css-fnit94-MuiIcon-root"
             aria-hidden="true"
-            onClick={modalClose}
+            style={{ cursor: "pointer" }}
+            onClick={closeModal}
           >
             close
           </span>
@@ -138,7 +149,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
         <div className="modal-main-content">
           <div className="modal-item">
             <div className="modal-input">
-              <img src={clockImg} style={{ width: "20px", height: "20px" }} />
+              <img src={clockImg} />
               결제일시
               <span className="ness"> * </span>
             </div>
@@ -147,7 +158,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={cardImg} style={{ width: "20px", height: "20px" }} />
+              <img src={cardImg} />
               사용금액
               <span className="ness"> * </span>
             </div>
@@ -156,7 +167,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={shopImg} style={{ width: "20px", height: "20px" }} />
+              <img src={shopImg} />
               사용처 <span className="ness"> * </span>&nbsp; &nbsp;
             </div>
             <input value={paymentInfo.merchant} readOnly />
@@ -164,23 +175,16 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={purposeImg} style={{ width: "20px", height: "20px" }} />
+              <img src={purposeImg} />
               용도
               <span className="ness"> * </span> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
-            <select onChange={handlePurposeChange}>
-              <option value="">선택하세요</option>
-              {purposeItem.map((purpose: any) => (
-                <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
-                  {purpose.purposeCategory} || {purpose.purposeItem}
-                </option>
-              ))}
-            </select>
+            <SelectPurpose />
           </div>
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={joinImg} style={{ width: "20px", height: "20px" }} />
+              <img src={joinImg} />
               참석자
               <span className="ness"> * </span>
             </div>
@@ -193,7 +197,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={picImg} style={{ width: "20px", height: "20px" }} />
+              <img src={picImg} />
               영수증 &nbsp; &nbsp;
             </div>
             <input type="file" onChange={handleFileChange} />
@@ -201,7 +205,7 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
 
           <div className="modal-item">
             <div className="modal-input">
-              <img src={penImg} style={{ width: "20px", height: "20px" }} />
+              <img src={penImg} />
               메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
             <div>
@@ -215,12 +219,55 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
             <img src={submitbtn} />
           </button>
         </div>
-        {/* <button className="closeButton" onClick={closeModal}>
-          닫기
-        </button> */}
       </div>
     </div>
   );
 };
 
 export default ModalContext;
+
+const SelectPurpose = () => {
+  const gptResult: string[] = ["식비", "교통비", "접대비"];
+  var [ind, setInd] = useState(0);
+  // var ind: number = 0; //인덱스 초기값
+  var selectedPurpose: string = gptResult[0]; //추천 초기값
+
+  //click 이벤트
+  function handleClick() {}
+
+  function cntInd() {
+    ind++;
+    setInd(ind);
+    return ind;
+  }
+
+  //클릭한 경우 3번을 넘어가면 직접 입력란 활성화
+  if (ind >= 3) {
+    return <Write />;
+  } else {
+    selectedPurpose = gptResult[ind];
+    return <Select purpose={selectedPurpose} cntInd={cntInd} />;
+  }
+};
+
+const Select = ({ purpose, cntInd }: any) => {
+  return (
+    <div className="purpose-content">
+      <div className="refresh-content">
+        <p>{purpose}</p>
+        <button className="refreshBtn" onClick={cntInd}>
+          <img src={refresh} />{" "}
+        </button>
+      </div>
+      <span className="refresh-notion">
+        {" "}
+        * 추천 용도입니다. 일치하지 않는다면 새로고침을 통해
+        <span> 2개 </span>의 항목을 더 추천 받을 수 있습니다.
+      </span>
+    </div>
+  );
+};
+
+const Write = () => {
+  return <input placeholder="용도를 직접 입력해주세요." />;
+};

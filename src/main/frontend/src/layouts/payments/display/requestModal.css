@@ -35,9 +35,6 @@
 } */
 
 /* Close button hover effect */
-.modal-content button:hover {
-  background-color: #0056b3;
-}
 
 /* Style for modal title */
 .modal-content h2 {
@@ -76,6 +73,11 @@ hr {
   color: #2f4f4f;
 }
 
+.modal-title-img p {
+  color: rgb(142, 142, 142);
+  font-size: 0.8rem;
+}
+
 .modal-input {
   display: flex;
   align-items: center;
@@ -85,6 +87,8 @@ hr {
 
 .modal-input > img {
   margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
 }
 
 .modal-item {
@@ -123,4 +127,53 @@ hr {
   border: none;
   background-color: transparent;
   margin-left: 15%;
+}
+
+input {
+  font-family: ChungBukUniversity;
+  padding: 0.5rem;
+}
+
+.inputbox {
+  padding: 0.5rem;
+}
+
+.refreshBtn {
+  border: none;
+  background-color: rgb(203, 225, 212);
+  margin: 1rem;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refreshBtn > img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.refresh-notion {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.refresh-notion > span {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.refresh-content {
+  display: flex;
+  align-items: center;
+}
+
+.refresh-content > p {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: black;
+  padding: 0.5rem;
 }
