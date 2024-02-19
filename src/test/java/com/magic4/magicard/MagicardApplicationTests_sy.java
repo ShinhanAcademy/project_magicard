@@ -55,8 +55,8 @@ class MagicardApplicationTests {
 	 // insertRequest();
 	 // insertPurposeCategory();
 	 // insertPurposeItem();
-//	 insertRequest();
-		 insertPayments();
+	 insertRequest();
+//		 insertPayments();
 	 }
 	void insertPayments(){
 		IssuedCard issuedCard = issuedCardRepo.findById(UUID.fromString("81d3ca25-7de1-4cf9-ac02-da885e06687e")).orElse(null);
@@ -92,7 +92,7 @@ class MagicardApplicationTests {
 
 
 	 void insertRequest(){
-		 Employee employee = employeeRepo.findById("aa4@naver.com").orElse(null);
+		 Employee employee = employeeRepo.findById("aa@naver.com").orElse(null);
 		 ApprovalSteps approvalSteps = approvalStepsRepo.findById(5).orElse(null);
 
 		 Request request = requestRepo.findById(1).orElse(null);
@@ -101,14 +101,14 @@ class MagicardApplicationTests {
 
 		 assert request != null;
 
-		 Random random = new Random();
-		 List<Employee> superEmployees = employeeRepo.findByDepartment(employee.getDepartment());
-		 String superEmployeeEmail = superEmployees.get(random.nextInt(superEmployees.size())).getEmployeeEmail();
+//		 Random random = new Random();
+//		 List<Employee> superEmployees = employeeRepo.findByDepartment(employee.getDepartment());
+//		 String superEmployeeEmail = superEmployees.get(random.nextInt(superEmployees.size())).getEmployeeEmail();
 
 
 		 Request setRequest = Request.builder()
 				 .employee(employee)
-				 .responseEmployeeEmail(superEmployeeEmail)
+				 .responseEmployeeEmail("aa4@naver.com")
 				 .paymentInfo(request.getPaymentInfo())
 				 .purposeItem(request.getPurposeItem())
 				 .participant(request.getParticipant())

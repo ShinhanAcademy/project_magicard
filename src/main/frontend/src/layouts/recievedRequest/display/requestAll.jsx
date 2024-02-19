@@ -4,10 +4,10 @@ import SoftTypography from "components/SoftTypography";
 import Card from "@mui/material/Card";
 import Table from "examples/Tables/Table";
 import Footer from "examples/Footer";
-import RequestApproveData from "../data/requestApproveData";
+import RequestAllData from "../data/requestAllData";
 
 function RequestAll() {
-  const { columns, rows } = RequestApproveData();
+  const { columns, rows } = RequestAllData();
   return (
     <>
       <SoftBox py={3}>

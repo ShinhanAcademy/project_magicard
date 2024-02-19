@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class RequestService {
   private final PaymentInfoRepo paymentInfoRepo;
   private final PurposeItemRepo purposeItemRepo;
   private final EmployeeRepo employeeRepo;
+  private final DepartmentRepo departmentRepo;
   private ModelMapper model = new ModelMapper();
 
   // 전체 내가 신청 내역 가져오기
@@ -117,7 +119,7 @@ public class RequestService {
       requestDto.setApprovalSteps(approvalStepsDto);
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
-      if(step == 2){
+      if(step == 1){
         requestDto.setSendRequest("확인");
       }else {
         requestDto.setSendRequest("조회");
@@ -348,6 +350,41 @@ PurposeItemDto purposeItemDto = null;
 
     requestRepo.save(request);
 
+    return 1;
+  }
+
+  public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+
+    Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
+    ApprovalSteps approvalSteps3 = approvalStepsRepo.findById(2).orElse(null);
+    request.setApprovalSteps(approvalSteps3);
+    requestRepo.save(request);
+
+    ApprovalSteps approvalSteps1 = approvalStepsRepo.findById(1).orElse(null);
+    request.setApprovalSteps(approvalSteps3);
+
+    Department superDept = departmentRepo.findById(17).orElse(null);
+    List<Employee> superEmp = employeeRepo.findByDepartment(superDept);
+
+    Random random = new Random();
+    String superEmployeeEmail = superEmp.get(random.nextInt(superEmp.size())).getEmployeeEmail();
+
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
+    PurposeItem purposeItem = purposeItemRepo.findById(request.getPurposeItem().getPurposeItemUid()).orElse(null);
+    Request sendRequest = Request.builder()
+            .employee(employee)
+            .responseEmployeeEmail(superEmployeeEmail)
+            .paymentInfo(paymentInfo)
+            .purposeItem(purposeItem)
+            .participant(requestFormDto.getParticipant())
+            .receiptUrl(requestFormDto.getReceiptUrl())
+            .memo(requestFormDto.getMemo())
+            .approvalSteps(approvalSteps1)
+            .refuseCount(0)
+            .requestLevel(2)
+            .build();
+    requestRepo.save(sendRequest);
     return 1;
   }
 }

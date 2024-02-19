@@ -6,9 +6,6 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
-  const [participant, setParticipant] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState(null);
-  const [memo, setMemo] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -19,6 +16,7 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         .then((result) => {
           console.log(result.data);
           setRequestInfo(result.data);
+          setSelectedPurpose(result.data.purposeItem.purposeItemUid);
         })
         .catch((err) => {});
     }
@@ -44,50 +42,30 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       alert("용도를 선택해주세요.");
       return;
     }
-    const requestData = {
-      paymentId: selectedPaymentId,
-      purposeItemUid: selectedPurpose,
-      participant: participant,
-      memo: memo,
-    };
-
-    if (receiptUrl) {
-      requestData.receiptUrl = receiptUrl;
-    }
-
-    axios({
-      method: "post",
-      url: "requests/sendRequest",
-      data: requestData,
-    })
-      .then((res) => {
-        console.log(res.data === 1 ? "요청 성공" : "요청 실패");
+    if (confirm("승인하시겠습니까?")) {
+      axios({
+        method: "post",
+        url: "requests/sendToFinanceDept",
+        data: requestInfo,
       })
-      .catch((e) => {
-        console.log("error 입니다.");
-      });
-  };
-
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      setReceiptUrl(files[0]);
+        .then((res) => {
+          console.log(res.data === 1 ? "승인 성공" : "승인 실패");
+          closeModal();
+        })
+        .catch((e) => {
+          console.log("error 입니다.");
+        });
     }
-  };
-
-  const handlePurposeChange = (event) => {
-    setSelectedPurpose(parseInt(event.target.value));
   };
 
   const handleRefuseSubmit = () => {};
 
-  if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = requestInfo.paymentInfo.paymentTime;
+  if (!isOpen || !requestInfo || !purposeItem) return null;
+  const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        <div>반려 사유 : {requestInfo.refuseMessage}</div>
         <h1>결재 요청</h1>
         <div>
           <div>결제일시</div>
@@ -103,32 +81,35 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
         </div>
         <div>
           <div>용도</div>
-          <select onChange={handlePurposeChange}>
-            <option value="">선택하세요</option>
-            {purposeItem.map((purpose) => (
-              <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
-                {purpose.purposeCategory} || {purpose.purposeItem}
-              </option>
-            ))}
-          </select>
+          {purposeItem.map(
+            (purpose) =>
+              selectedPurpose === purpose.purposeItemUid && (
+                <input
+                  key={purpose.purposeItemUid}
+                  type="text"
+                  value={`${purpose.purposeCategory || ""} || ${purpose.purposeItem}`}
+                  readOnly
+                />
+              )
+          )}
         </div>
         <div>
           <div>참석자</div>
-          <input placeholder="참석자를 입력하세요." value={requestInfo.participant} readOnly />
+          <input value={requestInfo.participant} readOnly />
         </div>
         <div>
           <div>영수증 첨부</div>
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" />
         </div>
         <div>
           <div>메모</div>
-          <input placeholder="기타 특이사항을 입력하세요." value={requestInfo.memo} readOnly />
+          <input value={requestInfo.memo} readOnly />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
           승인
         </button>
         <button className="refuseButton" onClick={handleRefuseSubmit}>
-          거절
+          반려
         </button>
         <button className="closeButton" onClick={closeModal}>
           닫기
