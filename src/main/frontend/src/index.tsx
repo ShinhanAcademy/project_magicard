@@ -28,5 +28,4 @@ root.render(
       <App />
     </SoftUIControllerProvider>
   </HashRouter>
-
 );
