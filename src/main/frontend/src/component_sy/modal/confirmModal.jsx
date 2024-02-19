@@ -12,32 +12,13 @@ import penImg from "assets/images/request_img/pen.png";
 import submitbtn from "assets/images/request_img/submitbtn.png";
 import refresh from "assets/images/request_img/refresh.png";
 
-interface PaymentInfo {
-  paymentTime: string;
-  payAmount: number;
-  merchant: string;
-}
-
-interface PurposeItem {
-  purposeItemUid: number;
-  purposeCategory: string;
-  purposeItem: string;
-}
-
-interface Request {
-  paymentId: number;
-  purposeId: number;
-  participant: string;
-  receiptUrl?: File;
-}
-
-const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
-  const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
-  const [purposeItem, setPurposeItem] = useState<PurposeItem[]>([]);
-  const [request, setRequest] = useState<RequestInfo | null>(null);
-  const [selectedPurpose, setSelectedPurpose] = useState<number | null>(null);
-  const [participant, setParticipant] = useState<string>("");
-  const [receiptUrl, setReceiptUrl] = useState<File | null>(null);
+const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+  const [paymentInfo, setPaymentInfo] = useState(null);
+  const [purposeItem, setPurposeItem] = useState([]);
+  const [selectedPurpose, setSelectedPurpose] = useState(null);
+  const [participant, setParticipant] = useState("");
+  const [receiptUrl, setReceiptUrl] = useState(null);
+  const [memo, setMemo] = useState("");
 
   //esc keyEvent 추가
   const handleKeyPress = (e: any) => {
@@ -89,10 +70,11 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
       alert("용도를 선택해주세요.");
       return;
     }
-    const requestData: Request = {
+    const requestData = {
       paymentId: selectedPaymentId,
-      purposeId: selectedPurpose,
+      purposeItemUid: selectedPurpose,
       participant: participant,
+      memo: memo,
     };
 
     if (receiptUrl) {
@@ -112,22 +94,24 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
       });
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       setReceiptUrl(files[0]);
     }
   };
 
-  const handlePurposeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handlePurposeChange = (event) => {
     setSelectedPurpose(parseInt(event.target.value));
   };
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
-  const paymentDate = paymentInfo.paymentTime.substring(0, 10);
+  const paymentDate = paymentInfo.paymentTime;
+
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
+<<<<<<< HEAD:src/main/frontend/src/layouts/payments/display/requestModal.tsx
         <div className="modal-title">
           <div className="modal-title-img">
             <img src={receiptImg}></img>
@@ -144,6 +128,13 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
           >
             close
           </span>
+=======
+        <h1>ConfirmContext 입니다.</h1>
+        <h1>결재 요청</h1>
+        <div>
+          <div>결제일시</div>
+          <input value={paymentDate} readOnly />
+>>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee:src/main/frontend/src/component_sy/modal/confirmModal.jsx
         </div>
         <hr />
         <div className="modal-main-content">
@@ -219,11 +210,52 @@ const ModalContext = ({ isOpen, closeModal, selectedPaymentId }: any) => {
             <img src={submitbtn} />
           </button>
         </div>
+<<<<<<< HEAD:src/main/frontend/src/layouts/payments/display/requestModal.tsx
+=======
+        <div>
+          <div>용도</div>
+          <select onChange={handlePurposeChange}>
+            <option value="">선택하세요</option>
+            {purposeItem.map((purpose) => (
+              <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
+                {purpose.purposeCategory} || {purpose.purposeItem}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <div>참석자</div>
+          <input
+            placeholder="참석자를 입력하세요."
+            value={participant}
+            onChange={(e) => setParticipant(e.target.value)}
+          />
+        </div>
+        <div>
+          <div>영수증 첨부</div>
+          <input type="file" onChange={handleFileChange} />
+        </div>
+        <div>
+          <div>메모</div>
+          <input
+            placeholder="기타 특이사항을 입력하세요."
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+          />
+        </div>
+        <button className="submitButton" onClick={handleSubmit}>
+          신청
+        </button>
+        <button className="closeButton" onClick={closeModal}>
+          닫기
+        </button>
+>>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee:src/main/frontend/src/component_sy/modal/confirmModal.jsx
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD:src/main/frontend/src/layouts/payments/display/requestModal.tsx
 export default ModalContext;
 
 const SelectPurpose = () => {
@@ -271,3 +303,6 @@ const Select = ({ purpose, cntInd }: any) => {
 const Write = () => {
   return <input placeholder="용도를 직접 입력해주세요." />;
 };
+=======
+export default ConfirmContext;
+>>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee:src/main/frontend/src/component_sy/modal/confirmModal.jsx

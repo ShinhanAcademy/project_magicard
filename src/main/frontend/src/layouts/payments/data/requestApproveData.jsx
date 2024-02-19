@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
-// Soft UI Dashboard React components
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const RequestApproveData = () => {
   const [approveList, setApproveList] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
   useEffect(() => {
     axios({
       method: "get",
@@ -30,9 +30,22 @@ const RequestApproveData = () => {
     { name: "승인요청", align: "center" },
   ];
 
+  const handleModalOpen = (paymentId) => {
+    setIsModalOpen(true);
+    setSelectedPaymentId(paymentId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
+
   const rows = approveList.map((approve) => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
-
+    const handleButtonClick = () => {
+      setSendRequest(approve.sendRequest);
+      handleModalOpen(approve.paymentInfo.paymentId);
+    };
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -72,23 +85,21 @@ const RequestApproveData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.approvalSteps.approvalStep}
+          {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),
-      승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
-          {approve.sendRequest}
-        </SoftTypography>
-      ),
+      승인요청: <button onClick={handleButtonClick}>{approve.sendRequest}</button>,
     };
   });
-  return { columns, rows };
+  return {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  };
 };
 
 export default RequestApproveData;

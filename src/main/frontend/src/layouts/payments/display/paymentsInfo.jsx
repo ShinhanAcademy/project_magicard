@@ -12,15 +12,27 @@ import leftMoney from "assets/images/payment-images/leftMoney.png";
 import "layouts/payments/display/paymentsInfo.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import ModalContext from "./requestModal";
+import RequestContext from "component_sy/modal/requestModal";
+import UpdateContext from "component_sy/modal/updateModal";
+import CheckContext from "component_sy/modal/checkModal";
 
 function PaymentsInfo() {
+<<<<<<< HEAD
   const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedPaymentId } =
     paymentInfoData();
+=======
+  const {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  } = paymentInfoData();
+>>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
 
   const [totalAmount, setTotalAmount] = useState(0);
-
   useEffect(() => {
     axios({
       method: "get",
@@ -32,6 +44,33 @@ function PaymentsInfo() {
       })
       .catch((err) => {});
   }, []);
+
+  let modalComponent;
+  if (sendRequest === "신청") {
+    modalComponent = (
+      <RequestContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  } else if (sendRequest === "수정") {
+    modalComponent = (
+      <UpdateContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  } else if (sendRequest === "조회") {
+    modalComponent = (
+      <CheckContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  }
 
   return (
     <>
@@ -69,11 +108,15 @@ function PaymentsInfo() {
         </SoftBox>
       </SoftBox>
       <Footer />
+<<<<<<< HEAD
       <ModalContext
         isOpen={isModalOpen}
         closeModal={handleModalClose}
         selectedPaymentId={selectedPaymentId}
       />
+=======
+      {modalComponent}
+>>>>>>> 39eb1d0fa68572cdb48f0390e13bf05c974374ee
     </>
   );
 }
