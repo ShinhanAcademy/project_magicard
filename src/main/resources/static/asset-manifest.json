@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.558942bf.css",
-    "main.js": "/static/js/main.2c41cc76.js",
+    "main.css": "/static/css/main.7c681aec.css",
+    "main.js": "/static/js/main.a3c8a261.js",
     "static/media/ChungbukUniversity.otf": "/static/media/ChungbukUniversity.ad0f9691528043ec3b72.otf",
     "static/media/home-decor-3.jpg": "/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
@@ -35,8 +35,5 @@
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html"
   },
-  "entrypoints": [
-    "static/css/main.558942bf.css",
-    "static/js/main.2c41cc76.js"
-  ]
+  "entrypoints": ["static/css/main.7c681aec.css", "static/js/main.a3c8a261.js"]
 }

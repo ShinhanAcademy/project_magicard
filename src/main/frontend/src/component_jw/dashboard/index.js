@@ -42,13 +42,13 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-import LineChart from "component_jw/cost_trend_chart/LineChart";
-import BarChart from "component_jw/department_chart/BarChart";
-import DoughnutChart from "component_jw/purpose_chart/DoughnutChart";
-import TotalCards from "component_jw/basic_information/TotalCards";
-import TotalUses from "component_jw/basic_information/TotalUses";
-import TotalPayment from "component_jw/basic_information/TotalPayment";
-import Totalapproval from "component_jw/basic_information/TotalApproval";
+import DepartmentalSpendingChart from "./departmentalSpendingChart";
+import SpendingByPurposeChart from "./spendingByPurposeChart";
+import TotalCards from "./basicInfo/totalCards";
+import TotalUses from "./basicInfo/totalUses";
+import TotalPayment from "./basicInfo/totalPayment";
+import TotalApproval from "./basicInfo/totalApproval";
+import CumulativeSpendingChart from "./cumulativeSpendingChart";
 
 function Dashboard() {
   const { size } = typography;
@@ -72,47 +72,46 @@ function Dashboard() {
               <TotalPayment/>
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <Totalapproval/>
+              <TotalApproval/>
             </Grid>
           </Grid>
         </SoftBox>
         
-        <SoftBox mb={3}>
-         <Card >
+        <SoftBox mb={3}>  
           <Grid container spacing={3} style={{
             display: 'flex',
             justifyContent: 'center',
             padding:'1.25rem'
           }}>
-                <Grid item xs={12} lg={10} >
-                  <LineChart/>
-                </Grid>
-              </Grid>
-            </Card>
-            </SoftBox>
-            <SoftBox mb={3} >
-      
-       
-              <Grid  container spacing={3}  >
-                <Grid item xs={7.75} >
-                  <Card >
-                    <SoftBox >
-                      <BarChart/>
-                    </SoftBox>
-                  </Card >
-                </Grid>
+            <Grid item xs={12} lg={10} >
+              {/* <LineChart/> */}
+             </Grid>
+            </Grid>
+         </SoftBox>     
 
-                <Grid item xs={4.25}>
-                  <Card>
-                    <SoftBox style={{padding:'1.25rem'}}>
-                      <DoughnutChart />
-                    </SoftBox>
-                  </Card>
-                </Grid>
-              </Grid>
-             
-      
-       </SoftBox>
+        <SoftBox mb={3}>  
+          <Grid >
+            <CumulativeSpendingChart/>
+            </Grid>
+         </SoftBox>        
+        
+         <SoftBox mb={3}>  
+          <Grid >
+            <Grid item xs={12} lg={10} >
+              <DepartmentalSpendingChart
+              height="30rm"/>
+             </Grid>
+            </Grid>
+         </SoftBox>
+         
+         <SoftBox mb={3}>  
+          <Grid >
+            <Grid item xs={12} lg={10} >
+              <SpendingByPurposeChart/>
+             </Grid>
+            </Grid>
+         </SoftBox>
+
 
         
        

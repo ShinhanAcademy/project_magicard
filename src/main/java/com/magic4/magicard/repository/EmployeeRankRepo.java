@@ -12,5 +12,6 @@ public interface EmployeeRankRepo extends JpaRepository<EmployeeRank, Integer> {
 
     // 회사별 직급 조회
     List<EmployeeRank> findEmployeeRanksByCompany(Company company);
+    List<EmployeeRank> findByCompany(Company company);
 
 }

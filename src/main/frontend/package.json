@@ -29,6 +29,8 @@
     "chart.js": "3.9.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chroma-js": "2.4.2",
+    "echarts": "^5.4.3",
+    "echarts-for-react": "^3.0.2",
     "prop-types": "15.8.1",
     "react": ">=16.8.0",
     "react-bootstrap": "^2.10.1",
