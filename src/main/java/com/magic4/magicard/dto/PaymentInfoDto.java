@@ -22,6 +22,7 @@ public class PaymentInfoDto {
     private int payAmount;
     private String merchant;
     private Timestamp paymentTime;
-    private String requestStatus;
-    private String sendRequest;
+    private String firstStepStatus; // 1단계 => 승인 대기중, 승인, 반려, 최종 반려
+    private String secondStepStatus; // 2단계  => 승인 대기중, 승인, 반려, 최종 반려, 최종 승인
+    private String sendRequest; // 신청, 요청
 }

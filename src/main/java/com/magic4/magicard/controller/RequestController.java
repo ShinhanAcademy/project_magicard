@@ -2,16 +2,12 @@ package com.magic4.magicard.controller;
 
 import java.util.*;
 
-import com.magic4.magicard.dto.CompanyDto;
-import com.magic4.magicard.dto.EmployeeDto;
-import com.magic4.magicard.dto.PaymentInfoDto;
-import com.magic4.magicard.dto.RequestDto;
+import com.magic4.magicard.dto.*;
 import com.magic4.magicard.service.RequestService;
 
+import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.magic4.magicard.vo.Request;
 
@@ -24,10 +20,8 @@ public class RequestController {
     private final RequestService requestService;
     CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
     EmployeeDto employeeInfo = EmployeeDto.builder()
-            .employeeEmail("aa15@naver.com")
-            .employeeName("박지원")
-            .phone("01012344321")
-            .company(companyDto)
+            .employeeEmail("aa4@naver.com")
+//            .employeeEmail("h12@naver.com")
             .build();
 
     @GetMapping("/fromMe/getRequestList")
@@ -45,21 +39,58 @@ public class RequestController {
         return requestService.getRefuseList(employeeInfo);
     }
 
-    @GetMapping("/toMe/getAllList")
+    @GetMapping("/toMe/getList")
     public List<RequestDto> getToMeRequestList(HttpSession session) {
         return requestService.getToMeRequestList(employeeInfo);
     }
 
+    @GetMapping("/toMe/getCount")
+    public Integer getToMeRequestCount(HttpSession session){
+        return requestService.getToMeRequestCount(employeeInfo);
+    }
+
+    @GetMapping("/toMe/getRequestList")
+    public List<RequestDto> getToTopRequestList(HttpSession session) {
+        return requestService.getToTopRequestList(employeeInfo);
+    }
+
     @GetMapping("/toMe/getApproveList")
     public List<RequestDto> getToMeApproveList(HttpSession session) {
-        return requestService.getToMeApproveList(employeeInfo);
+        return requestService.getToTopApproveList(employeeInfo);
     }
 
     @GetMapping("/toMe/getRefuseList")
     public List<RequestDto> getToMeRefuseList(HttpSession session) {
-        return requestService.getToMeRefuseList(employeeInfo);
+        return requestService.getToTopRefuseList(employeeInfo);
     }
 
+    @GetMapping("/paymentInfo/{paymentId}")
+    public PaymentInfoDto getPaymentInfo(@PathVariable Integer paymentId){
+        return requestService.getPaymentInfo(paymentId);
+    }
 
+    @PostMapping("/sendRequest")
+    public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.sendRequest(requestFormDto, employeeInfo);
+    }
 
+    @GetMapping("/requestInfo/{paymentId}")
+    public RequestDto getRequestInfo(@PathVariable Integer paymentId){
+        return requestService.getRequestInfo(paymentId);
+    }
+
+    @PostMapping("/updateRequest")
+    public Integer updateRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.updateRequest(requestFormDto, employeeInfo);
+    }
+
+    @PostMapping("/sendToFinanceDept")
+    public Integer confirmRequest(@RequestBody RequestFormDto requestFormDto){
+        return requestService.confirmRequest(requestFormDto, employeeInfo);
+    }
+
+    @PostMapping("/refuseRequest")
+    public Integer refuseRequest(@RequestBody RejectFormDto rejectFormDto){
+        return requestService.refuseRequest(rejectFormDto);
+    }
 }

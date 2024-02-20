@@ -42,80 +42,84 @@ import OrderOverview from "layouts/dashboard/components/OrderOverview";
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
-import LineChart from "component_jw/cost_trend_chart/LineChart";
-import BarChart from "component_jw/department_chart/BarChart";
-import DoughnutChart from "component_jw/purpose_chart/DoughnutChart";
-import TotalCards from "component_jw/basic_information/TotalCards";
-import TotalUses from "component_jw/basic_information/TotalUses";
-import TotalPayment from "component_jw/basic_information/TotalPayment";
-import Totalapproval from "component_jw/basic_information/TotalApproval";
+import DepartmentalSpendingChart from "./departmentalSpendingChart";
+import SpendingByPurposeChart from "./spendingByPurposeChart";
+import TotalCards from "./basicInfo/totalCards";
+import TotalUses from "./basicInfo/totalUses";
+import TotalPayment from "./basicInfo/totalPayment";
+import TotalApproval from "./basicInfo/totalApproval";
+import CumulativeSpendingChart from "./cumulativeSpendingChart";
+import ComparisonWithOthersChart from "./comparisonWithOthersChart";
+
+import { useState } from "react";
 
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  // State for managing chart instances
+  const [cumulativeSpendingChartKey, setCumulativeSpendingChartKey] = useState(0);
+  const [departmentalSpendingChartKey, setDepartmentalSpendingChartKey] = useState(0);
+  const [spendingByPurposeChartKey, setSpendingByPurposeChartKey] = useState(0);
+  const [comparisonWithOthersChartKey, setComparisonWithOthersChartKey] = useState(0);
+
+  // Function to reset chart keys
+  const resetCharts = () => {
+    setCumulativeSpendingChartKey((prevKey) => prevKey + 1);
+    setDepartmentalSpendingChartKey((prevKey) => prevKey + 1);
+    setSpendingByPurposeChartKey((prevKey) => prevKey + 1);
+    setComparisonWithOthersChartKey((prevKey) => prevKey + 1);
+  };
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-        
-      
+
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalCards/>
+              <TotalCards />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalUses/>
+              <TotalUses />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalPayment/>
+              <TotalPayment />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <Totalapproval/>
+              <TotalApproval />
             </Grid>
           </Grid>
         </SoftBox>
-        
+
         <SoftBox mb={3}>
-         <Card >
-          <Grid container spacing={3} style={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding:'1.25rem'
-          }}>
-                <Grid item xs={12} lg={10} >
-                  <LineChart/>
-                </Grid>
-              </Grid>
-            </Card>
-            </SoftBox>
-            <SoftBox mb={3} >
-      
-       
-              <Grid  container spacing={3}  >
-                <Grid item xs={7.75} >
-                  <Card >
-                    <SoftBox >
-                      <BarChart/>
-                    </SoftBox>
-                  </Card >
-                </Grid>
+          지출 추이 (전 년도 대비 지출)
+          <Grid>
+            <CumulativeSpendingChart key={cumulativeSpendingChartKey} />
+          </Grid>
+        </SoftBox>
 
-                <Grid item xs={4.25}>
-                  <Card>
-                    <SoftBox style={{padding:'1.25rem'}}>
-                      <DoughnutChart />
-                    </SoftBox>
-                  </Card>
-                </Grid>
-              </Grid>
-             
-      
-       </SoftBox>
+        <SoftBox mb={3}>
+          부서별 지출 비교
+          <Grid>
+            <DepartmentalSpendingChart key={departmentalSpendingChartKey} />
+          </Grid>
+        </SoftBox>
 
-        
-       
+        <SoftBox mb={3}>
+          용도별 지출 추이
+          <Grid>
+            <SpendingByPurposeChart key={spendingByPurposeChartKey} />
+          </Grid>
+        </SoftBox>
+
+        <SoftBox mb={3}>
+          타 기업간 분기별 비교
+          <Grid>
+            <ComparisonWithOthersChart key={comparisonWithOthersChartKey} />
+          </Grid>
+        </SoftBox>
+
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
@@ -126,8 +130,6 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
-
-       
 
         <SoftBox mb={3}>
           <Grid container spacing={3}>

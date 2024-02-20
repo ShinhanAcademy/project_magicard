@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestDto {
-    private Integer requestID;
+    private Integer requestId;
     private EmployeeDto employee;
     private String responseEmployeeEmail;
     private PaymentInfoDto paymentInfo;
@@ -24,4 +24,5 @@ public class RequestDto {
     private Integer requestLevel;
     private ApprovalStepsDto approvalSteps;
     private String sendRequest;
+    private String refuseMessage;
 }

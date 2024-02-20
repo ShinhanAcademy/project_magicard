@@ -1,0 +1,71 @@
+.openModal {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* 모달 컨테이너 */
+.container {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 25px;
+  border: 1px solid #888;
+  /* width: 80%; */
+  height: auto;
+  width: 781px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container .add-btn {
+  display: flex;
+  width: 90%;
+  align-items: center;
+  justify-content: space-around;
+  border: none;
+  border-radius: 5px;
+  background-color: #2f4f4f;
+  color: #ffffff;
+  font-size: 20px;
+  margin-left: 2rem;
+}
+
+.categoryform {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+}
+
+.categoryform p {
+  margin-bottom: 10px;
+}
+.categoryform img {
+  width: 50%;
+  height: 20%;
+}
+
+.title {
+  width: 70%; /* 원하는 너비로 설정하세요 */
+  margin: 0 auto; /* 가로 중앙 정렬 */
+  padding: 10px;
+  font-size: 2em;
+  color: #333; /* 원하는 색상으로 설정하세요 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.category-div span {
+  font-size: 0.8rem;
+  color: red;
+}
+.category-div .category-div-detail {
+  font-size: 0.8rem;
+  color: gray;
+  margin-left: 2rem;
+  margin-top: -1rem;
+}

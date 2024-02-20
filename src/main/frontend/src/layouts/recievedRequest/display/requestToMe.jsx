@@ -6,13 +6,68 @@ import Card from "@mui/material/Card";
 import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 
-import usingMoney from "assets/images/payment-images/usingMoney.png";
-import leftMoney from "assets/images/payment-images/leftMoney.png";
 import "layouts/payments/display/paymentsInfo.css";
 import RequestToMeData from "../data/requestToMeData";
+import UpdateContext from "component_sy/modal/updateModal";
+import CheckContext from "component_sy/modal/checkModal";
+import ConfirmContext from "component_sy/modal/confirmModal";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function RequestToMe() {
-  const { columns, rows } = RequestToMeData();
+  const [requestCount, setRequestCount] = useState(0);
+
+  const {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  } = RequestToMeData();
+
+  let modalComponent;
+  if (sendRequest === "확인") {
+    modalComponent = (
+      <ConfirmContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  } else if (sendRequest === "수정") {
+    modalComponent = (
+      <UpdateContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  } else if (sendRequest === "조회") {
+    modalComponent = (
+      <CheckContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  }
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "/requests/toMe/getCount",
+    })
+      .then((res) => {
+        console.log(res.data);
+        setRequestCount(res.data);
+      })
+      .catch((err) => {
+        console.log("에러 발생 => " + err);
+      });
+  });
+
   return (
     <>
       <SoftBox py={3}>
@@ -20,6 +75,7 @@ function RequestToMe() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h4">결재 요청 내역</SoftTypography>
+              <SoftTypography variant="h4">{requestCount}건</SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{
@@ -37,6 +93,7 @@ function RequestToMe() {
         </SoftBox>
       </SoftBox>
       <Footer />
+      {modalComponent}
     </>
   );
 }

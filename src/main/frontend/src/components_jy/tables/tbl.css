@@ -10,10 +10,6 @@ tbody > tr {
   font-size: 1rem;
 }
 
-tbody > tr > td:nth-child(1) {
-  font-weight: bold;
-}
-
 .detailbtn > button {
   width: 3rem;
   height: 1.5rem;
@@ -24,14 +20,9 @@ tbody > tr > td:nth-child(1) {
   font-weight: bold;
 }
 
-.detailbtn > button:nth-child(1) {
-  background-color: #2f4f4f;
-  color: white;
-}
-
-.detailbtn > button:nth-child(2) {
-  background-color: #ffbbae;
-  color: #b22222;
+.detailbtn > button {
+  background-color: #cbe1d4;
+  color: #2f4f4f;
 }
 
 .depttblbtn {

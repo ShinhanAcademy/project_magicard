@@ -1,11 +1,12 @@
-/* eslint-disable react/prop-types */
-// Soft UI Dashboard React components
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const RequestAllData = () => {
   const [requestList, setRequestList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
     axios({
@@ -18,6 +19,16 @@ const RequestAllData = () => {
       })
       .catch((err) => {});
   }, []);
+
+  const handleModalOpen = (paymentId) => {
+    setIsModalOpen(true);
+    setSelectedPaymentId(paymentId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
 
   const columns = [
     { name: "결제일시", align: "center" },
@@ -32,7 +43,10 @@ const RequestAllData = () => {
 
   const rows = requestList.map((request) => {
     const paymentDate = request.paymentInfo.paymentTime.substr(0, 10);
-
+    const handleButtonClick = () => {
+      setSendRequest(request.sendRequest);
+      handleModalOpen(request.paymentInfo.paymentId);
+    };
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -75,20 +89,18 @@ const RequestAllData = () => {
           {request.approvalSteps.approvalStep}
         </SoftTypography>
       ),
-      승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
-          {request.sendRequest}
-        </SoftTypography>
-      ),
+      승인요청: <button onClick={handleButtonClick}>{request.sendRequest}</button>,
     };
   });
-  return { columns, rows };
+  return {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  };
 };
 
 export default RequestAllData;

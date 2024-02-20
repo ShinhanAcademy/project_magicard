@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.UUID;
 
+
 import com.magic4.magicard.dto.CardInfoDto;
 import com.magic4.magicard.repository.EmployeeRepo;
+import com.magic4.magicard.dto.EmployeeEmailDto;
 import com.magic4.magicard.vo.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,6 +103,7 @@ public class IssuedCardService {
         return cardNumber.toString();
     }
 
+
     public CardInfoDto getMyCardInfo(String empEmail){
         Employee emp=employeeRepo.findById(empEmail).orElse(null);
         IssuedCard issuedCard= issuedCardRepo.findByEmployee(emp);
@@ -117,5 +120,19 @@ public class IssuedCardService {
                 .maximumAmount(issuedCard.getMaximumAmount())
                 .cardBenefit(issuedCard.getBenefit())
                 .build();
+    }
+    
+    public Long totalCards(EmployeeEmailDto employeeEmail){
+        return issuedCardRepo.totalCards(changeDtoToEntity(employeeEmail).getEmployeeEmail());
+    }
+
+    private Employee changeDtoToEntity(EmployeeEmailDto employeeEmail) {
+        Employee employeeEmailEntity= Employee
+                .builder()
+                .employeeEmail(employeeEmail.getEmployeeEmail())
+                .build();
+
+        return employeeEmailEntity;
+
     }
 }
