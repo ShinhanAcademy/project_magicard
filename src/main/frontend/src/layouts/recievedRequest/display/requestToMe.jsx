@@ -11,8 +11,12 @@ import RequestToMeData from "../data/requestToMeData";
 import UpdateContext from "component_sy/modal/updateModal";
 import CheckContext from "component_sy/modal/checkModal";
 import ConfirmContext from "component_sy/modal/confirmModal";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function RequestToMe() {
+  const [requestCount, setRequestCount] = useState(0);
+
   const {
     columns,
     rows,
@@ -50,6 +54,20 @@ function RequestToMe() {
     );
   }
 
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "/requests/toMe/getCount",
+    })
+      .then((res) => {
+        console.log(res.data);
+        setRequestCount(res.data);
+      })
+      .catch((err) => {
+        console.log("에러 발생 => " + err);
+      });
+  });
+
   return (
     <>
       <SoftBox py={3}>
@@ -57,6 +75,7 @@ function RequestToMe() {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftTypography variant="h4">결재 요청 내역</SoftTypography>
+              <SoftTypography variant="h4">{requestCount}건</SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{

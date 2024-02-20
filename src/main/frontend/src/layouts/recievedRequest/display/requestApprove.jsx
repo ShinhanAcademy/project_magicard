@@ -14,8 +14,6 @@ function RequestApprove() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              {/* <SoftTypography variant="h5">이번 달 결제 금액</SoftTypography>
-              <SoftTypography variant="h5">이번 달 잔액</SoftTypography> */}
               <SoftTypography variant="h4">승인 내역</SoftTypography>
             </SoftBox>
             <SoftBox
