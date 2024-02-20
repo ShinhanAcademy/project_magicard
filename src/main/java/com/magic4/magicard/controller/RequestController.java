@@ -21,6 +21,7 @@ public class RequestController {
     CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
     EmployeeDto employeeInfo = EmployeeDto.builder()
             .employeeEmail("aa4@naver.com")
+//            .employeeEmail("h12@naver.com")
             .build();
 
     @GetMapping("/fromMe/getRequestList")
@@ -43,6 +44,11 @@ public class RequestController {
         return requestService.getToMeRequestList(employeeInfo);
     }
 
+    @GetMapping("/toMe/getCount")
+    public Integer getToMeRequestCount(HttpSession session){
+        return requestService.getToMeRequestCount(employeeInfo);
+    }
+
     @GetMapping("/toMe/getRequestList")
     public List<RequestDto> getToTopRequestList(HttpSession session) {
         return requestService.getToTopRequestList(employeeInfo);
@@ -50,12 +56,12 @@ public class RequestController {
 
     @GetMapping("/toMe/getApproveList")
     public List<RequestDto> getToMeApproveList(HttpSession session) {
-        return requestService.getToMeApproveList(employeeInfo);
+        return requestService.getToTopApproveList(employeeInfo);
     }
 
     @GetMapping("/toMe/getRefuseList")
     public List<RequestDto> getToMeRefuseList(HttpSession session) {
-        return requestService.getToMeRefuseList(employeeInfo);
+        return requestService.getToTopRefuseList(employeeInfo);
     }
 
     @GetMapping("/paymentInfo/{paymentId}")
@@ -83,4 +89,8 @@ public class RequestController {
         return requestService.confirmRequest(requestFormDto, employeeInfo);
     }
 
+    @PostMapping("/refuseRequest")
+    public Integer refuseRequest(@RequestBody RejectFormDto rejectFormDto){
+        return requestService.refuseRequest(rejectFormDto);
+    }
 }
