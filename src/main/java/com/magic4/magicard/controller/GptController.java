@@ -15,8 +15,8 @@ public class GptController {
     @Autowired
     private GptService gptService;
 
-    @GetMapping("/gpt/recommend/{paymentId}")
-    public List<GptResultDto> gptRecommend(@PathVariable("paymentId") Integer paymentId) {
+    @GetMapping("/gpt/recommend/{selectedPaymentId}")
+    public List<GptResultDto> gptRecommend(@PathVariable("selectedPaymentId") Integer paymentId) {
         return gptService.getGptResponse(paymentId);
     }
 
