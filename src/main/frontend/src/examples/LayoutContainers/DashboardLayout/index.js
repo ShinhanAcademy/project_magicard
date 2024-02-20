@@ -1,40 +1,18 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect } from "react";
-
-// react-router-dom components
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux"; // useDispatch 및 useSelector 추가
+import SoftBox from "components/SoftBox";
+import { setLayout } from "mk/slices/softui"; // softuiSlice에서 setLayout 가져오도록 변경
 import { useLocation } from "react-router-dom";
 
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-
-// Soft UI Dashboard React context
-import { useSoftUIController, setLayout } from "context";
-
 function DashboardLayout({ children }) {
-  const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav } = controller;
+  const dispatch = useDispatch(); // useDispatch 훅을 사용하여 dispatch 함수 가져오기
+  const { miniSidenav } = useSelector((state) => state.layout); // Redux store에서 miniSidenav 가져오기
   const { pathname } = useLocation();
 
   useEffect(() => {
-    setLayout(dispatch, "dashboard");
-  }, [pathname]);
+    dispatch(setLayout("dashboard")); // setLayout 액션을 dispatch하여 layout 설정
+  }, [dispatch, pathname]);
 
   return (
     <SoftBox
@@ -56,7 +34,6 @@ function DashboardLayout({ children }) {
   );
 }
 
-// Typechecking props for the DashboardLayout
 DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };

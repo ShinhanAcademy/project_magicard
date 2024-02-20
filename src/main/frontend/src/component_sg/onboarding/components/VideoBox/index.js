@@ -27,41 +27,53 @@ import { Card } from "@mui/material";
 
 function VideoBox({ date, id, price, noGutter }) {
   return (
-    <Card sx={{ height: "100%", minHeight: "500px" }}>
+    <Card sx={{ height: "100%" }}>
       <SoftBox
+        style={{ height: "100%" }}
         component="li"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
         alignItems="center"
-        py={1}
-        pr={1}
+        p={3}
         mb={noGutter ? 0 : 1}
       >
-        <iframe
-          width="auto"
-          height="auto"
-          src="https://www.youtube.com/embed/W8s_Smx4v_U?si=x15S8jNsrX-FJwEB"
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-
-        <p
+        <SoftTypography variant="5" fontWeight="medium" color="error">
+          ※ 법인 카드 사용 전 교육 영상을 필히 시청하시기 바랍니다. ※ <br />
+        </SoftTypography>
+        <SoftTypography variant="h6" fontWeight="medium" pb={1}>
+          카드 사용에 대한 지침, 보안 조치, 리워드 프로그램 등 주요 약관 사항에 대한 다양한 정보를
+          포함하고 있습니다. <br />
+          이는 당사의 서비스를 안전하게 이용하고, 카드를 효과적으로 활용하실 수 있도록 도움을
+          드리고자 함입니다.
+        </SoftTypography>
+        <div
           style={{
-            fontFamily: "Chungbuk National University Regular",
-            fontSize: "16px",
-            textAlign: "left",
+            position: "relative",
+            width: "100%",
+            height: "0",
+            overflow: "hidden",
+            paddingTop: "calc(9/16 * 100%)",
           }}
         >
-          <SoftTypography variant="h6" fontWeight="medium">
-            법인 카드 사용 전 교육 영상을 필히 시청하시기 바랍니다. <br />
-            카드 사용에 대한 지침, 보안 조치,리워드 프로그램 등<br />
-            주요 약관 사항에 대한 다양한 정보를 포함하고 있습니다. <br />
-            이는 당사의 서비스를 안전하게 이용하고,카드를 효과적으로 <br />
-            활용사실 수 있도록 도움을 드리고자 함입니다.
-          </SoftTypography>
-        </p>
+          <iframe
+            style={{
+              position: "absolute",
+              top: "0",
+              left: "0",
+              width: "100%",
+              height: "100%",
+              border: "5px solid #CBCBCB",
+              borderRadius: "3px",
+            }}
+            width="auto"
+            height="auto"
+            src="https://www.youtube.com/embed/W8s_Smx4v_U?si=x15S8jNsrX-FJwEB"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
       </SoftBox>
     </Card>
   );

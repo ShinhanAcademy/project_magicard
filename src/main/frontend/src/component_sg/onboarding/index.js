@@ -36,8 +36,42 @@ import Transactions from "layouts/billing/components/Transactions";
 import OnboardingTransactions from "./components/Transactions";
 import VideoBox from "component_sg/onboarding/components/VideoBox";
 import CardDetail from "./components/CardDetail";
+import ad from "assets/images/mk/ad.jpg";
+import { Card } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Onboarding() {
+  const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
+  const employeeEmail = useSelector((state) => state.user.employeeEmail);
+  const employeeName = useSelector((state) => state.user.employeeName);
+  const [card, setCard] = useState([]);
+  let cardExpiredDate = "" + card.expireDate;
+
+  const getMyCard = () => {
+    if (isLoggedIn) {
+      console.log(employeeEmail);
+      axios
+        .post("/my-card-info", { employeeEmail })
+        .then((response) => {
+          setCard(response.data);
+          console.log("response.data: ", response.data);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  useEffect(() => {
+    getMyCard();
+    console.log("Card[]: ", card);
+  }, []);
+
+  useEffect(() => {
+    getMyCard();
+    console.log("Card[isLoggedIn]: ", card);
+  }, [isLoggedIn]);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -46,10 +80,22 @@ function Onboarding() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Grid container spacing={3}>
-                <Grid item xs={12} xl={5}>
-                  <MasterCard number={7777111145947852} holder="Seunggwang Roh" expires="11/22" />
+                <Grid item xs={12} xl={4.5}>
+                  {isLoggedIn ? (
+                    <MasterCard
+                      cardType={card.cardName}
+                      bgColor={card.cardCode}
+                      number={card.cardNumber}
+                      holder={employeeName}
+                      expires={
+                        cardExpiredDate.substring(5, 7) + "/" + cardExpiredDate.substring(2, 4)
+                      }
+                    />
+                  ) : (
+                    <MasterCard number={7777111145947852} holder="Seunggwang Roh" expires="11/22" />
+                  )}
                 </Grid>
-                <Grid item xs={12} md={6} xl={2.3}>
+                <Grid item xs={12} md={6} xl={2.5}>
                   <DefaultInfoCard
                     icon="credit_score_rounded"
                     title="카드"
@@ -57,7 +103,7 @@ function Onboarding() {
                     value="완료"
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={2.3}>
+                <Grid item xs={12} md={6} xl={2.5}>
                   <DefaultInfoCard
                     icon="ondemand_video_rounded"
                     title="영상 시청"
@@ -65,7 +111,7 @@ function Onboarding() {
                     value="완료"
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={2.3}>
+                <Grid item xs={12} md={6} xl={2.5}>
                   <DefaultInfoCard
                     icon="fact_check_rounded"
                     title="서약서"
@@ -73,8 +119,17 @@ function Onboarding() {
                     value="완료"
                   />
                 </Grid>
-                <Grid item xs={5}>
-                  <CardDetail />
+                <Grid item xs={5} container spacing={2}>
+                  <Grid item xs={12}>
+                    <CardDetail />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Card id="ad-zone">
+                      <SoftBox item xs={12}>
+                        <img src={ad} alt="ad" style={{ width: "100%" }} />
+                      </SoftBox>
+                    </Card>
+                  </Grid>
                 </Grid>
                 <Grid item xs={7}>
                   <VideoBox />

@@ -18,6 +18,7 @@
     "@mui/icons-material": "5.11.16",
     "@mui/material": "5.13.0",
     "@mui/styled-engine": "5.12.3",
+    "@reduxjs/toolkit": "^2.2.1",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
@@ -29,6 +30,7 @@
     "chart.js": "3.9.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chroma-js": "2.4.2",
+    "immer": "^10.0.3",
     "prop-types": "15.8.1",
     "react": ">=16.8.0",
     "react-bootstrap": "^2.10.1",
@@ -36,9 +38,12 @@
     "react-countup": "6.4.2",
     "react-dom": ">=16.8.0",
     "react-flatpickr": "3.10.13",
+    "react-redux": "^9.1.0",
     "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "react-session-api": "^1.1.0",
+    "redux": "^5.0.1",
     "stylis": "4.2.0",
     "stylis-plugin-rtl": "2.1.1",
     "typescript": "^5.3.3",
@@ -79,7 +84,8 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "file-loader": "^6.2.0",
-    "prettier": "2.8.8"
+    "prettier": "2.8.8",
+    "redux-devtools-extension": "^2.13.9"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

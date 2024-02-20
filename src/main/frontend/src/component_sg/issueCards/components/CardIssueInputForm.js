@@ -25,6 +25,8 @@ import SoftButton from "components/SoftButton";
 import Select from "react-select";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { StylesConfig } from "react-select";
+import "./CardIssueInputForm.css";
 
 function CardIssueInputForm() {
   const [agreement, setAgremment] = useState(true);
@@ -48,68 +50,97 @@ function CardIssueInputForm() {
     { value: "B", label: "The Black" },
   ];
 
+  const customStyles = {
+    placeholder: (defaultStyles) => {
+      return {
+        ...defaultStyles,
+        color: "#A9B1BE",
+        fontSize: "medium",
+        fontWeight: "regular",
+      };
+    },
+    option: (provided, state) => ({
+      ...provided,
+      // border: "1px dotted black",
+      // color: state.data.color,
+      fontSize: "medium",
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      paddingLeft: "5px",
+      borderRadius: "10px",
+      borderColor: state.isFocused ? "#35D1F5" : "#d2d6da",
+      boxShadow: state.isFocused ? "0 0 0 2px #81E3F9" : "none",
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      fontSize: "medium",
+    }),
+  };
+
   return (
     <SoftBox component="form" role="form">
-      <div>&nbsp;카드 선택</div>
-      <SoftBox mb={2}>
-        <Select
-          options={cardCode}
-          onChange={(e) => {
-            setcardCodeSelect(e.value);
-          }}
-        />
+      <SoftBox>
+        <SoftTypography variant="h5">&nbsp;카드 선택</SoftTypography>
+        <SoftBox mt={1} mb={5}>
+          <Select
+            styles={customStyles}
+            placeholder="카드 타입을 선택해 주세요."
+            options={cardCode}
+            onChange={(e) => {
+              setcardCodeSelect(e.value);
+            }}
+          />
+        </SoftBox>
       </SoftBox>
-
-      <div>&nbsp;대상 직급</div>
-      <SoftBox mb={2}>
-        <Select
-          options={rank}
-          onChange={(e) => {
-            setRankSelect(e.value);
-          }}
-        />
+      <SoftBox>
+        <SoftTypography variant="h5">&nbsp;대상 직급</SoftTypography>
+        <SoftBox mt={1} mb={5}>
+          <Select
+            styles={customStyles}
+            sx={{ fontSize: "small" }}
+            placeholder="카드를 사용할 직원의 직급을 선택해 주세요."
+            options={rank}
+            onChange={(e) => {
+              setRankSelect(e.value);
+            }}
+          />
+        </SoftBox>
       </SoftBox>
-
-      <div>&nbsp;월 최대 한도</div>
-      <SoftBox mb={2}>
-        <SoftInput
-          type="number"
-          placeholder="월 최대 한도"
-          onChange={(e) => {
-            setMaxLimit(e.target.value);
-          }}
-        />
+      <SoftBox>
+        <SoftTypography variant="h5">&nbsp;월 최대 한도</SoftTypography>
+        <SoftBox mt={1} mb={5}>
+          <SoftInput
+            className="input"
+            type="number"
+            placeholder="월 최대 사용 한도를 설정해 주세요."
+            onChange={(e) => {
+              setMaxLimit(e.target.value);
+            }}
+          />
+        </SoftBox>
       </SoftBox>
-
-      <div>&nbsp;발급 수량</div>
-      <SoftBox mb={2}>
-        <SoftInput
-          type="number"
-          placeholder="발급 수량"
-          onChange={(e) => {
-            setCardCount(e.target.value);
-          }}
-        />
+      <SoftBox>
+        <SoftTypography variant="h5">&nbsp;발급 수량</SoftTypography>
+        <SoftBox mt={1} mb={5}>
+          <SoftInput
+            type="number"
+            placeholder="발급 수량을 입력해주세요."
+            onChange={(e) => {
+              setCardCount(e.target.value);
+            }}
+          />
+        </SoftBox>
       </SoftBox>
-
       <SoftBox display="flex" alignItems="center">
         <Checkbox checked={agreement} onChange={handleSetAgremment} />
         <SoftTypography
           variant="button"
-          fontWeight="regular"
+          fontWeight="bold"
           onClick={handleSetAgremment}
           sx={{ cursor: "poiner", userSelect: "none" }}
         >
-          &nbsp;&nbsp;마법 카드&nbsp;
-        </SoftTypography>
-        <SoftTypography
-          component="b"
-          href="/dashboard"
-          variant="button"
-          fontWeight="bold"
-          textGradient
-        >
-          이용 약관에 동의합니다
+          &nbsp;&nbsp;마법 카드 이용 약관에 동의합니다
         </SoftTypography>
       </SoftBox>
       <SoftBox mt={4} mb={1}>
@@ -121,7 +152,9 @@ function CardIssueInputForm() {
             submitCardIssueForm(cardCodeSelect, rankSelect, maxLimit, cardCount, agreement);
           }}
         >
-          발급 신청
+          <SoftTypography variant="body1" color="white">
+            발급 신청
+          </SoftTypography>
         </SoftButton>
       </SoftBox>
     </SoftBox>

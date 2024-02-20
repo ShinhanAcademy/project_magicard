@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 
 // @mui material components
 import Collapse from "@mui/material/Collapse";
@@ -33,13 +34,20 @@ import {
   collapseIcon,
   collapseText,
 } from "examples/Sidenav/styles/sidenavCollapse";
-
-// Soft UI Dashboard React context
-import { useSoftUIController } from "context";
+import { setMiniSidenav } from "mk/slices/softui";
+import { setTransparentSidenav } from "mk/slices/softui";
 
 function SidenavCollapse({ color, icon, name, children, active, noCollapse, open, ...rest }) {
-  const [controller] = useSoftUIController();
-  const { miniSidenav, transparentSidenav } = controller;
+  const dispatch = useDispatch();
+  const { miniSidenav, transparentSidenav } = useSelector((state) => state.layout);
+
+  const handleSetMiniSidenav = (value) => {
+    dispatch(setMiniSidenav(value));
+  };
+
+  const handleSetTransparentSidenav = (value) => {
+    dispatch(setTransparentSidenav(value));
+  };
 
   return (
     <>

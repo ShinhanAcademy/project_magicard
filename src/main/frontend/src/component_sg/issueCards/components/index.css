@@ -1,0 +1,127 @@
+.flip-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.flip-outer {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+}
+
+.flip-inner {
+  transition: all 1s linear;
+  transform-style: preserve-3d;
+  position: relative;
+  height: 0;
+  padding-bottom: 173%;
+  /* box-shadow: 0px 45px 15px 5px gray; */
+}
+
+.front {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  backface-visibility: hidden;
+}
+
+.back {
+  width: 100%;
+  position: absolute;
+  transform: perspective(800px) rotateY(180deg) scale(1.05);
+}
+
+.flip-inner:hover {
+  transform: perspective(800px) rotateY(180deg) scale(1.05);
+}
+
+.flip-inner:hover ~ .card-description > .card-name {
+  transition: all 0.5s linear;
+  color: #2f4f4f;
+}
+
+.flip-inner::before,
+.flip-inner::after {
+  position: absolute;
+  content: "";
+  top: -5%;
+  left: -5%;
+  height: 110%;
+  width: 110%;
+  border-radius: 50%;
+  opacity: 0.5;
+  filter: blur(60px);
+}
+
+.flip-inner::after {
+  background-color: #cbcbcb;
+  z-index: -1;
+  animation: backglow2 15s ease infinite;
+}
+
+.flip-inner::before {
+  background-color: #cbe1d4;
+  z-index: -2;
+  animation: backglow1 15s ease infinite;
+}
+
+@keyframes backglow1 {
+  0% {
+    transform: translate(10%, 10%) scale(1);
+    opacity: 0.5;
+  }
+
+  25% {
+    transform: translate(-10%, 10%) scale(0.8);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-10%, -10%) scale(1.1);
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: translate(10%, -10%) scale(1.05);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(10%, 10%) scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes backglow2 {
+  0% {
+    transform: translate(-10%, -10%) scale(1);
+    opacity: 0.5;
+  }
+
+  25% {
+    transform: translate(10%, -10%) scale(0.8);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(10%, 10%) scale(1.1);
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: translate(-10%, 10%) scale(1.05);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(-10%, -10%) scale(1);
+    opacity: 0.5;
+  }
+}
+
+.card-description {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
