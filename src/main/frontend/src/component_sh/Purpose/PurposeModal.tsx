@@ -4,6 +4,7 @@ import axios from "axios";
 import PurposeInput from "./PurposeInput";
 import PurposeSelect from "./PurposeSelect";
 import purposeImg from "assets/images/request_img/purposeImg.png";
+import submitbtn from "assets/images/request_img/purposeInsertBtn.png";
 
 interface ModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -116,8 +117,9 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
             <p> 추가 지출 항목(하위)</p>
             <PurposeInput propsname="purposeItem" getResult={getResult} />
           </div>
-          <button className="add-btn" type="submit">
-            등록하기
+          <button className="submitButton" type="submit">
+            <img src={submitbtn} />
+            {/* 등록하기 */}
           </button>
         </form>
       </div>
