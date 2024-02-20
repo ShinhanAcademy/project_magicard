@@ -17,7 +17,6 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [purposeItem, setPurposeItem] = useState([]);
   const [optionPurposeItem, setOptionPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
-  const [writtenPurpose, setWrittenPurpose] = useState("");
   const [participant, setParticipant] = useState("");
   const [postImg, setPostImg] = useState("");
   const [preImg, setPreImg] = useState("");
@@ -197,7 +196,6 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
                 handlePurposeChange={handlePurposeChange}
                 optionPurposeItem={optionPurposeItem}
                 gptResult={purposeItem}
-                writtenPurpose={writtenPurpose}
               />
             )}
           </div>
@@ -247,7 +245,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
 
 export default RequestContext;
 
-const SelectPurpose = ({ gptResult, writtenPurpose, optionPurposeItem, handlePurposeChange }) => {
+const SelectPurpose = ({ gptResult, optionPurposeItem, handlePurposeChange }) => {
   var [ind, setInd] = useState(0);
 
   var selectedPurpose = gptResult[0]; //추천 초기값
@@ -264,11 +262,7 @@ const SelectPurpose = ({ gptResult, writtenPurpose, optionPurposeItem, handlePur
     return <Select purpose={selectedPurpose} cntInd={cntInd} />;
   } else {
     return (
-      <Option
-        handlePurposeChange={handlePurposeChange}
-        writtenPurpose={writtenPurpose}
-        optionPurposeItem={optionPurposeItem}
-      />
+      <Option handlePurposeChange={handlePurposeChange} optionPurposeItem={optionPurposeItem} />
     );
   }
 };

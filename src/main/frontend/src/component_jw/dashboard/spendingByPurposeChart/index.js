@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 // `echarts`를 직접 import합니다.
 import * as echarts from 'echarts/core';
-import { Card } from '@mui/material';
+import { Card, Grid, MenuItem, Select } from '@mui/material';
+
+const departments = {
+  "인사팀": [120, 132, 101, 134, 90, 230, 210, 310],
+  "재무팀": [220, 182, 191, 234, 290, 330, 310, 410],
+};
+const dataAxis = ["용도1","용도2","용도3","용도4","용도5","용도6","용도7","용도8"];
+
 
 const SpendingByPurposeChart = () => {
-  const dataAxis = ["용도1","용도2","용도3","용도4","용도5","용도6","용도7","용도8",];
-  const data = [220, 182, 191, 234, 290,320,220,400];
+  const [selectedDepartment, setSelectedDepartment] = useState(Object.keys(departments)[0]);
+  const [barOption, setBarOption] = useState({});
+  const [pieOption, setPieOption] = useState({});
 
-  const option = {
+  useEffect(() => {
+    const data = departments[selectedDepartment];
+    const pieSeriesData = dataAxis.map((item, index) => ({
+      value: data[index], name: item
+    }));
+
+    setBarOption ({
     title: {
-      text: '용도별 지출 추이',
-      subtext: '확대 가능',
+      subtext: '스크롤하여 그래프 확대 가능',
     },
     xAxis: {
       data: dataAxis,
@@ -50,13 +63,13 @@ const SpendingByPurposeChart = () => {
     series: [
       {
         type: 'bar',
-        showBackground: true,
+        showBackground: false,
         barWidth: '60%', // 막대의 너비 설정
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             { offset: 0, color: '#b7d7c8' },
-            { offset: 0.5, color: '#cbe1d4' },
-            { offset: 1, color: '#daf0e5' },
+            { offset: 0.5, color: '#b7d7c8' },
+            { offset: 1, color: '#cbe1d4' },
           ]),
         },
         emphasis: {
@@ -71,12 +84,66 @@ const SpendingByPurposeChart = () => {
         data: data,
       },
     ],
-  };
+  });
 
-  return <Card>
-      <ReactECharts option={option} />
+  setPieOption({
+    // color: ['#FF0000', '#00FF00', '#0000FF'], // 사용하고 싶은 색상 코드 배열
+    tooltip: { trigger: 'item' },
+    series: [
+      {
+        name: '지출 분포',
+        type: 'pie',
+        radius: '55%',
+        data: pieSeriesData,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ],
+    // 파이 차트 옵션 설정을 여기에 추가
+  });
+
+}, [selectedDepartment]);
+
+
+
+const handleDepartmentChange = (event) => {
+  setSelectedDepartment(event.target.value);
+};
+
+  return (
+    <Card>
+      <Grid container spacing={2} alignItems="flex-start">
+        <Grid item xs={12}>
+          <Grid container justifyContent="flex-end" style={{ padding: '16px' }}>
+            <Select
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              displayEmpty
+              style={{
+                backgroundColor: '#cbe1d4', 
+                width: '120px' // 단위 'px'를 추가
+              }}
+            >
+              {Object.keys(departments).map((department) => (
+                <MenuItem key={department} value={department}>{department}</MenuItem>
+              ))}
+            </Select>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <ReactECharts option={barOption} style={{ height: '400px', width: '100%' }} />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <ReactECharts option={pieOption} style={{ height: '400px', width: '100%' }} />
+        </Grid>
+      </Grid>
     </Card>
-    
+  );      
 };
 
 export default SpendingByPurposeChart;

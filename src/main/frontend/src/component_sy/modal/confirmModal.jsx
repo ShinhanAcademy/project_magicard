@@ -6,6 +6,8 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
+  const [refuseMessage, setRefuseMessage] = useState(null);
+  const [showRejectReasonInput, setShowRejectReasonInput] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -38,10 +40,6 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   }, [isOpen]);
 
   const handleSubmit = () => {
-    if (!selectedPurpose) {
-      alert("용도를 선택해주세요.");
-      return;
-    }
     if (confirm("승인하시겠습니까?")) {
       axios({
         method: "post",
@@ -58,7 +56,26 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
   };
 
-  const handleRefuseSubmit = () => {};
+  const handleRefuseSubmit = () => {
+    if (refuseMessage && confirm("반려하시겠습니까?")) {
+      axios({
+        method: "post",
+        url: "requests/refuseRequest",
+        data: {
+          requestId: requestInfo.requestId,
+          refuseMessage: refuseMessage,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+          console.log(res.data === 1 ? "반려 성공" : "반려 실패");
+          closeModal();
+        })
+        .catch((err) => {
+          console.log("에러 발생 : ", err);
+        });
+    }
+  };
 
   if (!isOpen || !requestInfo || !purposeItem) return null;
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
@@ -105,12 +122,28 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           <div>메모</div>
           <input value={requestInfo.memo} readOnly />
         </div>
+        {showRejectReasonInput && (
+          <div>
+            <div>반려 사유</div>
+            <input value={refuseMessage} onChange={(e) => setRefuseMessage(e.target.value)} />
+          </div>
+        )}
         <button className="submitButton" onClick={handleSubmit}>
           승인
         </button>
-        <button className="refuseButton" onClick={handleRefuseSubmit}>
-          반려
-        </button>
+
+        {!showRejectReasonInput && (
+          <button className="refuseMessage" onClick={() => setShowRejectReasonInput(true)}>
+            반려
+          </button>
+        )}
+
+        {showRejectReasonInput && (
+          <button className="refuseButton" onClick={handleRefuseSubmit}>
+            반려 제출
+          </button>
+        )}
+
         <button className="closeButton" onClick={closeModal}>
           닫기
         </button>
