@@ -166,7 +166,7 @@ public class RequestService {
       requestDto.setApprovalSteps(approvalStepsDto);
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
-      if(step == 2){
+      if(step == 1 || step == 4){
         requestDto.setSendRequest("확인");
       }else {
         requestDto.setSendRequest("조회");
@@ -190,7 +190,7 @@ public class RequestService {
 
     for(RequestDto requestDto : requestDtoList) {
       int step = requestDto.getApprovalSteps().getApprovalStatusCode();
-      if(step == 2 || step == 3){
+      if(step == 3){
         result.add(requestDto);
       }
     }
@@ -236,6 +236,7 @@ public class RequestService {
             .memo(requestFormDto.getMemo())
             .approvalSteps(approvalSteps)
             .requestLevel(1)
+            .refuseCount(0)
             .build();
 
     // 내가 우리 회사의 상급자인지 확인하기
@@ -325,6 +326,8 @@ PurposeItemDto purposeItemDto = null;
   }
 
   public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
+    // requestlevel이 1일 때와 2일 때 나눠서 처리하자
+
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
 
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
