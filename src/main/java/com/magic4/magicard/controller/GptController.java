@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
     private GptService gptService;
 
 
-    @GetMapping("/gpt/recommend/{selectedPaymentId}")
-    public List<GptResultDto> gptRecommend(@PathVariable("selectedPaymentId") Integer paymentId) {
+    @GetMapping("/gpt/recommend/{paymentId}")
+    public List<GptResultDto> gptRecommend(@PathVariable("paymentId") Integer paymentId) {
+
         return gptService.getGptResponse(paymentId);
     }
 
