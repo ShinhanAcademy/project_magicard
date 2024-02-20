@@ -67,8 +67,8 @@ import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
 import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
-
 import CardPlus from "./examples/Icons/CardPlus";
+import PurposeCategory from "./component_sh/components/PurposeCategory";
 import Tablesjy from "./components_jy/tables";
 
 const routes = [
@@ -92,6 +92,13 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "용도 관리",
+    key: "category-Management",
+    route: "/category-Management",
+    icon: <Settings size="14px" />,
+    component: <PurposeCategory />,
+  },
+  {
     name: "부서 관리",
     key: "departments",
     route: "/departments",

@@ -1,6 +1,8 @@
 package com.magic4.magicard.controller;
 
 import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import com.magic4.magicard.service.GptService;
 public class GptController {
     @Autowired
     private GptService gptService;
+
 
     @GetMapping("/gpt/recommend/{selectedPaymentId}")
     public List<GptResultDto> gptRecommend(@PathVariable("selectedPaymentId") Integer paymentId) {
