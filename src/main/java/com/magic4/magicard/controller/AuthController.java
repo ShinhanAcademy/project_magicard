@@ -1,12 +1,15 @@
 package com.magic4.magicard.controller;
 
 import com.magic4.magicard.dto.LoginRequestDto;
+import com.magic4.magicard.dto.LoginResponseDto;
 import com.magic4.magicard.service.AuthService;
 import com.magic4.magicard.service.EmployeeService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public void login(HttpServletRequest httpServletRequest){
+    public LoginResponseDto login(HttpServletRequest httpServletRequest){
 
         LoginRequestDto loginRequestDto=LoginRequestDto.builder()
                 .employeeEmail("aa1@anaver.com")
@@ -33,7 +36,25 @@ public class AuthController {
         httpServletRequest.getSession().invalidate();
         HttpSession session = httpServletRequest.getSession();  // Session이 없으면 생성
 
-        session.setAttribute("myInfo", authService.login(loginRequestDto));
+        LoginResponseDto loginResponseDto=authService.login(loginRequestDto);
 
+        session.setAttribute("myInfo", loginResponseDto);
+
+        return loginResponseDto;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest){
+
+
+        HttpSession session = httpServletRequest.getSession();
+
+        session.invalidate();
+
+        if (session == null || !httpServletRequest.isRequestedSessionIdValid()) {
+            System.out.println("세션이 무효화 상태입니다.");
+        }
+
+        return "로그아옷~";
     }
 }

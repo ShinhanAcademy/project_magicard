@@ -29,6 +29,20 @@ import SoftTypography from "components/SoftTypography";
 
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
+  let realTitle = "";
+  console.log(title);
+
+  if (title == "onboarding") {
+    realTitle = "카드 사용 등록";
+  } else if (title == "dashboard") {
+    realTitle = "대시보드";
+  } else if (title == "payments") {
+    realTitle = "결제 내역";
+  } else if (title == "recieved-requests") {
+    realTitle = "결재 요청 내역";
+  } else if (title == "issue-cards") {
+    realTitle = "카드 신규 발급";
+  }
 
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
@@ -82,7 +96,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {realTitle}
       </SoftTypography>
     </SoftBox>
   );

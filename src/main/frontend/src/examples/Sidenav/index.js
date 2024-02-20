@@ -1,25 +1,6 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
-
-// react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
-
-// prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types"; // PropTypes import 추가
 
 // @mui material components
 import List from "@mui/material/List";
@@ -30,7 +11,6 @@ import Icon from "@mui/material/Icon";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftButton from "components/SoftButton";
 
 // Soft UI Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
@@ -39,28 +19,27 @@ import SidenavCard from "examples/Sidenav/SidenavCard";
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-
-// Soft UI Dashboard React context
-import { useSoftUIController, setMiniSidenav } from "context";
+import { setMiniSidenav } from "mk/slices/softui";
+import { NavLink, useLocation } from "react-router-dom";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
-  const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, transparentSidenav } = controller;
+  const dispatch = useDispatch();
+  const { miniSidenav, transparentSidenav } = useSelector((state) => state.layout);
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
 
-  const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const closeSidenav = () => {
+    dispatch(setMiniSidenav(true));
+  };
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
-      setMiniSidenav(dispatch, window.innerWidth < 1200);
+      dispatch(setMiniSidenav(window.innerWidth < 1200));
     }
 
-    /** 
-     The event listener that's calling the handleMiniSidenav function when resizing the window.
-    */
+    // The event listener that's calling the handleMiniSidenav function when resizing the window.
     window.addEventListener("resize", handleMiniSidenav);
 
     // Call the handleMiniSidenav function to set the state with the initial value.
@@ -68,7 +47,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
-  }, [dispatch, location]);
+  }, [dispatch]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, href }) => {
@@ -164,39 +143,36 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </SoftBox>
         <Divider />
         <List>{renderRoutes}</List>
-        <SoftBox pt={2} my={2} mx={2} mt="auto">
+        <SoftBox pt={"40%"} pb={20} my={2} mx={2} mt="auto">
           {/* <SidenavCard /> */}
-          <SoftBox mt={5}>
-            <SoftButton
-              component="a"
-              href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
-              target="_blank"
-              rel="noreferrer"
-              variant="gradient"
-              color={color}
-              fullWidth
-            >
-              문의하기
-            </SoftButton>
-          </SoftBox>
         </SoftBox>
       </div>
     </SidenavRoot>
   );
 }
 
+// PropTypes 추가
+Sidenav.propTypes = {
+  color: PropTypes.string.isRequired,
+  brand: PropTypes.string,
+  brandName: PropTypes.string.isRequired,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      icon: PropTypes.element.isRequired,
+      title: PropTypes.string,
+      noCollapse: PropTypes.bool,
+      key: PropTypes.string.isRequired,
+      route: PropTypes.string,
+      href: PropTypes.string,
+    })
+  ).isRequired,
+};
+
 // Setting default values for the props of Sidenav
 Sidenav.defaultProps = {
   color: "info",
-  brand: "",
-};
-
-// Typechecking props for the Sidenav
-Sidenav.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
-  brand: PropTypes.string,
-  brandName: PropTypes.string.isRequired,
-  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Sidenav;
