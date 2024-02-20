@@ -1,10 +1,7 @@
 package com.magic4.magicard.repository;
 
-import java.util.List;
-import java.util.Optional;
 
-import java.util.Map;
-
+import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 import com.magic4.magicard.vo.Company;
 import com.magic4.magicard.vo.PurposeCategory;
 
+
+
+  
 public interface PurposeCategoryRepo extends JpaRepository<PurposeCategory, Integer> {
 
         // 회사에 해당하는 카테고리 찾기
@@ -29,5 +29,6 @@ public interface PurposeCategoryRepo extends JpaRepository<PurposeCategory, Inte
                         "on pc.purpose_category_id  = pi.purpose_category_id\r\n" + //
                         "where company_ticker = :companyTicker", nativeQuery = true)
         List<Map<String, Object>> findCategoryItemPairsByCompanyTicker(@Param("companyTicker") String companyTicker);
+
 
 }
