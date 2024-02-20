@@ -80,7 +80,7 @@ function PurposeList({ modalOpen }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [modalOpen]);
+  }, [modalOpen, newCategory]);
 
   const columns = [
     { name: "소분류", align: "center" },
