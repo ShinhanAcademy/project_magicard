@@ -150,7 +150,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           />
         </div>
         <button className="submitButton" onClick={handleSubmit}>
-          수정
+          재요청
         </button>
         <button className="closeButton" onClick={closeModal}>
           닫기

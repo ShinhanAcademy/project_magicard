@@ -11,7 +11,7 @@ const RequestAllData = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "/requests/toMe/getList",
+      url: "/requests/toMe/getRequestList",
     })
       .then((result) => {
         console.log(result.data);
