@@ -1,6 +1,7 @@
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useCallback, useEffect, useState } from "react";
+import paymentsInfoDataCss from "./paymentsInfoData.css";
 
 const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
@@ -78,7 +79,20 @@ const paymentInfoData = () => {
           {payment.secondStepStatus}
         </SoftTypography>
       ),
-      신청: <button onClick={handleButtonClick}>{payment.sendRequest} </button>,
+      신청: (
+        <button
+          className={
+            payment.sendRequest == "신청"
+              ? "requestBtn"
+              : payment.sendRequest == "수정"
+              ? "secondBtn"
+              : "checkBtn"
+          }
+          onClick={handleButtonClick}
+        >
+          {payment.sendRequest}{" "}
+        </button>
+      ),
     };
   });
   return {
