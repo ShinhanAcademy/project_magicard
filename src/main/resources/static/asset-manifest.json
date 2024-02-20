@@ -1,7 +1,12 @@
 {
   "files": {
+<<<<<<< HEAD
     "main.css": "/static/css/main.7c681aec.css",
     "main.js": "/static/js/main.a3c8a261.js",
+=======
+    "main.css": "/static/css/main.2b8f2325.css",
+    "main.js": "/static/js/main.7b43404f.js",
+>>>>>>> cb5e8433634d6f8d86b0050d31ce9cd6a679ecd4
     "static/media/ChungbukUniversity.otf": "/static/media/ChungbukUniversity.ad0f9691528043ec3b72.otf",
     "static/media/home-decor-3.jpg": "/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
@@ -40,7 +45,12 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
+<<<<<<< HEAD
     "static/css/main.7c681aec.css",
     "static/js/main.a3c8a261.js"
+=======
+    "static/css/main.2b8f2325.css",
+    "static/js/main.7b43404f.js"
+>>>>>>> cb5e8433634d6f8d86b0050d31ce9cd6a679ecd4
   ]
 }
