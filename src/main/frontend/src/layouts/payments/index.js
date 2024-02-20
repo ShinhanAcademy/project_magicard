@@ -11,19 +11,7 @@ import Refuse from "./display/refuse";
 
 import SoftButton from "components/SoftButton";
 
-
 function PaymentsTables() {
-  // 현재 선택된 버튼을 추적하기 위한 상태 설정
-  const [selectedButton, setSelectedButton] = useState(null);
-
-  // 현재 URL 경로를 가져오기 위해 useLocation 훅 사용
-  const location = useLocation();
-
-  // 버튼 클릭 핸들러
-  const handleButtonClick = (button) => {
-    setSelectedButton(button === selectedButton ? null : button);
-  };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -38,7 +26,6 @@ function PaymentsTables() {
       </Link>
       <Link to="refuse">
         <SoftButton style={{ width: "150px" }}>반려</SoftButton>
-
       </Link>
       <Routes>
         <Route path="/paymentsInfo" element={<PaymentsInfo />}></Route>
