@@ -96,8 +96,11 @@ public class GptService {
 
             String category = (String) categoryItem.get("purpose_category");
             String item = (String) categoryItem.get("purpose_item");
+            Integer cid = (Integer) categoryItem.get("purpose_category_id");
+            Integer iid = (Integer) categoryItem.get("purpose_item_uid");
 
-            GptResultDto gptResultDto = GptResultDto.builder().purposeCategory(category).purposeItem(item).build();
+            GptResultDto gptResultDto = GptResultDto.builder().purposeCategory(category).purposeItem(item)
+                    .purposeCategoryId(cid).purposeItemUid(iid).build();
             candidateDtos.add(gptResultDto);
 
             candidates += (i + 1) + ". " + category + " || " + item;

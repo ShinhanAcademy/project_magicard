@@ -18,7 +18,8 @@ public interface PurposeCategoryRepo extends JpaRepository<PurposeCategory, Inte
 
         Optional<PurposeCategory> findByCompanyAndPurposeCategory(Company company, String purposeCategory);
 
-        @Query(value = "select pc.purpose_category, pi.purpose_item from \r\n" + //
+        @Query(value = "select pc.purpose_category, pi.purpose_item, pc.purpose_category_id, pi.purpose_item_uid from \r\n"
+                        + //
                         "purpose_category as pc\r\n" + //
                         "join\r\n" + //
                         "purpose_item as pi\r\n" + //
