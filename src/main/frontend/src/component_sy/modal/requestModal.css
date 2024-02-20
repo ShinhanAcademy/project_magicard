@@ -177,3 +177,14 @@ input {
   color: black;
   padding: 0.5rem;
 }
+
+#file-upload {
+  font-size: 1rem;
+  width: 12rem;
+}
+
+.preview {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+}

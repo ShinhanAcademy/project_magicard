@@ -11,13 +11,16 @@ import picImg from "assets/images/request_img/pic.png";
 import penImg from "assets/images/request_img/pen.png";
 import submitbtn from "assets/images/request_img/submitbtn.png";
 import refresh from "assets/images/request_img/refresh.png";
+import plus from "assets/images/request_img/plus.png";
 
 const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState("");
+  const [postImg, setPostImg] = useState("");
+  const [preImg, setPreImg] = useState("");
+  const [url, setUrl] = useState("");
   const [memo, setMemo] = useState("");
 
   //esc keyEvent 추가
@@ -110,21 +113,33 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       });
   };
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const filePath = URL.createObjectURL(files[0]);
-      setReceiptUrl(filePath);
-    }
-  };
+  function uploadFile(e) {
+    let file = e.target.files[0];
+    setPostImg(file);
 
-  const handlePurposeChange = (event) => {
-    const selectedPurposeItemUid = event.target.value;
-    const selectedPurpose = purposeItem.find(
-      (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
-    );
-    setSelectedPurpose(selectedPurpose);
-  };
+    let preview = new FileReader();
+    preview.onload = function () {
+      setPreImg(preview.result);
+      setUrl(preview.result);
+    };
+    preview.readAsDataURL(file);
+  }
+
+  // const handleFileChange = (event) => {
+  //   const files = event.target.files;
+  //   if (files && files.length > 0) {
+  //     const filePath = URL.createObjectURL(files[0]);
+  //     setReceiptUrl(filePath);
+  //   }
+  // };
+
+  // const handlePurposeChange = (event) => {
+  //   const selectedPurposeItemUid = event.target.value;
+  //   const selectedPurpose = purposeItem.find(
+  //     (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
+  //   );
+  //   setSelectedPurpose(selectedPurpose);
+  // };
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
   const paymentDate = paymentInfo.paymentTime.substr(0, 10);
@@ -204,7 +219,9 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               <img src={picImg} />
               영수증 &nbsp; &nbsp;
             </div>
-            <input type="file" onChange={handleFileChange} />
+
+            <input id="file-upload" type="file" onChange={uploadFile}></input>
+            <img className="preview" alt={preImg} src={preImg} />
           </div>
 
           <div className="modal-item">
@@ -262,8 +279,8 @@ const Select = ({ purpose, cntInd }) => {
       </div>
       <span className="refresh-notion">
         {" "}
-        * 추천 용도입니다. 일치하지 않는다면 새로고침을 통해
-        <span> 2개 </span>의 항목을 더 추천 받을 수 있습니다.
+        * 추천 용도입니다. 최대
+        <span> 3개 </span>까지 추천 받을 수 있습니다.
       </span>
     </div>
   );
