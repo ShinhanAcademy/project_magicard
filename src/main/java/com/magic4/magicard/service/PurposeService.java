@@ -107,33 +107,31 @@ public class PurposeService {
       return purposeDtoList;
     };
 
-
-
-    // 대분류 입력
-    @SuppressWarnings("null")
-    public int insertCategory(String purposeCategory, String  purposeItem){
-
-         Company company = Company.builder().companyTicker("SHDS").build();
-
-         PurposeCategory  existingCategory  = purCateRepo.findByPurposeCategory(purposeCategory);
-
-         PurposeItem existingItem = purItemRepo.findByPurposeItem(purposeItem);
-
-         if(existingCategory == null && existingItem == null){
-          PurposeCategory category = PurposeCategory.builder().company(company).purposeCategory(purposeCategory).build();
-          purCateRepo.save(category);
-          PurposeItem item = PurposeItem.builder().purposeCategory(category).purposeItem(purposeItem).build();
-          purItemRepo.save(item);
-          return 2;
-         }
-         else if(existingCategory != null  && existingItem == null){
-          PurposeItem item = PurposeItem.builder().purposeCategory(existingCategory).purposeItem(purposeItem).build();
-          purItemRepo.save(item);
-          return 1;
-         }
-         else {
-          return 0;
-         }
-    }
+        // 대분류 입력
+        @SuppressWarnings("null")
+        public String insertCategory(String purposeCategory, String  purposeItem){
+    
+             Company company = Company.builder().companyTicker("SHDS").build();
+    
+             PurposeCategory  existingCategory  = purCateRepo.findByPurposeCategory(purposeCategory);
+    
+             PurposeItem existingItem = purItemRepo.findByPurposeItem(purposeItem);
+    
+             if(existingCategory == null && existingItem == null){
+              PurposeCategory category = PurposeCategory.builder().company(company).purposeCategory(purposeCategory).build();
+              purCateRepo.save(category);
+              PurposeItem item = PurposeItem.builder().purposeCategory(category).purposeItem(purposeItem).build();
+              purItemRepo.save(item);
+              return "success";
+             }
+             else if(existingCategory != null  && existingItem == null){
+              PurposeItem item = PurposeItem.builder().purposeCategory(existingCategory).purposeItem(purposeItem).build();
+              purItemRepo.save(item);
+              return existingCategory.getPurposeCategory();
+             }
+             else {
+              return existingCategory.getPurposeCategory();
+             }
+        }
     
 }
