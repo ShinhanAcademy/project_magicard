@@ -49,6 +49,7 @@ import TotalUses from "./basicInfo/totalUses";
 import TotalPayment from "./basicInfo/totalPayment";
 import TotalApproval from "./basicInfo/totalApproval";
 import CumulativeSpendingChart from "./cumulativeSpendingChart";
+import ComparisonWithOthersChart from "./comparisonWithOthersChart";
 
 function Dashboard() {
   const { size } = typography;
@@ -77,41 +78,35 @@ function Dashboard() {
           </Grid>
         </SoftBox>
         
-        <SoftBox mb={3}>  
-          <Grid container spacing={3} style={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding:'1.25rem'
-          }}>
-            <Grid item xs={12} lg={10} >
-              {/* <LineChart/> */}
-             </Grid>
-            </Grid>
-         </SoftBox>     
-
-        <SoftBox mb={3}>  
+        <SoftBox mb={3}>
+          지출 추이
+          (전 년도 대비 지출)
           <Grid >
             <CumulativeSpendingChart/>
             </Grid>
          </SoftBox>        
         
-         <SoftBox mb={3}>  
+         <SoftBox mb={3}> 
+          부서별 지출 비교 
           <Grid >
-            <Grid item xs={12} lg={10} >
-              <DepartmentalSpendingChart
-              height="30rm"/>
-             </Grid>
-            </Grid>
+              <DepartmentalSpendingChart/>
+          </Grid>
          </SoftBox>
          
-         <SoftBox mb={3}>  
-          <Grid >
-            <Grid item xs={12} lg={10} >
-              <SpendingByPurposeChart/>
-             </Grid>
-            </Grid>
+         <SoftBox mb={3}> 
+         용도별 지출 추이 
+          <Grid>
+            <SpendingByPurposeChart/>
+          </Grid>
+            
          </SoftBox>
 
+         <SoftBox mb={3}> 
+         타 기업간 분기별 비교 
+          <Grid >
+            <ComparisonWithOthersChart/>
+            </Grid>
+         </SoftBox>  
 
         
        

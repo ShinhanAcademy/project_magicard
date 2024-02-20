@@ -48,7 +48,7 @@ function CateogryListMain() {
         </SoftTypography>
       </SoftBox>
       <SoftBox display="flex" alignItems="center" justifyContent="space-between" p={3}>
-        <SoftTypography variant="h6" fontWeight="light" color="secondary">
+        <SoftTypography variant="h6" fontWeight="bold">
           상위 항목
         </SoftTypography>
         <SoftButton onClick={showModal}> 추가하기 </SoftButton>
