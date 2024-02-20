@@ -51,9 +51,24 @@ import TotalApproval from "./basicInfo/totalApproval";
 import CumulativeSpendingChart from "./cumulativeSpendingChart";
 import ComparisonWithOthersChart from "./comparisonWithOthersChart";
 
+import { useState } from "react";
+
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  // State for managing chart instances
+  const [cumulativeSpendingChartKey, setCumulativeSpendingChartKey] = useState(0);
+  const [departmentalSpendingChartKey, setDepartmentalSpendingChartKey] = useState(0);
+  const [spendingByPurposeChartKey, setSpendingByPurposeChartKey] = useState(0);
+  const [comparisonWithOthersChartKey, setComparisonWithOthersChartKey] = useState(0);
+
+  // Function to reset chart keys
+  const resetCharts = () => {
+    setCumulativeSpendingChartKey((prevKey) => prevKey + 1);
+    setDepartmentalSpendingChartKey((prevKey) => prevKey + 1);
+    setSpendingByPurposeChartKey((prevKey) => prevKey + 1);
+    setComparisonWithOthersChartKey((prevKey) => prevKey + 1);
+  };
 
   return (
     <DashboardLayout>
@@ -65,20 +80,20 @@ function Dashboard() {
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalCards/>
+              <TotalCards />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalUses/>
+              <TotalUses />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalPayment/>
+              <TotalPayment />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <TotalApproval/>
+              <TotalApproval />
             </Grid>
           </Grid>
         </SoftBox>
-        
+
         <SoftBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -109,8 +124,6 @@ function Dashboard() {
         
         
 
-        
-       
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
@@ -121,8 +134,6 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
-
-       
 
         <SoftBox mb={3}>
           <Grid container spacing={3}>

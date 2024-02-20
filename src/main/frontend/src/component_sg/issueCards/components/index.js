@@ -24,42 +24,74 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-import black from "assets/images/sg/black.png";
-import green from "assets/images/sg/green.png";
-import white from "assets/images/sg/white.png";
+import blackCard from "assets/images/mk/blackCard.png";
+import blackCardBack from "assets/images/mk/blackCardBack.png";
+import greenCard from "assets/images/mk/greenCard.png";
+import greenCardBack from "assets/images/mk/greenCardBack.png";
+import whiteCard from "assets/images/mk/whiteCard.png";
+import whiteCardBack from "assets/images/mk/whiteCardBack.png";
 import IssueForm from "./Invoices";
+import "./index.css";
+import SoftTypography from "components/SoftTypography";
 
 function IssueCards() {
-  const styles = {
-    container: {
-      display: "flex",
-      justifyContent: "center", // 이미지를 가로 방향으로 중앙에 정렬
-      gap: "120px", // 이미지 간의 간격
-    },
-  };
-
   return (
     <>
       <DashboardLayout>
         <DashboardNavbar />
-        <SoftBox mt={4}>
-          <SoftBox mb={1.5}>
-            <div style={styles.container}>
-              <img src={black} alt="black" />
-              <img src={green} alt="green" />
-              <img src={white} alt="white" />
-            </div>
-            <div style={styles.container}>
-              <Grid container spacing={3}>
-                <Grid item xs={16} lg={16}>
-                  <Grid container spacing={5}>
-                    <Grid item xs={16}>
-                      <IssueForm></IssueForm>
-                    </Grid>
-                  </Grid>
-                </Grid>
+        <SoftBox mt={10}>
+          <SoftBox mb={5} className="flip-container">
+            <SoftBox className="flip-outer">
+              <SoftBox className="flip-inner">
+                <img id="blackCard" src={blackCard} alt="blackCard" className="front" />
+                <img id="blackCardBack" src={blackCardBack} alt="blackCardBack" className="back" />
+              </SoftBox>
+              <SoftTypography className="card-description">
+                <SoftTypography className="card-name" variant="h5">
+                  the Black
+                </SoftTypography>
+                <SoftTypography variant="h6">월 한도 제한 없음</SoftTypography>
+                <SoftTypography variant="h6">연회비 1만원</SoftTypography>
+              </SoftTypography>
+            </SoftBox>
+            <SoftBox className="flip-outer">
+              <SoftBox className="flip-inner">
+                <img id="greenCard" src={greenCard} alt="greenCard" className="front" />
+                <img id="greenCardBack" src={greenCardBack} alt="greenCardBack" className="back" />
+              </SoftBox>
+              <SoftTypography className="card-description">
+                <SoftTypography className="card-name" variant="h5">
+                  the DSGray
+                </SoftTypography>
+                <SoftTypography variant="h6">월 한도 100만원 이하</SoftTypography>
+                <SoftTypography variant="h6">연회비 1만원</SoftTypography>
+              </SoftTypography>
+            </SoftBox>
+            <SoftBox className="flip-outer">
+              <SoftBox className="flip-inner">
+                <img id="whiteCard" src={whiteCard} alt="whiteCard" className="front" />
+                <img id="whiteCardBack" src={whiteCardBack} alt="whiteCardBack" className="back" />
+              </SoftBox>
+              <SoftTypography className="card-description">
+                <SoftTypography className="card-name" variant="h5">
+                  the White
+                </SoftTypography>
+                <SoftTypography variant="h6">월 한도 50만원 이하</SoftTypography>
+                <SoftTypography variant="h6">연회비 1만원</SoftTypography>
+              </SoftTypography>
+            </SoftBox>
+          </SoftBox>
+          <SoftBox>
+            <Grid
+              container
+              spacing={3}
+              mt={3}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Grid item xs={9}>
+                <IssueForm></IssueForm>
               </Grid>
-            </div>
+            </Grid>
           </SoftBox>
         </SoftBox>
         <Footer />

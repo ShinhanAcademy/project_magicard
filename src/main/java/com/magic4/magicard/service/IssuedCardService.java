@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.UUID;
 
+
+import com.magic4.magicard.dto.CardInfoDto;
+import com.magic4.magicard.repository.EmployeeRepo;
 import com.magic4.magicard.dto.EmployeeEmailDto;
 import com.magic4.magicard.vo.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class IssuedCardService {
 
     @Autowired
     private CardTypeRepo cardTypeRepo;
+
+    @Autowired
+    private EmployeeRepo employeeRepo;
 
     public boolean handleCardIssueRequest(IssueCardFormDto issueCardFormDto) {
 
@@ -97,6 +103,25 @@ public class IssuedCardService {
         return cardNumber.toString();
     }
 
+
+    public CardInfoDto getMyCardInfo(String empEmail){
+        Employee emp=employeeRepo.findById(empEmail).orElse(null);
+        IssuedCard issuedCard= issuedCardRepo.findByEmployee(emp);
+
+        return CardInfoDto.builder()
+                .issuedCardId(issuedCard.getIssuedCardId())
+                .CardCode(issuedCard.getCardType().getCardCode())
+                .minimumAmount(issuedCard.getCardType().getMinimumAmount())
+                .CardName(issuedCard.getCardType().getCardName())
+                .cardNumber(issuedCard.getCardNumber())
+                .cardCvc(issuedCard.getCardCvc())
+                .expireDate(issuedCard.getExpireDate())
+                .status(issuedCard.getStatus())
+                .maximumAmount(issuedCard.getMaximumAmount())
+                .cardBenefit(issuedCard.getBenefit())
+                .build();
+    }
+    
     public Long totalCards(EmployeeEmailDto employeeEmail){
         return issuedCardRepo.totalCards(changeDtoToEntity(employeeEmail).getEmployeeEmail());
     }
@@ -108,5 +133,6 @@ public class IssuedCardService {
                 .build();
 
         return employeeEmailEntity;
+
     }
 }

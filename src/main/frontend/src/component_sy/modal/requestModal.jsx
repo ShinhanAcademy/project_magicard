@@ -1,23 +1,26 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./requestModal.css";
-import axios from "axios";
-import receiptImg from "assets/images/request_img/reciept.png";
 import cardImg from "assets/images/request_img/card.png";
 import clockImg from "assets/images/request_img/clock.png";
-import shopImg from "assets/images/request_img/shop.png";
-import purposeImg from "assets/images/request_img/purpose.png";
 import joinImg from "assets/images/request_img/join.png";
-import picImg from "assets/images/request_img/pic.png";
 import penImg from "assets/images/request_img/pen.png";
-import submitbtn from "assets/images/request_img/submitbtn.png";
+import picImg from "assets/images/request_img/pic.png";
+import purposeImg from "assets/images/request_img/purpose.png";
+import receiptImg from "assets/images/request_img/reciept.png";
 import refresh from "assets/images/request_img/refresh.png";
+import shopImg from "assets/images/request_img/shop.png";
+import submitbtn from "assets/images/request_img/submitbtn.png";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import "./requestModal.css";
 
 const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
+  const [optionPurposeItem, setOptionPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
-  const [receiptUrl, setReceiptUrl] = useState("");
+  const [postImg, setPostImg] = useState("");
+  const [preImg, setPreImg] = useState("");
+  const [url, setUrl] = useState("");
   const [memo, setMemo] = useState("");
 
   //esc keyEvent 추가
@@ -50,7 +53,26 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
   }, [isOpen]);
 
-  // 용도 목적, 가져오기
+  //gpt 용도 연결
+  useEffect(() => {
+    if (isOpen) {
+      axios({
+        method: "Get",
+        url: `/gpt/recommend/${selectedPaymentId}`,
+      })
+        .then((res) => {
+          console.log("gpt id : " + selectedPaymentId);
+
+          setPurposeItem(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isOpen]);
+
+  // select 용도 목적, 가져오기
   useEffect(() => {
     if (isOpen) {
       axios({
@@ -59,14 +81,20 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       })
         .then((result) => {
           console.log(result.data);
-          setPurposeItem(result.data);
+          setOptionPurposeItem(result.data);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [isOpen]);
 
+  const handlePurposeChange = (event) => {
+    setSelectedPurpose(parseInt(event.target.value));
+  };
+
   const handleSubmit = () => {
-    if (!selectedPurpose) {
+    if (!optionPurposeItem) {
       alert("용도를 선택해주세요.");
       return;
     }
@@ -75,7 +103,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       paymentId: selectedPaymentId,
       purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
-      receiptUrl: receiptUrl,
+      receiptUrl: url,
       memo: memo,
     };
 
@@ -94,21 +122,17 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       });
   };
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const filePath = URL.createObjectURL(files[0]);
-      setReceiptUrl(filePath);
-    }
-  };
+  function uploadFile(e) {
+    let file = e.target.files[0];
+    setPostImg(file);
 
-  const handlePurposeChange = (event) => {
-    const selectedPurposeItemUid = event.target.value;
-    const selectedPurpose = purposeItem.find(
-      (purpose) => purpose.purposeItemUid === parseInt(selectedPurposeItemUid)
-    );
-    setSelectedPurpose(selectedPurpose);
-  };
+    let preview = new FileReader();
+    preview.onload = function () {
+      setPreImg(preview.result);
+      setUrl(preview.result);
+    };
+    preview.readAsDataURL(file);
+  }
 
   if (!isOpen || !paymentInfo || !purposeItem) return null;
   const paymentDate = paymentInfo.paymentTime.substr(0, 10);
@@ -167,7 +191,13 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               용도
               <span className="ness"> * </span> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
-            <SelectPurpose />
+            {purposeItem && (
+              <SelectPurpose
+                handlePurposeChange={handlePurposeChange}
+                optionPurposeItem={optionPurposeItem}
+                gptResult={purposeItem}
+              />
+            )}
           </div>
 
           <div className="modal-item">
@@ -188,7 +218,8 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               <img src={picImg} />
               영수증 &nbsp; &nbsp;
             </div>
-            <input type="file" onChange={handleFileChange} />
+            {preImg && <img className="preview" alt={preImg} src={preImg} />}
+            <input id="file-upload" type="file" onChange={uploadFile}></input>
           </div>
 
           <div className="modal-item">
@@ -214,14 +245,10 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
 
 export default RequestContext;
 
-const SelectPurpose = () => {
-  const gptResult = ["식비", "교통비", "접대비"];
+const SelectPurpose = ({ gptResult, optionPurposeItem, handlePurposeChange }) => {
   var [ind, setInd] = useState(0);
-  // var ind: number = 0; //인덱스 초기값
-  var selectedPurpose = gptResult[0]; //추천 초기값
 
-  //click 이벤트
-  function handleClick() {}
+  var selectedPurpose = gptResult[0]; //추천 초기값
 
   function cntInd() {
     ind++;
@@ -230,11 +257,13 @@ const SelectPurpose = () => {
   }
 
   //클릭한 경우 3번을 넘어가면 직접 입력란 활성화
-  if (ind >= 3) {
-    return <Write />;
-  } else {
+  if (ind < 3) {
     selectedPurpose = gptResult[ind];
     return <Select purpose={selectedPurpose} cntInd={cntInd} />;
+  } else {
+    return (
+      <Option handlePurposeChange={handlePurposeChange} optionPurposeItem={optionPurposeItem} />
+    );
   }
 };
 
@@ -242,20 +271,36 @@ const Select = ({ purpose, cntInd }) => {
   return (
     <div className="purpose-content">
       <div className="refresh-content">
-        <p>{purpose}</p>
+        {purpose && (
+          <>
+            <span className="purpose-span1">{purpose.purposeCategory} </span> &nbsp;&nbsp; ||
+            &nbsp;&nbsp;
+            <span className="purpose-span2"> {purpose.purposeItem}</span>
+          </>
+        )}
+
         <button className="refreshBtn" onClick={cntInd}>
           <img src={refresh} />{" "}
         </button>
       </div>
       <span className="refresh-notion">
         {" "}
-        * 추천 용도입니다. 일치하지 않는다면 새로고침을 통해
-        <span> 2개 </span>의 항목을 더 추천 받을 수 있습니다.
+        * 추천 용도입니다. 최대
+        <span> 3개 </span>까지 추천 받을 수 있습니다.
       </span>
     </div>
   );
 };
 
-const Write = () => {
-  return <input placeholder="용도를 직접 입력해주세요." />;
+const Option = ({ optionPurposeItem, handlePurposeChange }) => {
+  return (
+    <select onChange={handlePurposeChange}>
+      <option value="">선택하세요</option>
+      {optionPurposeItem.map((purpose) => (
+        <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
+          {purpose.purposeCategory} || {purpose.purposeItem}
+        </option>
+      ))}
+    </select>
+  );
 };

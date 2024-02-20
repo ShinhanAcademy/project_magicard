@@ -38,16 +38,24 @@ function CardDetail() {
   return (
     <Card id="delete-account">
       <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SoftTypography variant="h6" fontWeight="medium">
+        <SoftTypography variant="h6" fontWeight="bold">
           법인 카드 사용 서약서
         </SoftTypography>
-        <SoftButton variant="gradient" color="dark">
-          <Icon sx={{ fontWeight: "bold" }}>check</Icon>
-          &nbsp;서류 확인
+        <SoftButton
+          variant="gradient"
+          color="dark"
+          style={{ maxWidth: "140px", minWidth: "140px" }}
+        >
+          <SoftBox color="white" mr={1}>
+            <Icon sx={{ fontWeight: "bold" }}>check</Icon>
+          </SoftBox>
+          <SoftTypography variant="body2" color="white">
+            서류 확인
+          </SoftTypography>
         </SoftButton>
       </SoftBox>
       <SoftBox p={2}>
-        <Grid container spacing={3}>
+        <Grid container direction={"column"}>
           <Grid item xs={12} md={6}>
             <SoftBox
               border={`${borderWidth[1]} solid ${borderColor}`}
@@ -57,16 +65,19 @@ function CardDetail() {
               alignItems="center"
               p={3}
             >
-              <SoftBox component="img" src={document} alt="master card" width="10%" mr={2} />
+              <SoftBox width="10%" display="flex" alignItems="center">
+                <Icon fontSize="medium">document_scanner_rounded</Icon>
+              </SoftBox>
               <SoftTypography variant="h6" fontWeight="medium">
                 법인 카드 사용 안내 (마법카드)
-                {/* ****&nbsp;&nbsp;****&nbsp;&nbsp;****&nbsp;&nbsp;7852 */}
               </SoftTypography>
               <SoftBox ml="auto" lineHeight={0}>
                 <Tooltip title="상세 보기" placement="top">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    edit
-                  </Icon>
+                  <SoftBox width="10%" ml={2}>
+                    <Icon sx={{ cursor: "pointer" }} fontSize="medium">
+                      edit
+                    </Icon>
+                  </SoftBox>
                 </Tooltip>
               </SoftBox>
             </SoftBox>
@@ -80,16 +91,20 @@ function CardDetail() {
               alignItems="center"
               p={3}
             >
-              <SoftBox component="img" src={document} alt="master card" width="10%" mr={2} />
+              <SoftBox width="10%" display="flex" alignItems="center" s>
+                <Icon fontSize="medium">document_scanner_rounded</Icon>
+              </SoftBox>
               <SoftTypography variant="h6" fontWeight="medium">
                 법인 카드 사용 서약서
                 {/* ****&nbsp;&nbsp;****&nbsp;&nbsp;****&nbsp;&nbsp;5248 */}
               </SoftTypography>
               <SoftBox ml="auto" lineHeight={0}>
                 <Tooltip title="상세 보기" placement="top">
-                  <Icon sx={{ cursor: "pointer" }} fontSize="small">
-                    edit
-                  </Icon>
+                  <SoftBox width="10%" ml={2}>
+                    <Icon sx={{ cursor: "pointer" }} fontSize="medium">
+                      edit
+                    </Icon>
+                  </SoftBox>
                 </Tooltip>
               </SoftBox>
             </SoftBox>

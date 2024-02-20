@@ -93,7 +93,7 @@ public class RequestService {
   }
 
   // 내게 온 요청 리스트
-  public List<RequestDto> getToMeRequestList(EmployeeDto employeeDto) {
+  public List<RequestDto> getToMeAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
     List<Request> requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 1);
 
@@ -130,7 +130,17 @@ public class RequestService {
     return requestDtoList;
   }
 
-  public List<RequestDto> getToMeAllRequestList(EmployeeDto employeeDto) {
+  public List<RequestDto> getToMeRequestList(EmployeeDto employeeDto){
+    return getToMeAllRequestList(employeeDto);
+  }
+
+  public Integer getToMeRequestCount(EmployeeDto employeeDto) {
+    List<RequestDto> requestDtoList = getToMeAllRequestList(employeeDto);
+    return requestDtoList.size();
+  }
+
+  // 재무부에게 요청한 리스트
+  public List<RequestDto> getToTopAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
     List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(employeeDto.getEmployeeEmail(), 2);
 
@@ -156,7 +166,7 @@ public class RequestService {
       requestDto.setApprovalSteps(approvalStepsDto);
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
-      if(step == 2){
+      if(step == 1 || step == 4){
         requestDto.setSendRequest("확인");
       }else {
         requestDto.setSendRequest("조회");
@@ -169,70 +179,28 @@ public class RequestService {
 
   // 재무부에게 요청한 리스트
   public List<RequestDto> getToTopRequestList(EmployeeDto employeeDto) {
-    return getToMeAllRequestList(employeeDto);
+    return getToTopAllRequestList(employeeDto);
   }
 
-  // 내가 재요청한 것 중 승인된 것
-  public List<RequestDto> getToMeApproveList(EmployeeDto employeeDto) {
-    List<RequestDto> requestDtoList = getToMeAllRequestList(employeeDto);
+
+  // 내가 재무부에 재요청한 것 중 승인된 것
+  public List<RequestDto> getToTopApproveList(EmployeeDto employeeDto) {
+    List<RequestDto> requestDtoList = getToTopAllRequestList(employeeDto);
     List<RequestDto> result = new ArrayList<>();
 
     for(RequestDto requestDto : requestDtoList) {
       int step = requestDto.getApprovalSteps().getApprovalStatusCode();
-      if(step == 2 || step == 3){
+      if(step == 3){
         result.add(requestDto);
       }
     }
     return result;
-//    Employee emp = model.map(employeeDto, Employee.class);
-//    // requestEmployeeEmail == 나 자신, requestLevel == 2
-//    List<Request> request = requestRepo.findByEmployeeAndRequestLevel(emp, 2);
-//
-//    List<RequestDto> approveRequest = new ArrayList<>();
-//    for(Request req : request){
-//      if(req.getApprovalSteps().getApprovalStatusCode() == 7){
-//        RequestDto requestDto = model.map(req, RequestDto.class);
-//
-//        PaymentInfo paymentInfo = paymentInfoRepo.findById(req.getPaymentInfo().getPaymentId()).orElse(null);
-//        PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
-//        requestDto.setPaymentInfo(paymentInfoDto);
-//
-//        // employee는 카드 긁은 사람으로다가 보여지게 해야함
-//        Employee employee = paymentInfo.getIssuedCard().getEmployee();
-//        EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
-//        requestDto.setEmployee(sendEmpDto);
-//
-//        PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(req.getPurposeItem().getPurposeItem());
-//        PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
-//        requestDto.setPurposeItem(purposeItemDto);
-//
-//        ApprovalSteps approvalSteps = approvalStepsRepo.findById(req.getApprovalSteps().getApprovalStatusCode()).orElse(null);
-//        ApprovalStepsDto approvalStepsDto = model.map(approvalSteps, ApprovalStepsDto.class);
-//        requestDto.setApprovalSteps(approvalStepsDto);
-//
-//        Integer step = req.getApprovalSteps().getApprovalStatusCode();
-//        if(step == 1){
-//          requestDto.setSendRequest("신청");
-//        }else if(step == 2 || step == 4 || step == 5){
-//          requestDto.setSendRequest("요청 수정");
-//        }else if(step == 3 || step == 6) {
-//          requestDto.setSendRequest("승인 대기중");
-//        }else if(step == 7){
-//          requestDto.setSendRequest("최종 승인");
-//        }else if(step == 8){
-//          requestDto.setSendRequest("최종 반려");
-//        }
-//
-//        approveRequest.add(requestDto);
-//      }
-//    }
-//
-//    return approveRequest;
+
   }
 
-  // 내가 재요청한 것 중 거절된 것
-  public List<RequestDto> getToMeRefuseList(EmployeeDto employeeDto) {
-    List<RequestDto> requestDtoList = getToMeAllRequestList(employeeDto);
+  // 내가 재무부에 재요청한 것 중 거절된 것
+  public List<RequestDto> getToTopRefuseList(EmployeeDto employeeDto) {
+    List<RequestDto> requestDtoList = getToTopAllRequestList(employeeDto);
     List<RequestDto> result = new ArrayList<>();
 
     for(RequestDto requestDto : requestDtoList) {
@@ -268,6 +236,7 @@ public class RequestService {
             .memo(requestFormDto.getMemo())
             .approvalSteps(approvalSteps)
             .requestLevel(1)
+            .refuseCount(0)
             .build();
 
     // 내가 우리 회사의 상급자인지 확인하기
@@ -343,10 +312,13 @@ PurposeItemDto purposeItemDto = null;
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
     PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
 
+    ApprovalSteps approvalSteps = approvalStepsRepo.findById(1).orElse(null);
+
     request.setPurposeItem(purposeItem);
     request.setParticipant(requestFormDto.getParticipant());
     request.setReceiptUrl(requestFormDto.getReceiptUrl());
     request.setMemo(requestFormDto.getMemo());
+    request.setApprovalSteps(approvalSteps);
 
     requestRepo.save(request);
 
@@ -354,6 +326,8 @@ PurposeItemDto purposeItemDto = null;
   }
 
   public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
+    // requestlevel이 1일 때와 2일 때 나눠서 처리하자
+
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
 
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
@@ -387,4 +361,23 @@ PurposeItemDto purposeItemDto = null;
     requestRepo.save(sendRequest);
     return 1;
   }
+
+    public Integer refuseRequest(RejectFormDto rejectFormDto) {
+    ApprovalSteps approvalSteps4 = approvalStepsRepo.findById(4).orElse(null);
+    ApprovalSteps approvalSteps5 = approvalStepsRepo.findById(5).orElse(null);
+      Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
+    int refuseCount = request.getRefuseCount();
+      request.setRefuseMessage(rejectFormDto.getRefuseMessage());
+      request.setRefuseCount(refuseCount+1);
+
+      if(refuseCount + 1 >= 2){
+        request.setApprovalSteps(approvalSteps5);
+      }
+      else {
+        request.setApprovalSteps(approvalSteps4);
+      }
+      requestRepo.save(request);
+      return 1;
+    }
+
 }

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.7c681aec.css",
-    "main.js": "/static/js/main.a3c8a261.js",
+    "main.css": "/static/css/main.2b8f2325.css",
+    "main.js": "/static/js/main.7b43404f.js",
     "static/media/ChungbukUniversity.otf": "/static/media/ChungbukUniversity.ad0f9691528043ec3b72.otf",
     "static/media/home-decor-3.jpg": "/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
@@ -15,6 +15,7 @@
     "static/media/curved-6.jpg": "/static/media/curved-6.71ee1d1cc8196ed2126b.jpg",
     "static/media/curved1.jpg": "/static/media/curved1.af81cb53f1615f33b710.jpg",
     "static/media/pen.png": "/static/media/pen.3d05599b41dacadb78a8.png",
+    "static/media/ad.jpg": "/static/media/ad.5f8166363f33a462ce4d.jpg",
     "static/media/icon-sun-cloud.png": "/static/media/icon-sun-cloud.3399b234b40032f90d9b.png",
     "static/media/ivancik.jpg": "/static/media/ivancik.442b474727c414bb3b85.jpg",
     "static/media/white-curved.jpeg": "/static/media/white-curved.a5b7db662b0b14ab5534.jpeg",
@@ -23,13 +24,14 @@
     "static/media/team-1.jpg": "/static/media/team-1.c821a2730a9c8e3f68eb.jpg",
     "static/media/kal-visuals-square.jpg": "/static/media/kal-visuals-square.22829a59e2c6afb94b7a.jpg",
     "static/media/team-3.jpg": "/static/media/team-3.b75146da5bfdf9d8ae61.jpg",
+    "static/media/blackCard.png": "/static/media/blackCard.ebbae0e23120048ded4b.png",
     "static/media/ivana-square.jpg": "/static/media/ivana-square.b04026bd1ae5cf0d8a68.jpg",
     "static/media/team-4.jpg": "/static/media/team-4.a1e1c29f1b839ddae393.jpg",
+    "static/media/greenCard.png": "/static/media/greenCard.1e434d0b8cd19045528c.png",
     "static/media/bruce-mars.jpg": "/static/media/bruce-mars.45f6477957606abd2f24.jpg",
+    "static/media/whiteCard.png": "/static/media/whiteCard.aceed74c00ec28451a63.png",
     "static/media/team-2.jpg": "/static/media/team-2.e725aef8c892cb21f262.jpg",
-    "static/media/green.png": "/static/media/green.c8e6b9b899a8e9aee424.png",
-    "static/media/black.png": "/static/media/black.dd9d27a2d63ab3f55546.png",
-    "static/media/white.png": "/static/media/white.34bb03ca250e00a5b360.png",
+    "static/media/blackCardBack.png": "/static/media/blackCardBack.57e49d02d1ba931331a9.png",
     "static/media/logo-slack.svg": "/static/media/logo-slack.d8feb9c5b2a92c377e8c5b7a10faabc9.svg",
     "static/media/logo-xd.svg": "/static/media/logo-xd.77e7dd1528183ab292936e4f91241cf0.svg",
     "static/media/logo-invision.svg": "/static/media/logo-invision.f3413d25dc0761bcc615835e48482191.svg",
@@ -39,8 +41,10 @@
     "static/media/logo-webdev.svg": "/static/media/logo-webdev.88aae85b5a8a994aa0009d6c389a7f77.svg",
     "index.html": "/index.html"
   },
+
   "entrypoints": [
-    "static/css/main.7c681aec.css",
-    "static/js/main.a3c8a261.js"
+    "static/css/main.2b8f2325.css",
+    "static/js/main.7b43404f.js"
   ]
+
 }
