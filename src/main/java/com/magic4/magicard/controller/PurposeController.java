@@ -37,7 +37,7 @@ public class PurposeController {
 
     // 대분류 소분류 추가
     @PostMapping("/insert")
-    public int inserCategory(@RequestBody Map<String, String> requestData) {
+    public String inserCategory(@RequestBody Map<String, String> requestData) {
         String purposeCategory = requestData.get("purposeCategory");
         String purposeItem = requestData.get("purposeItem");
         return purService.insertCategory(purposeCategory, purposeItem);
