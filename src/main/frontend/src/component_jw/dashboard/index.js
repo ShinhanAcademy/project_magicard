@@ -60,6 +60,7 @@ function Dashboard() {
       <DashboardNavbar />
         
       
+
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
@@ -79,34 +80,34 @@ function Dashboard() {
         </SoftBox>
         
         <SoftBox mb={3}>
-          지출 추이
-          (전 년도 대비 지출)
-          <Grid >
-            <CumulativeSpendingChart/>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              지출 추이 (전 년도 대비 지출)
+              <CumulativeSpendingChart />
             </Grid>
-         </SoftBox>        
-        
-         <SoftBox mb={3}> 
+            <Grid item xs={12} md={6}>
+              타 기업간 분기별 비교
+              <ComparisonWithOthersChart />
+            </Grid>
+          </Grid>
+        </SoftBox> 
+            
+        <SoftBox mb={3}> 
           부서별 지출 비교 
           <Grid >
               <DepartmentalSpendingChart/>
           </Grid>
-         </SoftBox>
+        </SoftBox>
          
-         <SoftBox mb={3}> 
+        <SoftBox mb={3}> 
          용도별 지출 추이 
           <Grid>
             <SpendingByPurposeChart/>
-          </Grid>
-            
-         </SoftBox>
+          </Grid>    
+        </SoftBox>
 
-         <SoftBox mb={3}> 
-         타 기업간 분기별 비교 
-          <Grid >
-            <ComparisonWithOthersChart/>
-            </Grid>
-         </SoftBox>  
+        
+        
 
         
        
