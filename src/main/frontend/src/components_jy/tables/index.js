@@ -74,7 +74,7 @@ function Tablesjy() {
                 <tbody>
                   {deptList.map((dept, ind) => (
                     <tr key={ind}>
-                      <td>{dept.department_id}</td>
+                      <td>{dept.department_name}</td>
                       <td style={dept.employee_name == null ? { color: "#e9ecef" } : {}}>
                         <p>{dept.employee_name == null ? "미정" : dept.employee_name}</p>
                         <p style={{ fontSize: "0.7rem", color: "gray" }}>
