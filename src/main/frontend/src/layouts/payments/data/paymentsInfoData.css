@@ -1,0 +1,36 @@
+.requestBtn {
+  background-color: #2f4f4f;
+  border: none;
+  border-radius: 0.75rem;
+  color: white;
+  font-family: "ChungBukUniversity";
+  font-size: 0.75rem;
+  width: 4rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.secondBtn {
+  background-color: #cbe1d4;
+  border: none;
+  border-radius: 0.75rem;
+  color: #2f4f4f;
+  font-family: "ChungBukUniversity";
+  font-size: 0.75rem;
+  width: 4rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.checkBtn {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.75rem;
+  color: gray;
+  font-family: "ChungBukUniversity";
+  font-size: 0.75rem;
+  width: 4rem;
+  height: 2rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
