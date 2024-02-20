@@ -111,7 +111,7 @@ const routes = [
 
     name: "결제 내역",
     key: "payments",
-    route: "/payments/*",
+    route: "/payments",
     icon: <Money size="15px" />,
     component: <PaymentsTables />,
     noCollapse: true,
@@ -120,7 +120,7 @@ const routes = [
     type: "collapse",
     name: "결재 요청 내역",
     key: "recieved-requests",
-    route: "/recieved-requests/*",
+    route: "/recieved-requests",
     icon: <Check size="15px" />,
     component: <RecievedRequest />,
     noCollapse: true,
