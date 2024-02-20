@@ -77,11 +77,6 @@ public class PurposeService {
         purposeDtoList.add(purposedto);
       }
       return purposeDtoList;
-      // for(int i = 0 ;  i < cateList.size() ; i ++){
-      //   PurposeDto purposeDto = new PurposeDto();
-      //   purposeDto.setPurposeCategory(cateList.get(i).getPurposeCategory());
-      //   purposeDtoList.add(purposeDto);
-      //  }
     }
 
      // 대분류 , 소분류 조회

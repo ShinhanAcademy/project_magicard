@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Grid } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
@@ -7,12 +7,14 @@ import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
 import Table from "examples/Tables/Table";
 import CategoryDelete from "./CategoryDelete";
+import SoftAlert from "components/SoftAlert";
 
 function PurposeList({ modalOpen }) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [deleteElement, setDeleteElement] = useState("");
+  const [categoryCount, setCount] = useState("0");
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -76,6 +78,7 @@ function PurposeList({ modalOpen }) {
     })
       .then((res) => {
         setPurList(res.data);
+        setCount(res.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -103,42 +106,55 @@ function PurposeList({ modalOpen }) {
   };
 
   return (
-    <Card id="delete-account" sx={{ height: "100%" }}>
-      <Grid container spacing={2}>
-        {purList.map((pur, index) => (
-          <Grid
-            item
-            xs={1}
-            md={1}
-            key={index}
-            onClick={() => handleCategoryClick(pur.purposeCategory)}
-          >
-            <CategoryDelete
-              pur={pur}
-              selectedCategory={selectedCategory}
-              handleCategoryClick={handleCategoryClick}
-              deleteElement={deleteElement}
-              handleDeletepurposeItem={handleDeletepurposeItem}
-              deleteAll={deleteAll} // deleteAll 함수를 props로 전달
-            />
-          </Grid>
-        ))}
-      </Grid>
-      <div>
-        <SoftBox
-          sx={{
-            "& .MuiTableRow-root:not(:last-child)": {
-              "& td": {
-                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                  `${borderWidth[1]} solid ${borderColor}`,
+    <Fragment>
+      <p
+        style={{
+          fontSize: "0.8rem",
+          color: "gray",
+          marginLeft: "2rem",
+          marginTop: "-2rem",
+          marginBottom: "1rem",
+        }}
+      >
+        전체 상위 항목의 개수 : {categoryCount} 개
+      </p>
+      <Card id="delete-account" sx={{ height: "100%" }}>
+        <Grid container spacing={2}>
+          {purList.map((pur, index) => (
+            <Grid
+              item
+              xs={1}
+              md={1}
+              key={index}
+              onClick={() => handleCategoryClick(pur.purposeCategory)}
+            >
+              <CategoryDelete
+                pur={pur}
+                selectedCategory={selectedCategory}
+                handleCategoryClick={handleCategoryClick}
+                deleteElement={deleteElement}
+                handleDeletepurposeItem={handleDeletepurposeItem}
+                deleteAll={deleteAll} // deleteAll 함수를 props로 전달
+              />
+            </Grid>
+          ))}
+        </Grid>
+        <div>
+          <SoftBox
+            sx={{
+              "& .MuiTableRow-root:not(:last-child)": {
+                "& td": {
+                  borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                    `${borderWidth[1]} solid ${borderColor}`,
+                },
               },
-            },
-          }}
-        >
-          <Table columns={columns} rows={rows()} />
-        </SoftBox>
-      </div>
-    </Card>
+            }}
+          >
+            <Table columns={columns} rows={rows()} />
+          </SoftBox>
+        </div>
+      </Card>
+    </Fragment>
   );
 }
 
