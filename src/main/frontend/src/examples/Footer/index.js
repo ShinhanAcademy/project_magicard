@@ -44,6 +44,7 @@ function Footer({ company, links }) {
 
   return (
     <SoftBox
+      pt={10}
       width="100%"
       display="flex"
       flexDirection={{ xs: "column", lg: "row" }}

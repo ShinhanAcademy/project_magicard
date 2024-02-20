@@ -1,6 +1,10 @@
 package com.magic4.magicard.controller;
 
+import com.magic4.magicard.dto.CardInfoDto;
+import com.magic4.magicard.dto.EmployeeEmailDto;
+import com.magic4.magicard.dto.EmployeeInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,5 +26,12 @@ public class IssueCardController {
         boolean ret = issuedCardService.handleCardIssueRequest(request);
         log.info("RET=>{}", ret);
         return ret;
+    }
+
+    @PostMapping("/my-card-info")
+    public CardInfoDto getMyCardInfo(@RequestBody EmployeeEmailDto employeeEmailDto){
+
+        log.info(employeeEmailDto.getEmployeeEmail());
+        return issuedCardService.getMyCardInfo(employeeEmailDto.getEmployeeEmail());
     }
 }

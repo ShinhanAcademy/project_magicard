@@ -60,7 +60,6 @@ import Cube from "./examples/Icons/Cube";
 
 import DashboardIcon from "./examples/Icons/Dashboard";
 
-import Dashboard from "./component_jw/dashboard";
 import Onboarding from "./component_sg/onboarding";
 import IssueCards from "./component_sg/issueCards/components";
 import RecievedRequest from "./layouts/recievedRequest";
@@ -70,6 +69,7 @@ import Employees from "./layouts/employees";
 import CardPlus from "./examples/Icons/CardPlus";
 import PurposeCategory from "./component_sh/components/PurposeCategory";
 import Tablesjy from "./components_jy/tables";
+import Dashboard from "./component_jw/dashboard";
 
 const routes = [
   {

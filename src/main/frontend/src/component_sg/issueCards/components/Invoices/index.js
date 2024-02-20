@@ -28,23 +28,8 @@ import CardIssueInputForm from "../CardIssueInputForm";
 function IssueForm() {
   return (
     <Card id="delete-account" sx={{ height: "100%" }}>
-      <SoftBox
-        pt={2}
-        px={2}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      ></SoftBox>
-      <SoftBox p={2}>
-        <CardIssueInputForm></CardIssueInputForm>
-
-        {/* <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <IssueSubForm date="March, 01, 2020" id="#MS-415646" price="$180" />
-          <IssueSubForm date="February, 10, 2021" id="#RV-126749" price="$250" />
-          <IssueSubForm date="April, 05, 2020" id="#QW-103578" price="$120" />
-          <IssueSubForm date="June, 25, 2019" id="#MS-415646" price="$180" />
-          <IssueSubForm date="March, 01, 2019" id="#AR-803481" price="$300" noGutter />
-        </SoftBox> */}
+      <SoftBox px={10} py={8}>
+        <CardIssueInputForm />
       </SoftBox>
     </Card>
   );
