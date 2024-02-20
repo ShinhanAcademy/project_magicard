@@ -3,7 +3,8 @@ import "./PurposeModal.css";
 import axios from "axios";
 import PurposeInput from "./PurposeInput";
 import PurposeSelect from "./PurposeSelect";
-import purposeImg from "assets/images/request_img/purposeImg.png";
+import purposeImg from "assets/images/purpose_img/purposeImg.png";
+import submitbtn from "assets/images/purpose_img/purposeInsertBtn.png";
 
 interface ModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,21 +35,35 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // purposeCategory와 purposeItem이 존재하는지 확인하고, 앞뒤 공백 제거
+    const trimmedPurposeCategory = inputValues.purposeCategory
+      ? inputValues.purposeCategory.trim()
+      : "";
+    const trimmedPurposeItem = inputValues.purposeItem ? inputValues.purposeItem.trim() : "";
+
+    // 입력값이 공백인지 확인
+    if (trimmedPurposeCategory === "" && trimmedPurposeItem === "") {
+      alert("값을 입력하세요.");
+      return;
+    }
+
     axios({
       method: "post",
       url: "/pur/insert",
       data: {
-        purposeCategory: inputValues.purposeCategory || selectedCategory,
-        purposeItem: inputValues.purposeItem,
+        purposeCategory: trimmedPurposeCategory || selectedCategory,
+        purposeItem: trimmedPurposeItem,
       },
     })
       .then((res) => {
-        if (res.data === 0) {
-          alert("값이 중복되었습니다.");
+        if (res.data != "success") {
+          const dpcateory = res.data;
+          alert(`하위 항목 값이 상위 항목  "${dpcateory}" 에 중복되었습니다. `);
         } else {
           alert("성공");
+          loadListData();
         }
-        loadListData();
       })
       .catch((err) => {
         console.log(err);
@@ -116,8 +131,9 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
             <p> 추가 지출 항목(하위)</p>
             <PurposeInput propsname="purposeItem" getResult={getResult} />
           </div>
-          <button className="add-btn" type="submit">
-            등록하기
+          <button className="submitButton" type="submit">
+            <img src={submitbtn} />
+            {/* 등록하기 */}
           </button>
         </form>
       </div>

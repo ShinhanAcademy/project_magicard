@@ -41,8 +41,10 @@
     "static/media/logo-webdev.svg": "/static/media/logo-webdev.88aae85b5a8a994aa0009d6c389a7f77.svg",
     "index.html": "/index.html"
   },
+
   "entrypoints": [
     "static/css/main.2b8f2325.css",
     "static/js/main.7b43404f.js"
   ]
+
 }
