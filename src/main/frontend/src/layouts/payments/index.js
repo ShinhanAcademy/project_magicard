@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import "layouts/payments/index.css";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import PaymentsInfo from "./display/paymentsInfo";
 import RequestAll from "./display/requestAll";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
 
 import SoftButton from "components/SoftButton";
-import { useAppDispatch } from "mk/store";
 import { useSelector } from "react-redux";
 
 function PaymentsTables() {
-  const dispatch = useAppDispatch();
   const isLoggedIn = useSelector((state) => !!state.user.employeeName);
+  const softButtonRef = useRef(null);
 
-  console.log(isLoggedIn);
-
-  // useEffect(() => {}, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      softButtonRef.current.click(); // 페이지가 열리면 SoftButton 클릭
+    }
+  }, [isLoggedIn]);
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       {isLoggedIn}
       <Link to="paymentsInfo">
-        <SoftButton style={{ width: "150px" }}>결제 내역</SoftButton>
+        <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
+          결제 내역
+        </SoftButton>
       </Link>
       <Link to="requestAll">
         <SoftButton style={{ width: "150px" }}>승인 요청 전체</SoftButton>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
@@ -10,13 +10,25 @@ import Refuse from "./display/refuse";
 import "layouts/recievedRequest/index.css";
 
 import SoftButton from "components/SoftButton";
+import { useSelector } from "react-redux";
 
 function RecievedRequest() {
+  const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
+  const softButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      softButtonRef.current.click(); // 페이지가 열리면 SoftButton 클릭
+    }
+  }, [isLoggedIn]);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <Link to="requesetToMe">
-        <SoftButton style={{ width: "150px" }}>결재 요청 내역</SoftButton>
+        <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
+          결재 요청 내역
+        </SoftButton>
       </Link>
       <Link to="requestAll">
         <SoftButton style={{ width: "150px" }}>전체</SoftButton>
