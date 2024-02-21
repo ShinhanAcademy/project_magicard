@@ -73,12 +73,12 @@ const RequestAllData = () => {
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.employee.employeeName}
+          {request.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.responseEmployeeEmail}
+          {request.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (

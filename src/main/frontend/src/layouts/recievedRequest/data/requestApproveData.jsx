@@ -54,12 +54,12 @@ const RequestApproveData = () => {
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.employee.employeeEmail}
+          {approve.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.responseEmployeeEmail}
+          {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -85,7 +85,7 @@ const RequestApproveData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.requestStatus}
+          {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (

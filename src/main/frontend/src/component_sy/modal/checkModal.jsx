@@ -8,9 +8,7 @@ import joinImg from "assets/images/request_img/join.png";
 import penImg from "assets/images/request_img/pen.png";
 import picImg from "assets/images/request_img/pic.png";
 import purposeImg from "assets/images/request_img/purpose.png";
-import refresh from "assets/images/request_img/refresh.png";
 import shopImg from "assets/images/request_img/shop.png";
-import submitbtn from "assets/images/request_img/submitbtn.png";
 
 const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
@@ -70,10 +68,16 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   if (!isOpen || !requestInfo || !purposeItem) return null;
 
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
+  const paymentTimeArray = requestInfo.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+  const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
+  console.log("requestIdId" + requestInfo.requestId);
+  console.log("gpt" + requestInfo.refuseMessage);
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
+        {requestInfo.refuseMessage && <div>반려 사유 : {requestInfo.refuseMessage}</div>}
         <div className="modal-title">
           <div className="modal-title-img">
             <img src={checkImg}></img>
@@ -98,7 +102,7 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               결제일시
               <span className="ness"> * </span>
             </div>
-            <input value={paymentDate} readOnly />
+            <input value={paymentTime} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">

@@ -9,6 +9,7 @@ const RequestApproveData = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
+
   useEffect(() => {
     axios({
       method: "get",
@@ -21,6 +22,16 @@ const RequestApproveData = () => {
       .catch((err) => {});
   }, []);
 
+  const handleModalOpen = (paymentId) => {
+    setIsModalOpen(true);
+    setSelectedPaymentId(paymentId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
+
   const columns = [
     { name: "결제일시", align: "center" },
     { name: "요청자", align: "center" },
@@ -31,16 +42,6 @@ const RequestApproveData = () => {
     { name: "상태", align: "center" },
     { name: "승인요청", align: "center" },
   ];
-
-  const handleModalOpen = (paymentId) => {
-    setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    window.location.reload();
-  };
 
   const rows = approveList.map((approve) => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
@@ -70,12 +71,12 @@ const RequestApproveData = () => {
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.employee.employeeEmail}
+          {approve.employee.employeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.responseEmployeeEmail}
+          {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (

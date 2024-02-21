@@ -75,7 +75,7 @@ const RequestAllData = () => {
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.responseEmployeeEmail}
+          {request.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (

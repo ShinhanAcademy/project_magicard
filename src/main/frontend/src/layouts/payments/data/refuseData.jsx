@@ -75,7 +75,7 @@ const RefuseData = () => {
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.responseEmployeeEmail}
+          {refuse.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -101,7 +101,7 @@ const RefuseData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.requestStatus}
+          {refuse.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (
