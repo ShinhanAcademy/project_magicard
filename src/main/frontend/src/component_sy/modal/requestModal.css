@@ -199,3 +199,60 @@ input {
   color: black;
   font-size: 1.2rem;
 }
+
+.approveButton > img {
+  width: 125px;
+  height: 50px;
+}
+
+.approveButton {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  width: 125px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.refuseButton > img {
+  width: 125px;
+  height: 50px;
+}
+
+.refuseButton {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  width: 125px;
+  height: 50px;
+  margin-left: 20px;
+}
+
+.refuseFinalButton > img {
+  width: 125px;
+  height: 50px;
+}
+
+.refuseFinalButton {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  width: 125px;
+  height: 50px;
+  margin-left: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.refuseIputbox {
+  padding: 0.5rem;
+  border: 1px solid #8e8e8e;
+  width: 500px;
+  border-radius: 8px;
+  height: 100px;
+  margin-left: -17px;
+}
