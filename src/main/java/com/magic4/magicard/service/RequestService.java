@@ -33,10 +33,15 @@ public class RequestService {
   // 전체 내가 신청 내역 가져오기
   public List<RequestDto> getRequestAll(EmployeeDto employeeDto){
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
-    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(employee.getEmployeeEmail(), 1);
+    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderByPaymentTime(employee.getEmployeeEmail(), 1);
     List<RequestDto> result = new ArrayList<>();
     for(Request request : requestList){
       RequestDto requestDto = model.map(request, RequestDto.class);
+
+      requestDto.setRequestEmployeeName(employee.getEmployeeName());
+
+      Employee responseEmp = employeeRepo.findById(request.getResponseEmployeeEmail()).orElse(null);
+      requestDto.setResponseEmployeeName(responseEmp.getEmployeeName());
 
       PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
@@ -111,6 +116,9 @@ public class RequestService {
       EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
       requestDto.setEmployee(sendEmpDto);
 
+      Employee emp = employeeRepo.findById(responseEmployeeEmail).orElse(null);
+      requestDto.setResponseEmployeeName(emp.getEmployeeName());
+
       PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(request.getPurposeItem().getPurposeItem());
       PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
       requestDto.setPurposeItem(purposeItemDto);
@@ -143,7 +151,7 @@ public class RequestService {
   // 재무부에게 요청한 리스트
   public List<RequestDto> getToTopAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
-    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(employeeDto.getEmployeeEmail(), 2);
+    List<Request> requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 2);
 
     List<RequestDto> requestDtoList = new ArrayList<>();
     for(Request request : requestList){
@@ -157,6 +165,12 @@ public class RequestService {
       Employee employee = paymentInfo.getIssuedCard().getEmployee();
       EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
       requestDto.setEmployee(sendEmpDto);
+
+      Employee requestEmp = employeeRepo.findById(responseEmployeeEmail).orElse(null);
+      requestDto.setRequestEmployeeName(requestEmp.getEmployeeName());
+
+      Employee responseEmp = employeeRepo.findById(request.getResponseEmployeeEmail()).orElse(null);
+      requestDto.setResponseEmployeeName(responseEmp.getEmployeeName());
 
       PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(request.getPurposeItem().getPurposeItem());
       PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
@@ -207,9 +221,11 @@ public class RequestService {
     for(RequestDto requestDto : requestDtoList) {
       int step = requestDto.getApprovalSteps().getApprovalStatusCode();
       if(step == 4 || step == 5){
+      System.out.println("tqtq왜 이거 뭐냐 얌마" + requestDto.getPaymentInfo().getPaymentId());
         result.add(requestDto);
       }
     }
+
     return result;
   }
 
@@ -282,23 +298,26 @@ public class RequestService {
   // requestInfo 불러오기, 수정, 조회, 확인
   public RequestDto getRequestInfo(Integer paymentId) { // 신청 아무것도 안했을 때
     PaymentInfo paymentInfo = paymentInfoRepo.findById(paymentId).orElse(null);
+//  public RequestDto getRequestInfo(Integer requestId) { // 신청 아무것도 안했을 때
+//
+//      Request request = requestRepo.findById(requestId).orElse(null);
+//
+//    PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
     PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
-    System.out.println(paymentInfoDto.getPaymentTime());
-    System.out.println(paymentInfoDto.getPayAmount());
 
-    List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+    List<Request> requestList = requestRepo.findByPaymentInfo(paymentInfo);
 
     RequestDto requestDto = null;
 PurposeItem purposeItem = null;
 PurposeItemDto purposeItemDto = null;
-    if(request.size() == 1){
-      requestDto = model.map(request.get(0), RequestDto.class);
-      purposeItem = purposeItemRepo.findById(request.get(0).getPurposeItem().getPurposeItemUid()).orElse(null);
+    if(requestList.size() == 1){
+      requestDto = model.map(requestList.get(0), RequestDto.class);
+      purposeItem = purposeItemRepo.findById(requestList.get(0).getPurposeItem().getPurposeItemUid()).orElse(null);
       purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
       purposeItemDto.setPurposeCategory(purposeItem.getPurposeCategory().getPurposeCategory());
-    }else if(request.size() == 2){
-      requestDto = model.map(request.get(1), RequestDto.class);
-      purposeItem = purposeItemRepo.findById(request.get(1).getPurposeItem().getPurposeItemUid()).orElse(null);
+    }else if(requestList.size() == 2){
+      requestDto = model.map(requestList.get(1), RequestDto.class);
+      purposeItem = purposeItemRepo.findById(requestList.get(1).getPurposeItem().getPurposeItemUid()).orElse(null);
       purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
       purposeItemDto.setPurposeCategory(purposeItem.getPurposeCategory().getPurposeCategory());
     }
