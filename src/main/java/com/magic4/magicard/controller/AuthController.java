@@ -28,7 +28,7 @@ public class AuthController {
     public LoginResponseDto login(HttpServletRequest httpServletRequest){
 
         LoginRequestDto loginRequestDto=LoginRequestDto.builder()
-                .employeeEmail("aa1@anaver.com")
+                .employeeEmail("aa4@naver.com")
 //                .userPassword()
                 .build();
 

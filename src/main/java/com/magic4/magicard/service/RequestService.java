@@ -51,9 +51,9 @@ public class RequestService {
       requestDto.setApprovalSteps(approvalStepsDto);
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
-      if(step == 1 || step == 2 || step == 4) {
+      if(step == 1 || step == 4) {
         requestDto.setSendRequest("수정");
-      }else if(step == 5) {
+      }else if(step == 2 || step == 5) {
         requestDto.setSendRequest("조회");
       }
 
@@ -85,7 +85,8 @@ public class RequestService {
     List<RequestDto> requestDtoList = new ArrayList<>();
 
     for(RequestDto requestDto : allRequest){
-      if(requestDto.getApprovalSteps().getApprovalStatusCode() == 5){
+      int step = requestDto.getApprovalSteps().getApprovalStatusCode();
+      if(step == 4 || step == 5){
         requestDtoList.add(requestDto);
       }
     }
@@ -167,7 +168,7 @@ public class RequestService {
 
       Integer step = request.getApprovalSteps().getApprovalStatusCode();
       if(step == 1 || step == 4){
-        requestDto.setSendRequest("확인");
+        requestDto.setSendRequest("수정");
       }else {
         requestDto.setSendRequest("조회");
       }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
@@ -17,18 +17,9 @@ function PaymentsTables() {
   const dispatch = useAppDispatch();
   const isLoggedIn = useSelector((state) => !!state.user.employeeName);
 
-  // 현재 선택된 버튼을 추적하기 위한 상태 설정
-  const [selectedButton, setSelectedButton] = useState(null);
-
-  // 현재 URL 경로를 가져오기 위해 useLocation 훅 사용
-  const location = useLocation();
-
-  // 버튼 클릭 핸들러
-  const handleButtonClick = (button) => {
-    setSelectedButton(button === selectedButton ? null : button);
-  };
-
   console.log(isLoggedIn);
+
+  // useEffect(() => {}, []);
 
   return (
     <DashboardLayout>
