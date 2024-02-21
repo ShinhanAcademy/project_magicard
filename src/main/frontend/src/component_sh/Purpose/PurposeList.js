@@ -34,7 +34,9 @@ function PurposeList({ modalOpen }) {
   };
 
   const deleteAll = (categorytest) => {
-    const confirmed = window.confirm("전체 삭제 하시겠습니까?");
+    const confirmed = window.confirm(
+      "상위항목 삭제시 해당 하위 항목이 모두 삭제 됩니다. 삭제하시겠습니까?"
+    );
     if (confirmed) {
       axios({
         method: "delete",
@@ -140,18 +142,20 @@ function PurposeList({ modalOpen }) {
           ))}
         </Grid>
         <div>
-          <SoftBox
-            sx={{
-              "& .MuiTableRow-root:not(:last-child)": {
-                "& td": {
-                  borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                    `${borderWidth[1]} solid ${borderColor}`,
+          {selectedCategory && (
+            <SoftBox
+              sx={{
+                "& .MuiTableRow-root:not(:last-child)": {
+                  "& td": {
+                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                      `${borderWidth[1]} solid ${borderColor}`,
+                  },
                 },
-              },
-            }}
-          >
-            <Table columns={columns} rows={rows()} />
-          </SoftBox>
+              }}
+            >
+              <Table columns={columns} rows={rows()} />{" "}
+            </SoftBox>
+          )}
         </div>
       </Card>
     </Fragment>

@@ -24,6 +24,7 @@ import SoftButton from "components/SoftButton";
 import { useState } from "react";
 import PurposeModal from "component_sh/Purpose/PurposeModal";
 import PurposeList from "component_sh/Purpose/PurposeList";
+import { red } from "@mui/material/colors";
 
 function CateogryListMain() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,8 +51,8 @@ function CateogryListMain() {
       <SoftBox display="flex" alignItems="center" justifyContent="space-between" p={3}>
         <SoftTypography variant="h6" fontWeight="bold">
           상위 항목
-        </SoftTypography>
-        <SoftButton onClick={showModal}> 추가하기 </SoftButton>
+        </SoftTypography>{" "}
+        <SoftButton onClick={showModal}>용도 추가</SoftButton>
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
       <SoftBox>

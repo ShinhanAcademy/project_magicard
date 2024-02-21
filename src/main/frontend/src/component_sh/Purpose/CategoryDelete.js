@@ -17,6 +17,8 @@ function CategoryDelete({ pur, selectedCategory, handleCategoryClick, deleteElem
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        width="7rem"
+        padding="1rem"
         p={1}
         style={{
           backgroundColor: selectedCategory === pur.purposeCategory ? "lightblue" : "white",
@@ -24,22 +26,22 @@ function CategoryDelete({ pur, selectedCategory, handleCategoryClick, deleteElem
         }}
       >
         <SoftButton
-          style={{ width: "150px" }}
+          style={{ padding: "0rem", background: "#f8f9fa" }}
           onClick={() => handleCategoryClick(pur.purposeCategory)}
         >
+          {selectedCategory === pur.purposeCategory && deleteElement === pur.purposeCategory && (
+            <button
+              className="allDeteleBtn"
+              onClick={(e) => {
+                e.stopPropagation(); // 이벤트 버블링 방지
+                handleDeleteAll();
+              }}
+            >
+              <img src="image_sh/deleteButton.png" alt="Delete" />
+            </button>
+          )}
           {pur.purposeCategory}
         </SoftButton>
-        {selectedCategory === pur.purposeCategory && deleteElement === pur.purposeCategory && (
-          <button
-            className="allDeteleBtn"
-            onClick={(e) => {
-              e.stopPropagation(); // 이벤트 버블링 방지
-              handleDeleteAll();
-            }}
-          >
-            <img src="image_sh/deleteButton.png" alt="Delete" />
-          </button>
-        )}
       </SoftBox>
     </>
   );
