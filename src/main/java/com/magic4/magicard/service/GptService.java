@@ -141,6 +141,11 @@ public class GptService {
         String finalMsg = gptPromptHeader + payInfo + body + candidates;
 
         finalMsg += System.lineSeparator();
+        finalMsg += System.lineSeparator();
+        finalMsg += "이상의 내역들을 참고하여 다음의 질문에 답하여라.";
+        finalMsg += System.lineSeparator();
+        finalMsg += payInfo;
+        finalMsg += "이 카드 결제는 어떤 분류에 들어가야 하는가?";
         finalMsg += """
                     다시 한번 강조하지만, 답변은 다른 말을 사용하지 말고 단답으로 답하고 3,1,2와 같이 답하여라. 답변에 큰 따옴표(")를 사용하지 말아라
                 """;
