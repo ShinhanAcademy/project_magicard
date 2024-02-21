@@ -1,4 +1,5 @@
 import axios from "axios";
+import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
@@ -43,14 +44,28 @@ const RefuseData = () => {
 
   const rows = refuseList.map((refuse) => {
     const paymentDate = refuse.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = refuse.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
     const handleButtonClick = () => {
       setSendRequest(refuse.sendRequest);
       handleModalOpen(refuse.paymentInfo.paymentId);
     };
+
+    let backgroundColor = "";
+    let color = "";
+    if (refuse.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (refuse.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
@@ -89,7 +104,17 @@ const RefuseData = () => {
           {refuse.requestStatus}
         </SoftTypography>
       ),
-      승인요청: <button onClick={handleButtonClick}>{refuse.sendRequest}</button>,
+      승인요청: (
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{
+            backgroundColor: backgroundColor,
+            color: color,
+          }}
+        >
+          {refuse.sendRequest}
+        </SoftButton>
+      ),
     };
   });
   return {
