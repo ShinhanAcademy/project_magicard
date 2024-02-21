@@ -10,8 +10,6 @@ on:
   workflow_dispatch:
 
 jobs:
-<<<<<<< HEAD
-=======
   delete-old-artifacts:
     runs-on: ubuntu-latest
     permissions:
@@ -22,7 +20,6 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           expire-in: 0days
->>>>>>> cb5e8433634d6f8d86b0050d31ce9cd6a679ecd4
   build:
     runs-on: ubuntu-latest
 
