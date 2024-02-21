@@ -40,8 +40,17 @@ public class EmployeeController {
 
     // 회사의 특정 부서 소속 직원 조회
     @GetMapping("/list/dept/{deptId}")
-    public List<EmployeeInfoDto> getEmpListByDept(@PathVariable("deptId") int deptId){
-        return employeeService.getEmpListByDept(deptId);
+    public List<EmployeeInfoDto> getEmpListByDept(HttpServletRequest httpServletRequest, @PathVariable("deptId") int deptId){
+        System.out.println("백백ㅂ갭갭갭갭갭갭ㄱ");
+
+        HttpSession session = httpServletRequest.getSession();
+        if (session.getAttribute("myInfo")==null){
+            return null;
+        } else {
+            LoginResponseDto loginEmp=(LoginResponseDto) session.getAttribute("myInfo");
+            return employeeService.getEmpListByDept(loginEmp.getCompany(), deptId);
+        }
+
     }
 
     // 회사의 특정 직급 직원 조회

@@ -48,6 +48,7 @@ function Onboarding() {
   const employeeName = useSelector((state) => state.user.employeeName);
   const [card, setCard] = useState([]);
   let cardExpiredDate = "" + card.expireDate;
+  let cardNumber = "" + card.cardNumber;
 
   const getMyCard = () => {
     if (isLoggedIn) {
@@ -85,7 +86,7 @@ function Onboarding() {
                     <MasterCard
                       cardType={card.cardName}
                       bgColor={card.cardCode}
-                      number={card.cardNumber}
+                      number={cardNumber.replace(/[^0-9]/g, "")}
                       holder={employeeName}
                       expires={
                         cardExpiredDate.substring(5, 7) + "/" + cardExpiredDate.substring(2, 4)

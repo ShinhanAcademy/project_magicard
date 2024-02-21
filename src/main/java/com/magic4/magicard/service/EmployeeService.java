@@ -36,9 +36,7 @@ public class EmployeeService {
     }
 
     // 회사의 특정 부서 소속 직원 조회
-    public List<EmployeeInfoDto> getEmpListByDept(int departmentId){
-
-        Company company= companyRepo.findById("SHDS").orElse(null);
+    public List<EmployeeInfoDto> getEmpListByDept(Company company, int departmentId){
 
         // 세션에 등록된 Company 정보로 회사의 직급들을 조회
         List<EmployeeRank> employeeRankList=employeeRankRepo.findEmployeeRanksByCompany(company);

@@ -65,11 +65,11 @@ import IssueCards from "./component_sg/issueCards/components";
 import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
 import Member from "./examples/Icons/Member";
-import Employees from "./layouts/employees";
 import CardPlus from "./examples/Icons/CardPlus";
 import PurposeCategory from "./component_sh/components/PurposeCategory";
 import Tablesjy from "./components_jy/tables";
 import Dashboard from "./component_jw/dashboard";
+import Employees from "./layouts/employees";
 
 const routes = [
   {
