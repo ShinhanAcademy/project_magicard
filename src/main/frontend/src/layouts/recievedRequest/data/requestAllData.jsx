@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const RequestAllData = () => {
   const [requestList, setRequestList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
@@ -21,9 +21,9 @@ const RequestAllData = () => {
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (requestId) => {
     setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
+    setSelectedId(requestId);
   };
 
   const handleModalClose = () => {
@@ -49,7 +49,7 @@ const RequestAllData = () => {
 
     const handleButtonClick = () => {
       setSendRequest(request.sendRequest);
-      handleModalOpen(request.paymentInfo.paymentId);
+      handleModalOpen(request.requestId);
     };
 
     let backgroundColor = "";
@@ -123,7 +123,7 @@ const RequestAllData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };

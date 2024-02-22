@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 
 const RequestApproveData = () => {
   const [approveList, setApproveList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
     axios({
@@ -19,6 +22,16 @@ const RequestApproveData = () => {
       })
       .catch((err) => {});
   }, []);
+
+  const handleModalOpen = (requestId) => {
+    setIsModalOpen(true);
+    setSelectedId(requestId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
 
   const columns = [
     { name: "결제일시", align: "center" },
@@ -35,6 +48,11 @@ const RequestApproveData = () => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
     const paymentTimeArray = approve.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
     const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
+    const handleButtonClick = () => {
+      setSendRequest(approve.sendRequest);
+      handleModalOpen(approve.requestId);
+    };
 
     let backgroundColor = "";
     let color = "";
@@ -89,13 +107,16 @@ const RequestApproveData = () => {
         </SoftTypography>
       ),
       승인요청: (
-        <SoftButton style={{ backgroundColor: backgroundColor, color: color }}>
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{ backgroundColor: backgroundColor, color: color }}
+        >
           {approve.sendRequest}
         </SoftButton>
       ),
     };
   });
-  return { columns, rows };
+  return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest };
 };
 
 export default RequestApproveData;

@@ -105,6 +105,11 @@ public class RequestController {
         return requestService.getRequestInfo(paymentId);
     }
 
+    @GetMapping("/requestInfo/bySelectedId/{requestId}")
+    public RequestDto getRequestInfoByRequestId(@PathVariable Integer requestId){
+        return requestService.getRequestInfoByRequestId(requestId);
+    }
+
     @PostMapping("/updateRequest")
     public Integer updateRequest(@RequestBody RequestFormDto requestFormDto, HttpServletRequest httpServletRequest){
         EmployeeDto myInfo = getLoginInfo(httpServletRequest);

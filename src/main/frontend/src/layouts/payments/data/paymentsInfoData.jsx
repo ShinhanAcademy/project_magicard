@@ -7,7 +7,7 @@ import SoftButton from "components/SoftButton";
 const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
@@ -16,15 +16,14 @@ const paymentInfoData = () => {
       url: "/paymentInfo/getList",
     })
       .then((result) => {
-        console.log(result.data);
         setPaymentList(result.data);
       })
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (Id) => {
     setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
+    setSelectedId(Id);
   };
 
   const handleModalClose = () => {
@@ -47,9 +46,28 @@ const paymentInfoData = () => {
     const paymentTimeArray = payment.paymentTime.substr(11, 11).split("").slice(0, 5);
     const paymentTime = paymentDate + " " + paymentTimeArray.join("");
 
+    // const handleButtonClick = () => {
+    //   setSendRequest(payment.sendRequest);
+    //   handleModalOpen(payment.paymentId);
+    // };
     const handleButtonClick = () => {
       setSendRequest(payment.sendRequest);
-      handleModalOpen(payment.paymentId);
+      if (payment.sendRequest === "신청") {
+        handleModalOpen(payment.paymentId);
+      } else {
+        axios({
+          method: "get",
+          url: `/paymentInfo/getRequestId/${payment.paymentId}`,
+        })
+          .then((result) => {
+            const requestId = result.data;
+            console.log("ㅅㅄㅄㅂ" + requestId);
+            handleModalOpen(requestId);
+          })
+          .catch((err) => {
+            // 오류 처리
+          });
+      }
     };
 
     let backgroundColor = "";
@@ -104,7 +122,7 @@ const paymentInfoData = () => {
             color: color,
           }}
         >
-          {payment.sendRequest}{" "}
+          {payment.sendRequest}
         </SoftButton>
       ),
     };
@@ -115,7 +133,7 @@ const paymentInfoData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };
