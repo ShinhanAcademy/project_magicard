@@ -6,9 +6,30 @@ import Card from "@mui/material/Card";
 import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 import RefuseData from "../data/refuseData";
+import CheckContext from "component_sy/modal/checkModal";
 
 function Refuse() {
-  const { columns, rows } = RefuseData();
+  const {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  } = RefuseData();
+
+  let modalComponent;
+  if (sendRequest === "조회") {
+    modalComponent = (
+      <CheckContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
+  }
+
   return (
     <>
       <SoftBox py={3}>
@@ -33,6 +54,7 @@ function Refuse() {
         </SoftBox>
       </SoftBox>
       <Footer />
+      {modalComponent}
     </>
   );
 }

@@ -27,7 +27,16 @@ function RequestApprove() {
         selectedPaymentId={selectedPaymentId}
       />
     );
+  } else if (sendRequest === "조회") {
+    modalComponent = (
+      <CheckContext
+        isOpen={isModalOpen}
+        closeModal={handleModalClose}
+        selectedPaymentId={selectedPaymentId}
+      />
+    );
   }
+
   return (
     <>
       <SoftBox py={3}>
