@@ -15,10 +15,12 @@ const CumulativeSpendingChart = () => {
 
   return (
     <Card>
-      <Grid container direction="column" spacing={2} >
+     
+      <Grid container spacing={2} alignItems="flex-start" >
         <Grid item xs={12}>  
-          <Grid container justifyContent="flex-space-evenly" style={{ padding: '16px' }} >
+          <Grid container justifyContent="flex-space-evenly" style={{ padding: '1rem' }} >
             <Select
+            width="100%"
               onChange={onChange}
               value={select}
               >
@@ -28,10 +30,11 @@ const CumulativeSpendingChart = () => {
             </Select>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} >
           {select === 1 ? <Monthly /> : select === 2 ? <Quarterly /> : <Yearly />}
         </Grid>
       </Grid>
+     
     </Card>  
 )};
 

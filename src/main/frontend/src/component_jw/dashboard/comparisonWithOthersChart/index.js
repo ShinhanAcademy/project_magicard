@@ -40,7 +40,7 @@ const ComparisonWithOthersChart = () => {
     <Card>
       <Grid container spacing={2} alignItems="flex-start">
         <Grid item xs={12}>
-          <Grid container justifyContent="flex-end" style={{ padding: '16px' }}>    
+          <Grid container justifyContent="flex-end" style={{ padding: '1rem' }}>    
             <Select
               value={selectedCompany}
               onChange={handleCompanyChange}

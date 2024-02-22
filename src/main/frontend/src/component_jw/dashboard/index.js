@@ -52,6 +52,8 @@ import CumulativeSpendingChart from "./cumulativeSpendingChart";
 import ComparisonWithOthersChart from "./comparisonWithOthersChart";
 
 import { useState } from "react";
+import MonthlyDonationAmount from "./basicInfo/monthlyDonationAmount";
+import TotalDonationAmount from "./basicInfo/totalDonationAmount";
 
 function Dashboard() {
   const { size } = typography;
@@ -77,22 +79,56 @@ function Dashboard() {
       
 
       <SoftBox py={3}>
+{/*         
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid item xs={12} sm={6} xl={6}>
               <TotalCards />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid item xs={12} sm={6} xl={6}>
               <TotalUses />
             </Grid>
+          </Grid>
+        </SoftBox>
+        <SoftBox mb={3}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <TotalPayment />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <TotalApproval />
             </Grid>
+            <Grid item xs={12} sm={6} xl={3}>
+              <MonthlyDonationAmount />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={3}>
+              <TotalDonationAmount />
+            </Grid>
           </Grid>
-        </SoftBox>
+        </SoftBox> */}
+
+        <SoftBox mb={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalCards />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalUses />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalPayment />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalApproval />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <MonthlyDonationAmount />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalDonationAmount />
+          </Grid>
+        </Grid>
+      </SoftBox>
 
         <SoftBox mb={3}>
           <Grid container spacing={2}>
@@ -113,13 +149,13 @@ function Dashboard() {
               <DepartmentalSpendingChart/>
           </Grid>
         </SoftBox>
-         
         <SoftBox mb={3}> 
          용도별 지출 추이 
           <Grid>
             <SpendingByPurposeChart/>
           </Grid>    
         </SoftBox>
+         
 
         
         
