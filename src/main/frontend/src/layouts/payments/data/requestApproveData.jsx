@@ -1,12 +1,15 @@
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
+import "./paymentsInfoData.css";
+import SoftButton from "components/SoftButton";
 
 const RequestApproveData = () => {
   const [approveList, setApproveList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
+
   useEffect(() => {
     axios({
       method: "get",
@@ -19,6 +22,16 @@ const RequestApproveData = () => {
       .catch((err) => {});
   }, []);
 
+  const handleModalOpen = (paymentId) => {
+    setIsModalOpen(true);
+    setSelectedId(paymentId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
+
   const columns = [
     { name: "결제일시", align: "center" },
     { name: "요청자", align: "center" },
@@ -30,36 +43,40 @@ const RequestApproveData = () => {
     { name: "승인요청", align: "center" },
   ];
 
-  const handleModalOpen = (paymentId) => {
-    setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    window.location.reload();
-  };
-
   const rows = approveList.map((approve) => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = approve.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
     const handleButtonClick = () => {
       setSendRequest(approve.sendRequest);
-      handleModalOpen(approve.paymentInfo.paymentId);
+      handleModalOpen(approve.requestId);
     };
+
+    let backgroundColor = "";
+    let color = "";
+    if (approve.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (approve.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.employee.employeeEmail}
+          {approve.employee.employeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.responseEmployeeEmail}
+          {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -88,7 +105,14 @@ const RequestApproveData = () => {
           {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),
-      승인요청: <button onClick={handleButtonClick}>{approve.sendRequest}</button>,
+      승인요청: (
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{ backgroundColor: backgroundColor, color: color }}
+        >
+          {approve.sendRequest}
+        </SoftButton>
+      ),
     };
   });
   return {
@@ -97,7 +121,7 @@ const RequestApproveData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };

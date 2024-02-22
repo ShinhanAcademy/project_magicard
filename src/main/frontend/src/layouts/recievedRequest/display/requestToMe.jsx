@@ -17,40 +17,21 @@ import axios from "axios";
 function RequestToMe() {
   const [requestCount, setRequestCount] = useState(0);
 
-  const {
-    columns,
-    rows,
-    isModalOpen,
-    handleModalOpen,
-    handleModalClose,
-    selectedPaymentId,
-    sendRequest,
-  } = RequestToMeData();
+  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
+    RequestToMeData();
 
   let modalComponent;
   if (sendRequest === "확인") {
     modalComponent = (
-      <ConfirmContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <ConfirmContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   } else if (sendRequest === "수정") {
     modalComponent = (
-      <UpdateContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <UpdateContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   } else if (sendRequest === "조회") {
     modalComponent = (
-      <CheckContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   }
 

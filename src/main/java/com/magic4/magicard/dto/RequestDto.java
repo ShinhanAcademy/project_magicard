@@ -14,7 +14,8 @@ import java.util.UUID;
 public class RequestDto {
     private Integer requestId;
     private EmployeeDto employee;
-    private String responseEmployeeEmail;
+    private String requestEmployeeName;
+    private String responseEmployeeName;
     private PaymentInfoDto paymentInfo;
     private PurposeItemDto purposeItem;
     private String participant;

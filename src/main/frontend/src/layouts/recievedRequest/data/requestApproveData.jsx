@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
 // Soft UI Dashboard React components
 import axios from "axios";
+import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const RequestApproveData = () => {
   const [approveList, setApproveList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
     axios({
@@ -18,6 +22,16 @@ const RequestApproveData = () => {
       })
       .catch((err) => {});
   }, []);
+
+  const handleModalOpen = (requestId) => {
+    setIsModalOpen(true);
+    setSelectedId(requestId);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
 
   const columns = [
     { name: "결제일시", align: "center" },
@@ -32,21 +46,38 @@ const RequestApproveData = () => {
 
   const rows = approveList.map((approve) => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = approve.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
+    const handleButtonClick = () => {
+      setSendRequest(approve.sendRequest);
+      handleModalOpen(approve.requestId);
+    };
+
+    let backgroundColor = "";
+    let color = "";
+    if (approve.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (approve.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
 
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.employee.employeeEmail}
+          {approve.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.responseEmployeeEmail}
+          {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -72,23 +103,20 @@ const RequestApproveData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.requestStatus}
+          {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{ backgroundColor: backgroundColor, color: color }}
         >
           {approve.sendRequest}
-        </SoftTypography>
+        </SoftButton>
       ),
     };
   });
-  return { columns, rows };
+  return { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest };
 };
 
 export default RequestApproveData;

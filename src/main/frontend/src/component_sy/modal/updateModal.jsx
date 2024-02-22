@@ -1,21 +1,47 @@
 import React, { useEffect, useState } from "react";
 import "./requestModal.css";
 import axios from "axios";
+import receiptImg from "assets/images/request_img/updatemodal.png";
+import cardImg from "assets/images/request_img/card.png";
+import clockImg from "assets/images/request_img/clock.png";
+import joinImg from "assets/images/request_img/join.png";
+import penImg from "assets/images/request_img/pen.png";
+import picImg from "assets/images/request_img/pic.png";
+import purposeImg from "assets/images/request_img/purpose.png";
+import shopImg from "assets/images/request_img/shop.png";
+import submitbtn from "assets/images/request_img/submitbtn.png";
 
-const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
-  const [requestId, setRequestId] = useState(0);
+  const [paymentId, setPaymentId] = useState(0);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
+  const [postImg, setPostImg] = useState("");
+  const [preImg, setPreImg] = useState("");
   const [receiptUrl, setReceiptUrl] = useState("");
   const [memo, setMemo] = useState("");
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isOpen, closeModal]);
 
   useEffect(() => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/requestInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/bySelectedId/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);
@@ -52,8 +78,8 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
 
     const requestData = {
-      requestId: requestId,
-      paymentId: selectedPaymentId,
+      requestId: selectedId,
+      paymentId: paymentId,
       purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
       receiptUrl: receiptUrl,
@@ -75,13 +101,17 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
       });
   };
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const filePath = URL.createObjectURL(files[0]);
-      setReceiptUrl(filePath);
-    }
-  };
+  function uploadFile(e) {
+    let file = e.target.files[0];
+    setPostImg(file);
+
+    let preview = new FileReader();
+    preview.onload = function () {
+      setPreImg(preview.result);
+      setReceiptUrl(preview.result);
+    };
+    preview.readAsDataURL(file);
+  }
 
   const handlePurposeChange = (event) => {
     const selectedPurposeItemUid = event.target.value;
@@ -94,67 +124,111 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   if (!isOpen || !requestInfo || !purposeItem) return null;
 
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
+  const paymentTimeArray = requestInfo.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+  const paymentTime = paymentDate + " " + paymentTimeArray.join("");
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        <div>반려 사유 : {requestInfo.refuseMessage}</div>
-        <h1>결재 요청</h1>
-        <div>
-          <div>결제일시</div>
-          <input value={paymentDate} readOnly />
-        </div>
-        <div>
-          <div>사용금액</div>
-          <input value={requestInfo.paymentInfo.payAmount} readOnly />
-        </div>
-        <div>
-          <div>사용처</div>
-          <input value={requestInfo.paymentInfo.merchant} readOnly />
-        </div>
-        <div>
-          <div>용도</div>
-          <select
-            value={selectedPurpose ? selectedPurpose.purposeItemUid : ""}
-            onChange={handlePurposeChange}
+        {requestInfo.refuseMessage && <div>반려 사유 : {requestInfo.refuseMessage}</div>}
+        <div className="modal-title">
+          <div className="modal-title-img">
+            <img src={receiptImg}></img>
+            <div>
+              <h1>결재 요청</h1>
+            </div>
+          </div>
+          <span
+            className="material-icons-round notranslate MuiIcon-root MuiIcon-fontSizeInherit css-fnit94-MuiIcon-root"
+            aria-hidden="true"
+            style={{ cursor: "pointer" }}
+            onClick={closeModal}
           >
-            {purposeItem.map((purpose) => (
-              <option
-                key={purpose.purposeItemUid}
-                value={purpose.purposeItemUid}
-                selected={selectedPurpose === purpose.purposeItemUid ? "selected" : ""}
-              >
-                {purpose.purposeCategory} || {purpose.purposeItem}
-              </option>
-            ))}
-          </select>
+            close
+          </span>
+        </div>
+        <hr />
+        <div className="modal-main-content">
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={clockImg} />
+              결제일시
+              <span className="ness"> * </span>
+            </div>
+            <input value={paymentTime} readOnly />
+          </div>
+
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={cardImg} />
+              사용금액
+              <span className="ness"> * </span>
+            </div>
+            <input value={requestInfo.paymentInfo.payAmount} readOnly />
+          </div>
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={shopImg} />
+              사용처 <span className="ness"> * </span>&nbsp; &nbsp;
+            </div>
+            <input value={requestInfo.paymentInfo.merchant} readOnly />
+          </div>
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={purposeImg} />
+              용도
+              <span className="ness"> * </span> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            </div>
+            <select
+              value={selectedPurpose ? selectedPurpose.purposeItemUid : ""}
+              onChange={handlePurposeChange}
+            >
+              {purposeItem.map((purpose) => (
+                <option
+                  key={purpose.purposeItemUid}
+                  value={purpose.purposeItemUid}
+                  selected={selectedPurpose === purpose.purposeItemUid ? "selected" : ""}
+                >
+                  {purpose.purposeCategory} || {purpose.purposeItem}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={joinImg} />
+              참석자
+              <span className="ness"> * </span>
+            </div>
+            <input
+              placeholder="참석자를 입력하세요."
+              value={requestInfo.participant}
+              onChange={(e) => setParticipant(e.target.value)}
+            />
+          </div>
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={picImg} />
+              영수증 &nbsp; &nbsp;
+            </div>
+            {preImg && <img className="preview" alt={preImg} src={preImg} />}
+            <input id="file-upload" type="file" onChange={uploadFile}></input>
+          </div>
+          <div className="modal-item">
+            <div className="modal-input">
+              <img src={penImg} />
+              메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            </div>
+            <div>
+              <textarea className="inputbox" />
+            </div>
+          </div>
         </div>
         <div>
-          <div>참석자</div>
-          <input
-            placeholder="참석자를 입력하세요."
-            value={requestInfo.participant}
-            onChange={(e) => setParticipant(e.target.value)}
-          />
+          <button className="submitButton" onClick={handleSubmit}>
+            <img src={submitbtn} />
+          </button>
         </div>
-        <div>
-          <div>영수증 첨부</div>
-          <input type="file" onChange={handleFileChange} />
-        </div>
-        <div>
-          <div>메모</div>
-          <input
-            placeholder="기타 특이사항을 입력하세요."
-            value={requestInfo.memo}
-            onChange={(e) => setMemo(e.target.value)}
-          />
-        </div>
-        <button className="submitButton" onClick={handleSubmit}>
-          재요청
-        </button>
-        <button className="closeButton" onClick={closeModal}>
-          닫기
-        </button>
       </div>
     </div>
   );

@@ -5,9 +5,19 @@ import Card from "@mui/material/Card";
 import Table from "examples/Tables/Table";
 import Footer from "examples/Footer";
 import RequestApproveData from "../data/requestApproveData";
+import CheckContext from "component_sy/modal/checkModal";
 
 function RequestApprove() {
-  const { columns, rows } = RequestApproveData();
+  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
+    RequestApproveData();
+
+  let modalComponent;
+  if (sendRequest === "조회") {
+    modalComponent = (
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
+    );
+  }
+
   return (
     <>
       <SoftBox py={3}>
@@ -32,6 +42,7 @@ function RequestApprove() {
         </SoftBox>
       </SoftBox>
       <Footer />
+      {modalComponent}
     </>
   );
 }

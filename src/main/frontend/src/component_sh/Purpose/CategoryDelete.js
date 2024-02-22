@@ -12,23 +12,29 @@ function CategoryDelete({ pur, selectedCategory, handleCategoryClick, deleteElem
 
   return (
     <>
-      <SoftBox
+      {/* <SoftBox
         borderRadius="lg"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        width="7rem"
+        padding="1rem"
         p={1}
         style={{
           backgroundColor: selectedCategory === pur.purposeCategory ? "lightblue" : "white",
           position: "relative",
         }}
+      > */}
+      <SoftButton
+        style={{
+          padding: "0rem",
+          // background: "#f8f9fa",
+          backgroundColor: selectedCategory === pur.purposeCategory ? "lightblue" : "#f1f3f5",
+          marginLeft: "30%",
+          marginBottom: "30%",
+        }}
+        onClick={() => handleCategoryClick(pur.purposeCategory)}
       >
-        <SoftButton
-          style={{ width: "150px" }}
-          onClick={() => handleCategoryClick(pur.purposeCategory)}
-        >
-          {pur.purposeCategory}
-        </SoftButton>
         {selectedCategory === pur.purposeCategory && deleteElement === pur.purposeCategory && (
           <button
             className="allDeteleBtn"
@@ -40,7 +46,9 @@ function CategoryDelete({ pur, selectedCategory, handleCategoryClick, deleteElem
             <img src="image_sh/deleteButton.png" alt="Delete" />
           </button>
         )}
-      </SoftBox>
+        {pur.purposeCategory}
+      </SoftButton>
+      {/* </SoftBox> */}
     </>
   );
 }
