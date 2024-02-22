@@ -23,5 +23,8 @@ public interface PurposeItemRepo extends JpaRepository<PurposeItem,Integer>{
 
     List<PurposeItem> findByPurposeCategoryAndPurposeItem(PurposeCategory purposeCategory, String purposeItem);
 
+    
+    List<PurposeItem> findAllByPurposeItem(String purposeItem);
+
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /**
 =========================================================
 * Soft UI Dashboard React - v4.0.1
@@ -21,13 +22,50 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 
-import { useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import PurposeModal from "component_sh/Purpose/PurposeModal";
 import PurposeList from "component_sh/Purpose/PurposeList";
-import { red } from "@mui/material/colors";
+import SoftInput from "components/SoftInput";
+
+// const SearchQureyContext = createContext(); // @@
+
+// function SearchProvider({ children }) {
+//   const [serachItem, setSerachItem] = useState("");
+
+//   const updateSearchItem = (item) => {
+//     setSerachItem(item);
+//     console.log(serachItem + "@@@@@@@@@@@@@@@@@@@@@@");
+//   };
+//   const searchPlayloadMemoizedValue = useMemo(
+//     () => ({
+//       serachItem,
+//       updateSearchItem,
+//     }),
+//     [serachItem, updateSearchItem]
+//   );
+
+//   return (
+//     <SearchQureyContext.Provider value={searchPlayloadMemoizedValue}>
+//       {children}
+//     </SearchQureyContext.Provider>
+//   );
+// }
 
 function CateogryListMain() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [serachItem, setSerachItem] = useState("");
+
+  const updateSearchItem = (item) => {
+    setSerachItem(item);
+    console.log(serachItem + "@@@@@@@@@@@@@@@@@@@@@@");
+  };
+  const searchPlayloadMemoizedValue = useMemo(
+    () => ({
+      serachItem,
+      updateSearchItem,
+    }),
+    [serachItem, updateSearchItem]
+  );
 
   const showModal = () => {
     setModalOpen(true);
@@ -52,16 +90,24 @@ function CateogryListMain() {
         <SoftTypography variant="h6" fontWeight="bold">
           상위 항목
         </SoftTypography>{" "}
-        <SoftButton style={{ background: "aliceblue", height: "0.5rem" }} onClick={showModal}>
+        <SoftBox style={{ position: "relative", left: "35%" }}>
+          <SoftInput
+            placeholder="하위항목"
+            icon={{ component: "search", direction: "left" }}
+            onChange={(e) => updateSearchItem(e.target.value)}
+          />
+        </SoftBox>
+        <SoftButton style={{ background: "lightgray", height: "0.5rem" }} onClick={showModal}>
           항목 추가
         </SoftButton>
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
       <SoftBox>
-        <PurposeList modalOpen={modalOpen} />
+        <PurposeList modalOpen={modalOpen} serachItem={serachItem} />
       </SoftBox>
     </Card>
   );
 }
 
 export default CateogryListMain;
+// export { SearchQureyContext, SearchProvider };

@@ -8,7 +8,7 @@ import SoftBox from "components/SoftBox";
 import Table from "examples/Tables/Table";
 import CategoryDelete from "./CategoryDelete";
 
-function PurposeList({ modalOpen }) {
+function PurposeList({ modalOpen, serachItem }) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -106,6 +106,17 @@ function PurposeList({ modalOpen }) {
     }));
   };
 
+  const rows2 = Array.isArray(serachItem)
+    ? serachItem.map((item, index) => ({
+        소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
+        삭제: (
+          <SoftButton onClick={() => handleDeletepurposeItem(item)}>
+            <span style={{ fontSize: "13px" }}>삭제</span>
+          </SoftButton>
+        ),
+      }))
+    : [];
+
   return (
     <Fragment>
       <p
@@ -154,6 +165,11 @@ function PurposeList({ modalOpen }) {
               }}
             >
               <Table columns={columns} rows={rows()} />{" "}
+            </SoftBox>
+          )}
+          {rows2.length > 0 && (
+            <SoftBox>
+              <Table columns={columns} rows={rows2} />
             </SoftBox>
           )}
         </div>
