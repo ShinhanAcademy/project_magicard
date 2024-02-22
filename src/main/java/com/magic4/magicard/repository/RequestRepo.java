@@ -16,14 +16,14 @@ public interface RequestRepo extends JpaRepository<Request, Integer> {
         List<Request> findByResponseEmployeeEmailAndApprovalStepsOrderByApprovalStepsAsc(String responseEmployeeEmail,
                         ApprovalSteps approvalSteps);
 
-    
-List<Request> findByPaymentInfo(PaymentInfo paymentInfo);
+        List<Request> findByPaymentInfo(PaymentInfo paymentInfo);
 
         List<Request> findByEmployeeAndRequestLevel(Employee employee, int requestLevel);
-
+        
         List<Request> findByApprovalSteps(ApprovalSteps approvalSteps);
-@Query(nativeQuery = true,
-            value = "SELECT r.*, p.payment_time " +
+        
+    @Query(nativeQuery = true,
+        value = "SELECT r.*, p.payment_time " +
                     "FROM request r LEFT JOIN payment_info p " +
                     "on r.payment_id = p.payment_id " +
                     "where r.request_employee_email = ?1 and r.request_level = ?2 " +
