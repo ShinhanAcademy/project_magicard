@@ -41,12 +41,15 @@ import { Card } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loading from "layouts/employees/loading/Loading";
 
 function Onboarding() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
   const employeeEmail = useSelector((state) => state.user.employeeEmail);
   const employeeName = useSelector((state) => state.user.employeeName);
   const [card, setCard] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   let cardExpiredDate = "" + card.expireDate;
   let cardNumber = "" + card.cardNumber;
 
@@ -60,6 +63,7 @@ function Onboarding() {
           console.log("response.data: ", response.data);
         })
         .catch((error) => console.error(error));
+      setLoading(false); //로딩 완료
     }
   };
 
@@ -71,7 +75,7 @@ function Onboarding() {
   useEffect(() => {
     getMyCard();
     console.log("Card[isLoggedIn]: ", card);
-  }, [isLoggedIn]);
+  }, [isLoggedIn, loading]);
 
   return (
     <DashboardLayout>
@@ -83,15 +87,19 @@ function Onboarding() {
               <Grid container spacing={3}>
                 <Grid item xs={12} xl={4.5}>
                   {isLoggedIn ? (
-                    <MasterCard
-                      cardType={card.cardName}
-                      bgColor={card.cardCode}
-                      number={cardNumber.replace(/[^0-9]/g, "")}
-                      holder={employeeName}
-                      expires={
-                        cardExpiredDate.substring(5, 7) + "/" + cardExpiredDate.substring(2, 4)
-                      }
-                    />
+                    loading ? (
+                      <Loading />
+                    ) : (
+                      <MasterCard
+                        cardType={card.cardName}
+                        bgColor={card.cardCode}
+                        number={cardNumber.replace(/[^0-9]/g, "")}
+                        holder={employeeName}
+                        expires={
+                          cardExpiredDate.substring(5, 7) + "/" + cardExpiredDate.substring(2, 4)
+                        }
+                      />
+                    )
                   ) : (
                     <MasterCard number={7777111145947852} holder="Seunggwang Roh" expires="11/22" />
                   )}

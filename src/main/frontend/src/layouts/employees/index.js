@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Select from "react-select";
 import EmployeesFiltering from "./data/employeesFiltering";
+import Loading from "./loading/Loading";
 
 function Employees() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);

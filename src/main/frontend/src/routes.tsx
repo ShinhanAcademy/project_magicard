@@ -184,7 +184,7 @@ const routes = [
 
   {
     type: "collapse",
-    name: "Profile",
+    name: "마이페이지",
     key: "profile",
     route: "/profile",
     icon: <CustomerSupport size="12px" />,
@@ -193,7 +193,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sign In",
+    name: "로그인",
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
@@ -202,7 +202,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sign Up",
+    name: "회원가입",
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
