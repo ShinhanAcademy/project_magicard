@@ -19,23 +19,23 @@ public interface RequestRepo extends JpaRepository<Request, Integer> {
         List<Request> findByPaymentInfo(PaymentInfo paymentInfo);
 
         List<Request> findByEmployeeAndRequestLevel(Employee employee, int requestLevel);
-
+        
         List<Request> findByApprovalSteps(ApprovalSteps approvalSteps);
+        
+    @Query(nativeQuery = true,
+        value = "SELECT r.*, p.payment_time " +
+                    "FROM request r LEFT JOIN payment_info p " +
+                    "on r.payment_id = p.payment_id " +
+                    "where r.request_employee_email = ?1 and r.request_level = ?2 " +
+                    "order by p.payment_time desc")
+    List<Request> findByRequestEmployeeEmailAndRequestLevelOrderByPaymentTime(String requestEmployeeEmail, int requestLevel);
 
-        @Query(nativeQuery = true, value = "SELECT r.*, p.payment_time " +
-                        "FROM request r LEFT JOIN payment_info p " +
-                        "on r.payment_id = p.payment_id " +
-                        "where r.request_employee_email = ? and r.request_level = ? " +
-                        "order by p.payment_time desc")
-        List<Request> findByRequestEmployeeEmailAndRequestLevelOrderBYPaymentTime(String requestEmployeeEmail,
-                        int requestLevel);
-
-        @Query(nativeQuery = true, value = "SELECT r.*, p.payment_time " +
-                        "FROM request r LEFT JOIN payment_info p " +
-                        "on r.payment_id = p.payment_id " +
-                        "where r.response_employee_email = ? and r.request_level = ? " +
-                        "order by p.payment_time desc")
-        List<Request> findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(String responseEmployeeEmail,
-                        int requestLevel);
+    @Query(nativeQuery = true,
+            value = "SELECT r.*, p.payment_time " +
+                    "FROM request r LEFT JOIN payment_info p " +
+                    "on r.payment_id = p.payment_id " +
+                    "where r.response_employee_email = ?1 and r.request_level = ?2 " +
+                    "order by p.payment_time desc")
+    List<Request> findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(String responseEmployeeEmail, int requestLevel);
 
 }

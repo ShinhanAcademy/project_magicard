@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magic4.magicard.dto.PurposeAllDto;
 import com.magic4.magicard.dto.PurposeDto;
 import com.magic4.magicard.service.PurposeService;
+import com.magic4.magicard.vo.PurposeCategory;
+
 
 @RestController
 @RequestMapping("/pur")
@@ -22,6 +23,13 @@ public class PurposeController {
 
     @Autowired
     PurposeService purService;
+
+    //회사별 category 추출
+    @GetMapping("categorylist")
+    public List<PurposeCategory> categoryList() {
+        return purService.categoryList();
+    }
+    
 
     // 대분류만 가져오기
     @GetMapping("/catelist")
@@ -33,7 +41,7 @@ public class PurposeController {
     @GetMapping("/list")
     public List<PurposeAllDto> getAllCateList() {
         return purService.getAllCateList();
-    };
+    }; 
 
     // 대분류 소분류 추가
     @PostMapping("/insert")

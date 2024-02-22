@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 // Soft UI Dashboard React components
 import axios from "axios";
+import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
@@ -32,21 +33,33 @@ const RequestApproveData = () => {
 
   const rows = approveList.map((approve) => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = approve.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
+    let backgroundColor = "";
+    let color = "";
+    if (approve.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (approve.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
 
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.employee.employeeEmail}
+          {approve.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.responseEmployeeEmail}
+          {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -72,19 +85,13 @@ const RequestApproveData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.requestStatus}
+          {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
+        <SoftButton style={{ backgroundColor: backgroundColor, color: color }}>
           {approve.sendRequest}
-        </SoftTypography>
+        </SoftButton>
       ),
     };
   });

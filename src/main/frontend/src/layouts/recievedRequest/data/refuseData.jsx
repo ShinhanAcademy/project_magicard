@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
 // Soft UI Dashboard React components
 import axios from "axios";
+import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const RefuseData = () => {
   const [refuseList, setRefuseList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
     axios({
@@ -18,6 +22,16 @@ const RefuseData = () => {
       })
       .catch((err) => {});
   }, []);
+
+  const handleModalOpen = (selectedPaymentId) => {
+    setSelectedPaymentId(selectedPaymentId);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
 
   const columns = [
     { name: "결제일시", align: "center" },
@@ -32,21 +46,35 @@ const RefuseData = () => {
 
   const rows = refuseList.map((refuse) => {
     const paymentDate = refuse.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = refuse.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+
+    const handleButtonClick = () => {
+      setSendRequest(refuse.sendRequest);
+      handleModalOpen(refuse.paymentInfo.paymentId);
+    };
+
+    let backgroundColor = "";
+    let color = "";
+    if (refuse.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    }
 
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.employee.employeeName}
+          {refuse.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.responseEmployeeEmail}
+          {refuse.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -72,23 +100,31 @@ const RefuseData = () => {
       ),
       상태: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.requestStatus}
+          {refuse.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{
+            backgroundColor: backgroundColor,
+            color: color,
+          }}
         >
           {refuse.sendRequest}
-        </SoftTypography>
+        </SoftButton>
       ),
     };
   });
-  return { columns, rows };
+  return {
+    columns,
+    rows,
+    isModalOpen,
+    handleModalOpen,
+    handleModalClose,
+    selectedPaymentId,
+    sendRequest,
+  };
 };
 
 export default RefuseData;

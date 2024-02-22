@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.magic4.magicard.dto.PurposeAllDto;
+import com.magic4.magicard.dto.PurposeCategoryDto;
 import com.magic4.magicard.dto.PurposeDto;
 import com.magic4.magicard.repository.PurposeCategoryRepo;
 import com.magic4.magicard.repository.PurposeItemRepo;
@@ -28,6 +29,12 @@ public class PurposeService {
     //소분류
     @Autowired
     PurposeItemRepo purItemRepo;
+
+    //회사별 category 추출
+    public List<PurposeCategory> categoryList(){
+      Company company = Company.builder().companyTicker("SHDS").build();
+      return purCateRepo.findByCompany(company);
+    }
 
 
     //대분류 소분류 삭제
