@@ -15,6 +15,8 @@ function PurposeList({ modalOpen, serachItem }) {
   const [deleteElement, setDeleteElement] = useState("");
   const [categoryCount, setCount] = useState("0");
 
+  //검색기능 구현
+
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
       setSelectedCategory(null); // 이미 선택된 카테고리를 다시 클릭하면 선택 해제
