@@ -200,7 +200,6 @@ input {
   font-size: 1.2rem;
 }
 
-<<<<<<< HEAD
 select {
   margin-right: 1rem;
   font-family: ChungBukUniversity;
@@ -212,7 +211,7 @@ option {
 }
 option:nth-child(1) {
   color: #8e8e8e;
-=======
+}
 .approveButton > img {
   width: 125px;
   height: 50px;
@@ -268,5 +267,10 @@ option:nth-child(1) {
   border-radius: 8px;
   height: 100px;
   margin-left: -17px;
->>>>>>> 2882499afdde4b24c91cefa5177ca5c9f441f861
+}
+
+.css-kodg4s-MuiTypography-root > button {
+  width: 3rem;
+  height: auto;
+  padding: 0px;
 }
