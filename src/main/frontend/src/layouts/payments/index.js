@@ -16,11 +16,15 @@ function PaymentsTables() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeName);
   const softButtonRef = useRef(null);
 
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     softButtonRef.current.click();
+  //   }
+  // }, [isLoggedIn]);
+
   useEffect(() => {
-    if (isLoggedIn) {
-      softButtonRef.current.click(); // 페이지가 열리면 SoftButton 클릭
-    }
-  }, [isLoggedIn]);
+    softButtonRef.current.click();
+  }, []);
 
   return (
     <DashboardLayout>
