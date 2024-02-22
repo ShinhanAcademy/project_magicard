@@ -109,4 +109,10 @@ public class PaymentInfoService {
     return Employee.builder().employeeEmail(employeeEmailDto.getEmployeeEmail()).build();
 
   }
+
+    public int getRequestInfoByRequestId(int paymentId) {
+      PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
+      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+      return request.get(0).getRequestID();
+    }
 }

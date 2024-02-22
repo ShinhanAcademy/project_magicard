@@ -298,11 +298,6 @@ public class RequestService {
   // requestInfo 불러오기, 수정, 조회, 확인
   public RequestDto getRequestInfo(Integer paymentId) { // 신청 아무것도 안했을 때
     PaymentInfo paymentInfo = paymentInfoRepo.findById(paymentId).orElse(null);
-//  public RequestDto getRequestInfo(Integer requestId) { // 신청 아무것도 안했을 때
-//
-//      Request request = requestRepo.findById(requestId).orElse(null);
-//
-//    PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
     PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
 
     List<Request> requestList = requestRepo.findByPaymentInfo(paymentInfo);
@@ -327,6 +322,20 @@ PurposeItemDto purposeItemDto = null;
     return requestDto;
   }
 
+  public RequestDto getRequestInfoByRequestId(Integer requestId) {
+    Request request = requestRepo.findById(requestId).orElse(null);
+    RequestDto requestDto = model.map(request, RequestDto.class);
+
+    PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
+    PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
+    requestDto.setPaymentInfo(paymentInfoDto);
+
+    PurposeItem purposeItem = purposeItemRepo.findById(request.getPurposeItem().getPurposeItemUid()).orElse(null);
+    PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
+    requestDto.setPurposeItem(purposeItemDto);
+
+    return requestDto;
+  }
 
   public Integer updateRequest(RequestFormDto requestFormDto, EmployeeDto employeeInfo) {
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);

@@ -2,14 +2,12 @@ package com.magic4.magicard.controller;
 
 import java.util.*;
 
-import com.magic4.magicard.dto.LoginResponseDto;
+import com.magic4.magicard.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.magic4.magicard.dto.CompanyDto;
-import com.magic4.magicard.dto.EmployeeDto;
-import com.magic4.magicard.dto.PaymentInfoDto;
 import com.magic4.magicard.service.PaymentInfoService;
 
 import jakarta.servlet.http.HttpSession;
@@ -51,6 +49,11 @@ public class PaymentInfoController {
   public int getTotalAmount(HttpServletRequest httpServletRequest) {
     EmployeeDto myInfo = getLoginInfo(httpServletRequest);
     return paymentInfoService.getTotalAmount(myInfo);
+  }
+
+  @GetMapping("/getRequestId/{paymentId}")
+  public int getRequestInfoByRequestId(@PathVariable Integer paymentId){
+    return paymentInfoService.getRequestInfoByRequestId(paymentId);
   }
   
 }
