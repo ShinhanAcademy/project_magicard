@@ -199,3 +199,16 @@ input {
   color: black;
   font-size: 1.2rem;
 }
+
+select {
+  margin-right: 1rem;
+  font-family: ChungBukUniversity;
+}
+
+option {
+  font-family: ChungBukUniversity;
+  color: black;
+}
+option:nth-child(1) {
+  color: #8e8e8e;
+}
