@@ -7,14 +7,15 @@ import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
 import Table from "examples/Tables/Table";
 import CategoryDelete from "./CategoryDelete";
-import SoftAlert from "components/SoftAlert";
 
-function PurposeList({ modalOpen }) {
+function PurposeList({ modalOpen, serachItem }) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [deleteElement, setDeleteElement] = useState("");
   const [categoryCount, setCount] = useState("0");
+
+  //검색기능 구현
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -34,7 +35,9 @@ function PurposeList({ modalOpen }) {
   };
 
   const deleteAll = (categorytest) => {
-    const confirmed = window.confirm("전체 삭제 하시겠습니까?");
+    const confirmed = window.confirm(
+      "상위 항목 삭제시 해당 하위 항목이 모두 삭제됩니다. \n삭제하시겠습니까?"
+    );
     if (confirmed) {
       axios({
         method: "delete",
@@ -99,11 +102,22 @@ function PurposeList({ modalOpen }) {
       소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
       삭제: (
         <SoftButton onClick={() => handleDeletepurposeItem(item)}>
-          <span style={{ fontSize: "16px" }}>삭제</span>
+          <span style={{ fontSize: "13px" }}>삭제</span>
         </SoftButton>
       ),
     }));
   };
+
+  const rows2 = Array.isArray(serachItem)
+    ? serachItem.map((item, index) => ({
+        소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
+        삭제: (
+          <SoftButton onClick={() => handleDeletepurposeItem(item)}>
+            <span style={{ fontSize: "13px" }}>삭제</span>
+          </SoftButton>
+        ),
+      }))
+    : [];
 
   return (
     <Fragment>
@@ -116,7 +130,7 @@ function PurposeList({ modalOpen }) {
           marginBottom: "1rem",
         }}
       >
-        전체 상위 항목의 개수 : {categoryCount} 개
+        전체 용도 : {categoryCount} 개
       </p>
       <Card id="delete-account" sx={{ height: "100%" }}>
         <Grid container spacing={2}>
@@ -139,19 +153,27 @@ function PurposeList({ modalOpen }) {
             </Grid>
           ))}
         </Grid>
+
         <div>
-          <SoftBox
-            sx={{
-              "& .MuiTableRow-root:not(:last-child)": {
-                "& td": {
-                  borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                    `${borderWidth[1]} solid ${borderColor}`,
+          {selectedCategory && (
+            <SoftBox
+              sx={{
+                "& .MuiTableRow-root:not(:last-child)": {
+                  "& td": {
+                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                      `${borderWidth[1]} solid ${borderColor}`,
+                  },
                 },
-              },
-            }}
-          >
-            <Table columns={columns} rows={rows()} />
-          </SoftBox>
+              }}
+            >
+              <Table columns={columns} rows={rows()} />{" "}
+            </SoftBox>
+          )}
+          {rows2.length > 0 && (
+            <SoftBox>
+              <Table columns={columns} rows={rows2} />
+            </SoftBox>
+          )}
         </div>
       </Card>
     </Fragment>

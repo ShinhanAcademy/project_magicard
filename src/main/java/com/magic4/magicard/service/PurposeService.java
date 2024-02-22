@@ -134,10 +134,11 @@ public class PurposeService {
              else if(existingCategory != null  && existingItem == null){
               PurposeItem item = PurposeItem.builder().purposeCategory(existingCategory).purposeItem(purposeItem).build();
               purItemRepo.save(item);
-              return existingCategory.getPurposeCategory();
+              return "success";
              }
              else {
-              return existingCategory.getPurposeCategory();
+              PurposeCategory existingItemCategory = existingItem.getPurposeCategory();
+              return existingItemCategory.getPurposeCategory();
              }
         }
     
