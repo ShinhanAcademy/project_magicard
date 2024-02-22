@@ -12,6 +12,7 @@ function EmployeesFiltering(props) {
   const [authoritySelect, setAuthoritySelect] = useState(null);
 
   console.log("EmployeesFiltering", props.filter);
+  console.log(deptSelect);
 
   const getDepartments = () => {
     axios
@@ -20,14 +21,15 @@ function EmployeesFiltering(props) {
         if (response.data != "") {
           setDeptList(response.data);
         }
-        console.log("부서들.." + response.data[1]);
+        console.log("부서들..", response.data[1]);
+        console.log("부서들..0", response.data[0]);
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     getDepartments();
-    console.log("deptList : ", deptList);
+    console.log("deptList..", deptList[0]);
   }, []);
 
   const rank = [
@@ -42,6 +44,11 @@ function EmployeesFiltering(props) {
     { value: "일반", label: "일반" },
     { value: "관리자", label: "관리자" },
   ];
+
+  const dept = deptList.map((item) => ({
+    value: item.department_id,
+    label: item.department_name,
+  }));
 
   const customStyles = {
     placeholder: (defaultStyles) => {
@@ -71,43 +78,82 @@ function EmployeesFiltering(props) {
     }),
   };
 
-  return (
-    <>
-      <SoftBox mt={1} mb={5}>
+  function RankResult() {
+    return (
+      <SoftBox>
         <Select
           styles={customStyles}
-          sx={{ fontSize: "small" }}
           placeholder="직급 선택"
           options={rank}
           onChange={(e) => {
+            setDeptSelect(null);
+            setAuthoritySelect(null);
             setRankSelect(e.value);
           }}
+          value={rank.filter(function (option) {
+            return option.value === rankSelect;
+          })}
         />
       </SoftBox>
-      <SoftBox mt={1} mb={5}>
+    );
+  }
+
+  function AuthorityResult() {
+    return (
+      <SoftBox>
         <Select
           styles={customStyles}
-          sx={{ fontSize: "small" }}
           placeholder="권한 선택"
           options={authority}
           onChange={(e) => {
+            setRankSelect(null);
+            setDeptSelect(null);
             setAuthoritySelect(e.value);
           }}
+          value={authority.filter(function (option) {
+            return option.value === authoritySelect;
+          })}
         />
       </SoftBox>
-      <SoftBox mt={1} mb={5}>
+    );
+  }
+
+  function DeptResult() {
+    return (
+      <SoftBox>
         <Select
           styles={customStyles}
-          sx={{ fontSize: "small" }}
           placeholder="부서 선택"
-          options={deptList}
+          options={dept}
           onChange={(e) => {
+            setRankSelect(null);
+            setAuthoritySelect(null);
             setDeptSelect(e.value);
           }}
+          value={dept.filter(function (option) {
+            return option.value === deptSelect;
+          })}
         />
       </SoftBox>
-    </>
-  );
+    );
+  }
+
+  return props.filter == "부서" ? (
+    <DeptResult />
+  ) : props.filter == "직급" ? (
+    <RankResult />
+  ) : props.filter == "권한" ? (
+    <AuthorityResult />
+  ) : null;
 }
 
 export default EmployeesFiltering;
+{
+  /* {activeButton == "부서" ? (
+                  <DeptResult />
+                ) : activeButton == "직급" ? (
+                  <RankResult />
+                ) : activeButton == "권한" ? (
+                  <AuthorityResult />
+                ) : null} */
+}

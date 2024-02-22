@@ -99,6 +99,7 @@ const routes = [
     component: <PurposeCategory />,
   },
   {
+    type: "collapse",
     name: "부서 관리",
     key: "departments",
     route: "/departments",
@@ -108,7 +109,6 @@ const routes = [
   },
   {
     type: "collapse",
-
     name: "결제 내역",
     key: "payments",
     route: "/payments",
