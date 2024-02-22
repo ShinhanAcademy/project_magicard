@@ -9,24 +9,13 @@ import RefuseData from "../data/refuseData";
 import CheckContext from "component_sy/modal/checkModal";
 
 function Refuse() {
-  const {
-    columns,
-    rows,
-    isModalOpen,
-    handleModalOpen,
-    handleModalClose,
-    selectedPaymentId,
-    sendRequest,
-  } = RefuseData();
+  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
+    RefuseData();
 
   let modalComponent;
   if (sendRequest === "조회") {
     modalComponent = (
-      <CheckContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   }
 
