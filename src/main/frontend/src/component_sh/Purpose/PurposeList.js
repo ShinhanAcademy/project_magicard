@@ -100,7 +100,7 @@ function PurposeList({ modalOpen }) {
       소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
       삭제: (
         <SoftButton onClick={() => handleDeletepurposeItem(item)}>
-          <span style={{ fontSize: "16px" }}>삭제</span>
+          <span style={{ fontSize: "13px" }}>삭제</span>
         </SoftButton>
       ),
     }));
