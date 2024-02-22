@@ -52,7 +52,9 @@ function CateogryListMain() {
         <SoftTypography variant="h6" fontWeight="bold">
           상위 항목
         </SoftTypography>{" "}
-        <SoftButton onClick={showModal}>용도 추가</SoftButton>
+        <SoftButton style={{ background: "aliceblue", height: "0.5rem" }} onClick={showModal}>
+          항목 추가
+        </SoftButton>
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
       <SoftBox>

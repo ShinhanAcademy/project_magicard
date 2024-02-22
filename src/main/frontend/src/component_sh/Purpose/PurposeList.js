@@ -7,7 +7,6 @@ import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
 import Table from "examples/Tables/Table";
 import CategoryDelete from "./CategoryDelete";
-import SoftAlert from "components/SoftAlert";
 
 function PurposeList({ modalOpen }) {
   const [purList, setPurList] = useState([]);
@@ -35,7 +34,7 @@ function PurposeList({ modalOpen }) {
 
   const deleteAll = (categorytest) => {
     const confirmed = window.confirm(
-      "상위항목 삭제시 해당 하위 항목이 모두 삭제 됩니다. 삭제하시겠습니까?"
+      "상위 항목 삭제시 해당 하위 항목이 모두 삭제됩니다. \n삭제하시겠습니까?"
     );
     if (confirmed) {
       axios({
@@ -118,7 +117,7 @@ function PurposeList({ modalOpen }) {
           marginBottom: "1rem",
         }}
       >
-        전체 상위 항목의 개수 : {categoryCount} 개
+        전체 용도 : {categoryCount} 개
       </p>
       <Card id="delete-account" sx={{ height: "100%" }}>
         <Grid container spacing={2}>
@@ -141,6 +140,7 @@ function PurposeList({ modalOpen }) {
             </Grid>
           ))}
         </Grid>
+
         <div>
           {selectedCategory && (
             <SoftBox
