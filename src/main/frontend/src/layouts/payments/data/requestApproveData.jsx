@@ -7,7 +7,7 @@ import SoftButton from "components/SoftButton";
 const RequestApproveData = () => {
   const [approveList, setApproveList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const RequestApproveData = () => {
 
   const handleModalOpen = (paymentId) => {
     setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
+    setSelectedId(paymentId);
   };
 
   const handleModalClose = () => {
@@ -50,7 +50,7 @@ const RequestApproveData = () => {
 
     const handleButtonClick = () => {
       setSendRequest(approve.sendRequest);
-      handleModalOpen(approve.paymentInfo.paymentId);
+      handleModalOpen(approve.requestId);
     };
 
     let backgroundColor = "";
@@ -121,7 +121,7 @@ const RequestApproveData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };

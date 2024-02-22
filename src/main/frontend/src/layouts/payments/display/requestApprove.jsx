@@ -8,32 +8,17 @@ import RequestApproveData from "../data/requestApproveData";
 import CheckContext from "component_sy/modal/checkModal";
 
 function RequestApprove() {
-  const {
-    columns,
-    rows,
-    isModalOpen,
-    handleModalOpen,
-    handleModalClose,
-    selectedPaymentId,
-    sendRequest,
-  } = RequestApproveData();
+  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
+    RequestApproveData();
 
   let modalComponent;
   if (sendRequest === "수정") {
     modalComponent = (
-      <CheckContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   } else if (sendRequest === "조회") {
     modalComponent = (
-      <CheckContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   }
 

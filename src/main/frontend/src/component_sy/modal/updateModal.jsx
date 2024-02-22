@@ -11,10 +11,10 @@ import purposeImg from "assets/images/request_img/purpose.png";
 import shopImg from "assets/images/request_img/shop.png";
 import submitbtn from "assets/images/request_img/submitbtn.png";
 
-const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
-  const [requestId, setRequestId] = useState(0);
+  const [paymentId, setPaymentId] = useState(0);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
   const [participant, setParticipant] = useState("");
   const [postImg, setPostImg] = useState("");
@@ -41,7 +41,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/requestInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/bySelectedId/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);
@@ -78,8 +78,8 @@ const UpdateContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
 
     const requestData = {
-      requestId: requestId,
-      paymentId: selectedPaymentId,
+      requestId: selectedId,
+      paymentId: paymentId,
       purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
       receiptUrl: receiptUrl,

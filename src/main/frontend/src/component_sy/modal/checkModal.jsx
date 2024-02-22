@@ -10,7 +10,7 @@ import picImg from "assets/images/request_img/pic.png";
 import purposeImg from "assets/images/request_img/purpose.png";
 import shopImg from "assets/images/request_img/shop.png";
 
-const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const CheckContext = ({ isOpen, closeModal, selectedId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
@@ -35,7 +35,7 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/requestInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/bySelectedId/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);
@@ -70,9 +70,6 @@ const CheckContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
   const paymentTimeArray = requestInfo.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
   const paymentTime = paymentDate + " " + paymentTimeArray.join("");
-
-  console.log("requestIdId" + requestInfo.requestId);
-  console.log("gpt" + requestInfo.refuseMessage);
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>

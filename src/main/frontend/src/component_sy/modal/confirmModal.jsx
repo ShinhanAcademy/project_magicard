@@ -13,7 +13,7 @@ import purposeImg from "assets/images/request_img/purpose.png";
 import shopImg from "assets/images/request_img/shop.png";
 import refuseSubmitImg from "assets/images/request_img/refuseSubmit.png";
 
-const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const ConfirmContext = ({ isOpen, closeModal, selectedId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [selectedPurpose, setSelectedPurpose] = useState(null);
@@ -41,7 +41,7 @@ const ConfirmContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/requestInfo/${selectedPaymentId}`,
+        url: `/requests/requestInfo/bySelectedId/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);

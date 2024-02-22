@@ -1,7 +1,7 @@
 .allDeteleBtn {
   position: absolute;
-  top: -14%;
-  left: 39%;
+  top: -33%;
+  left: 80%;
   color: black;
   background-color: transparent;
   border: none;
@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: auto;
 }
 
 .allDeteleBtn img {
