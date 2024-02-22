@@ -22,6 +22,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [preImg, setPreImg] = useState("");
   const [url, setUrl] = useState("");
   const [memo, setMemo] = useState("");
+  const [selectItemByCategory, setSelectItemByCategory] = useState([]); //모든 category별 item
   const [selectPurposeItem, setSelectPurposeItem] = useState([]); //option에서 카테코리 별 purpostitem을 알기 위한 변수
 
   //esc keyEvent 추가
@@ -78,7 +79,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: "/pur/list",
+        url: "/pur/categorylist",
       })
         .then((result) => {
           console.log("select 용도 확인 : " + result.data);
@@ -90,14 +91,31 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
   }, [isOpen]);
 
+  //purposeItem 전체 목록
+  useEffect(() => {
+    axios({
+      method: "Get",
+      url: "/purpose/getList",
+    })
+      .then((result) => {
+        setSelectItemByCategory(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [isOpen]);
+
   // category 별 item 추출
   useEffect(() => {
     if (selectedPurpose) {
-      optionPurposeItem.find(function (data) {
-        if (data.purposeCategory == selectedPurpose) {
-          setSelectPurposeItem(data.purposeItem);
-        }
-      });
+      const selectedItems = selectItemByCategory
+        .filter((data) => data.purposeCategory == selectedPurpose) //동일한 카테고리인 data 찾기
+        .map((data) => ({
+          purposeItemUid: data.purposeItemUid,
+          purposeItem: data.purposeItem,
+        })); //각각의 카테고리에서 purposeItem & Uid만 추출
+
+      setSelectPurposeItem(selectedItems);
     }
   }, [selectedPurpose]);
 
@@ -321,8 +339,8 @@ const Option = ({ optionPurposeItem, handlePurposeChange, selectPurposeItem }) =
     <>
       <select onChange={handlePurposeChange}>
         <option value=""> 용도를 선택하세요</option>
-        {optionPurposeItem.map((purpose, ind) => (
-          <option key={ind} value={purpose.purposeCategory}>
+        {optionPurposeItem.map((purpose) => (
+          <option key={purpose.purposeCategoryId} value={purpose.purposeCategory}>
             {purpose.purposeCategory}
           </option>
         ))}
@@ -330,9 +348,9 @@ const Option = ({ optionPurposeItem, handlePurposeChange, selectPurposeItem }) =
 
       <select onChange={handlePurposeChange}>
         <option value=""> 세부 용도를 선택하세요</option>
-        {selectPurposeItem.map((selectPurpose, ind) => (
-          <option key={ind} value={selectPurpose}>
-            {selectPurpose}
+        {selectPurposeItem.map((selectPurpose) => (
+          <option key={selectPurpose.purposeItemUid} value={selectPurpose.purposeItemUid}>
+            {selectPurpose.purposeItem}
           </option>
         ))}
       </select>
