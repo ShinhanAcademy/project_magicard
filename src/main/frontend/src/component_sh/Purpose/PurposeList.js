@@ -14,6 +14,7 @@ function PurposeList({ modalOpen, searchItem }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [deleteElement, setDeleteElement] = useState("");
   const [categoryCount, setCount] = useState("0");
+  const [searchItemResult, setSearchItemResult] = useState(searchItem);
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
@@ -79,12 +80,24 @@ function PurposeList({ modalOpen, searchItem }) {
         if (res.data.length > 0) {
           setSelectedCategory(res.data[0].purposeCategory);
         }
-        console.log("여기서도 나오니?????????" + searchItem);
+        setSearchItemResult(searchItem);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [modalOpen, newCategory, searchItem]);
+
+  useEffect(() => {
+    if (searchItem) {
+      setSelectedCategory(null);
+    }
+  }, [searchItem]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setSearchItemResult(null);
+    }
+  }, [selectedCategory]);
 
   const columns = [
     { name: "상위항목", align: "center" },
@@ -93,25 +106,27 @@ function PurposeList({ modalOpen, searchItem }) {
   ];
 
   const rows = () => {
-    if (searchItem) {
+    if (searchItemResult) {
       return purList
         .flatMap((pur) => pur.purposeItem.map((item) => ({ item, category: pur.purposeCategory })))
-        .filter((entry) => entry.item.includes(searchItem))
-        .map((entry, index) => ({
-          대분류: <SoftTypography variant="body1">{entry.category}</SoftTypography>,
-          하위항목: <SoftTypography variant="body1">{entry.item}</SoftTypography>,
-          삭제: (
-            <SoftButton onClick={() => handleDeletePurposeItem(entry.item)}>
-              <span style={{ fontSize: "13px" }}>삭제</span>
-            </SoftButton>
-          ),
-        }));
+        .filter((entry) => entry.item.includes(searchItemResult))
+        .map((entry, index) => {
+          return {
+            상위항목: <SoftTypography variant="body1">{entry.category}</SoftTypography>,
+            하위항목: <SoftTypography variant="body1">{entry.item}</SoftTypography>,
+            삭제: (
+              <SoftButton onClick={() => handleDeletePurposeItem(entry.item)}>
+                <span style={{ fontSize: "13px" }}>삭제</span>
+              </SoftButton>
+            ),
+          };
+        });
     } else if (selectedCategory) {
       const selectedCategoryItems =
         purList.find((pur) => pur.purposeCategory === selectedCategory)?.purposeItem || [];
 
       return selectedCategoryItems.map((item, index) => ({
-        대분류: <SoftTypography variant="body1">{selectedCategory}</SoftTypography>,
+        상위항목: <SoftTypography variant="body1">{selectedCategory}</SoftTypography>,
         하위항목: <SoftTypography variant="body1">{item}</SoftTypography>,
         삭제: (
           <SoftButton onClick={() => handleDeletePurposeItem(item)}>
@@ -160,26 +175,9 @@ function PurposeList({ modalOpen, searchItem }) {
         </Grid>
 
         <div>
-          {searchItem ? (
-            <SoftBox>
-              <Table columns={columns} rows={rows()} />
-            </SoftBox>
-          ) : (
-            selectedCategory && (
-              <SoftBox
-                sx={{
-                  "& .MuiTableRow-root:not(:last-child)": {
-                    "& td": {
-                      borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                        `${borderWidth[1]} solid ${borderColor}`,
-                    },
-                  },
-                }}
-              >
-                <Table columns={columns} rows={rows()} />
-              </SoftBox>
-            )
-          )}
+          <SoftBox>
+            <Table columns={columns} rows={rows()} />
+          </SoftBox>
         </div>
       </Card>
     </Fragment>

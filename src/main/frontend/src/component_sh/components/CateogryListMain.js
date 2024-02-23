@@ -33,15 +33,7 @@ function CategoryListMain() {
 
   const updateSearchItem = (item) => {
     setSearchItem(item);
-    console.log(searchItem + "@@@@@@@@@@@@@@@@@@@@@@");
   };
-  const searchPayloadMemoizedValue = useMemo(
-    () => ({
-      searchItem,
-      updateSearchItem,
-    }),
-    [searchItem, updateSearchItem]
-  );
 
   const showModal = () => {
     setModalOpen(true);
