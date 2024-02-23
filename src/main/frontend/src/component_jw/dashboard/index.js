@@ -52,6 +52,8 @@ import CumulativeSpendingChart from "./cumulativeSpendingChart";
 import ComparisonWithOthersChart from "./comparisonWithOthersChart";
 
 import { useState } from "react";
+import MonthlyDonationAmount from "./basicInfo/monthlyDonationAmount";
+import TotalDonationAmount from "./basicInfo/totalDonationAmount";
 
 function Dashboard() {
   const { size } = typography;
@@ -73,52 +75,90 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+        
+      
 
       <SoftBox py={3}>
+{/*         
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid item xs={12} sm={6} xl={6}>
               <TotalCards />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid item xs={12} sm={6} xl={6}>
               <TotalUses />
             </Grid>
+          </Grid>
+        </SoftBox>
+        <SoftBox mb={3}>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <TotalPayment />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <TotalApproval />
             </Grid>
+            <Grid item xs={12} sm={6} xl={3}>
+              <MonthlyDonationAmount />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={3}>
+              <TotalDonationAmount />
+            </Grid>
           </Grid>
-        </SoftBox>
+        </SoftBox> */}
 
         <SoftBox mb={3}>
-          지출 추이 (전 년도 대비 지출)
-          <Grid>
-            <CumulativeSpendingChart key={cumulativeSpendingChartKey} />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalCards />
           </Grid>
-        </SoftBox>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalUses />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalPayment />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalApproval />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <MonthlyDonationAmount />
+          </Grid>
+          <Grid item xs={12} sm={6} xl={2}>
+            <TotalDonationAmount />
+          </Grid>
+        </Grid>
+      </SoftBox>
 
         <SoftBox mb={3}>
-          부서별 지출 비교
-          <Grid>
-            <DepartmentalSpendingChart key={departmentalSpendingChartKey} />
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              지출 추이 (전 년도 대비 지출)
+              <CumulativeSpendingChart />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              타 기업간 분기별 비교
+              <ComparisonWithOthersChart />
+            </Grid>
+          </Grid>
+        </SoftBox> 
+            
+        <SoftBox mb={3}> 
+          부서별 지출 비교 
+          <Grid >
+              <DepartmentalSpendingChart/>
           </Grid>
         </SoftBox>
+        <SoftBox mb={3}> 
+         용도별 지출 추이 
+          <Grid>
+            <SpendingByPurposeChart/>
+          </Grid>    
+        </SoftBox>
+         
 
-        <SoftBox mb={3}>
-          용도별 지출 추이
-          <Grid>
-            <SpendingByPurposeChart key={spendingByPurposeChartKey} />
-          </Grid>
-        </SoftBox>
-
-        <SoftBox mb={3}>
-          타 기업간 분기별 비교
-          <Grid>
-            <ComparisonWithOthersChart key={comparisonWithOthersChartKey} />
-          </Grid>
-        </SoftBox>
+        
+        
 
         <SoftBox mb={3}>
           <Grid container spacing={3}>

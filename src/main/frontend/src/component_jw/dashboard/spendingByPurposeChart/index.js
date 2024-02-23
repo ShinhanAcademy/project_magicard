@@ -25,6 +25,12 @@ const SpendingByPurposeChart = () => {
     setBarOption ({
     title: {
       subtext: '스크롤하여 그래프 확대 가능',
+      subtextStyle: {
+        align: 'right' 
+      },
+      right: '10%', // 오른쪽 여백을 5%로 설정합니다.
+      top: '5%', // 상단 여백을 5%로 설정합니다.
+
     },
     xAxis: {
       data: dataAxis,
@@ -117,17 +123,13 @@ const handleDepartmentChange = (event) => {
 
   return (
     <Card>
-      <Grid container spacing={2} alignItems="flex-start">
+      <Grid container spacing={2} >
         <Grid item xs={12}>
-          <Grid container justifyContent="flex-end" style={{ padding: '16px' }}>
+          <Grid container justifyContent="flex-space-evenly" style={{ padding: '16px' }}>
             <Select
               value={selectedDepartment}
               onChange={handleDepartmentChange}
               displayEmpty
-              style={{
-                backgroundColor: '#cbe1d4', 
-                width: '120px' // 단위 'px'를 추가
-              }}
             >
               {Object.keys(departments).map((department) => (
                 <MenuItem key={department} value={department}>{department}</MenuItem>
@@ -135,12 +137,14 @@ const handleDepartmentChange = (event) => {
             </Select>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <ReactECharts option={barOption} style={{ height: '400px', width: '100%' }} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <ReactECharts option={pieOption} style={{ height: '400px', width: '100%' }} />
-        </Grid>
+        <Grid container spacing={2}>
+  <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center' }}>
+    <ReactECharts option={pieOption} style={{ height: '400px', width: '100%' }} />
+  </Grid>
+  <Grid item xs={12} md={8} style={{ display: 'flex', justifyContent: 'center' }}>
+    <ReactECharts option={barOption} style={{ height: '400px', width: '100%' }} />
+  </Grid>
+</Grid>
       </Grid>
     </Card>
   );      
