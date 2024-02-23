@@ -11,7 +11,7 @@ import submitbtn from "assets/images/request_img/submitbtn.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./requestModal.css";
-const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [optionPurposeItem, setOptionPurposeItem] = useState([]);
@@ -42,7 +42,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/paymentInfo/${selectedPaymentId}`,
+        url: `/requests/paymentInfo/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);
@@ -56,10 +56,10 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "Get",
-        url: `/gpt/recommend/${selectedPaymentId}`,
+        url: `/gpt/recommend/${selectedId}`,
       })
         .then((res) => {
-          console.log("gpt id : " + selectedPaymentId);
+          console.log("gpt id : " + selectedId);
           setPurposeItem(res.data);
           console.log(res.data);
         })
@@ -125,7 +125,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
     const requestData = {
       requestId: 0,
-      paymentId: selectedPaymentId,
+      paymentId: selectedId,
       purposeItemUid: selectPurposeUid,
       participant: participant,
       receiptUrl: url,
