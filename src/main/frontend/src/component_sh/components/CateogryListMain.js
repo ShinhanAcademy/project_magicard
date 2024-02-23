@@ -27,44 +27,20 @@ import PurposeModal from "component_sh/Purpose/PurposeModal";
 import PurposeList from "component_sh/Purpose/PurposeList";
 import SoftInput from "components/SoftInput";
 
-// const SearchQureyContext = createContext(); // @@
-
-// function SearchProvider({ children }) {
-//   const [serachItem, setSerachItem] = useState("");
-
-//   const updateSearchItem = (item) => {
-//     setSerachItem(item);
-//     console.log(serachItem + "@@@@@@@@@@@@@@@@@@@@@@");
-//   };
-//   const searchPlayloadMemoizedValue = useMemo(
-//     () => ({
-//       serachItem,
-//       updateSearchItem,
-//     }),
-//     [serachItem, updateSearchItem]
-//   );
-
-//   return (
-//     <SearchQureyContext.Provider value={searchPlayloadMemoizedValue}>
-//       {children}
-//     </SearchQureyContext.Provider>
-//   );
-// }
-
-function CateogryListMain() {
+function CategoryListMain() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [serachItem, setSerachItem] = useState("");
+  const [searchItem, setSearchItem] = useState("");
 
   const updateSearchItem = (item) => {
-    setSerachItem(item);
-    console.log(serachItem + "@@@@@@@@@@@@@@@@@@@@@@");
+    setSearchItem(item);
+    console.log(searchItem + "@@@@@@@@@@@@@@@@@@@@@@");
   };
-  const searchPlayloadMemoizedValue = useMemo(
+  const searchPayloadMemoizedValue = useMemo(
     () => ({
-      serachItem,
+      searchItem,
       updateSearchItem,
     }),
-    [serachItem, updateSearchItem]
+    [searchItem, updateSearchItem]
   );
 
   const showModal = () => {
@@ -97,17 +73,16 @@ function CateogryListMain() {
             onChange={(e) => updateSearchItem(e.target.value)}
           />
         </SoftBox>
-        <SoftButton style={{ background: "lightgray", height: "0.5rem" }} onClick={showModal}>
+        <SoftButton style={{ background: "powderblue", height: "0.5rem" }} onClick={showModal}>
           항목 추가
         </SoftButton>
         {modalOpen && <PurposeModal setModalOpen={setModalOpen} />}
       </SoftBox>
       <SoftBox>
-        <PurposeList modalOpen={modalOpen} serachItem={serachItem} />
+        <PurposeList modalOpen={modalOpen} searchItem={searchItem} />
       </SoftBox>
     </Card>
   );
 }
 
-export default CateogryListMain;
-// export { SearchQureyContext, SearchProvider };
+export default CategoryListMain;
