@@ -3,9 +3,11 @@ package com.magic4.magicard.controller;
 import java.util.*;
 
 import com.magic4.magicard.dto.*;
+import com.magic4.magicard.service.EmployeeService;
 import com.magic4.magicard.service.RequestService;
 
 import com.magic4.magicard.vo.PaymentInfo;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,50 +20,73 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/requests")
 public class RequestController {
     private final RequestService requestService;
-    CompanyDto companyDto = CompanyDto.builder().companyName("신한DS").companyTicker("SHDS").build();
-    EmployeeDto employeeInfo = EmployeeDto.builder()
-            .employeeEmail("aa4@naver.com")
-//            .employeeEmail("h12@naver.com")
-            .build();
+
+    public EmployeeDto getLoginInfo(HttpServletRequest httpServletRequest){
+        HttpSession session = httpServletRequest.getSession();
+
+        if (session == null || !httpServletRequest.isRequestedSessionIdValid()) {
+            System.out.println("세션이 무효화 상태입니다.");
+        }
+
+        System.out.println(session.getAttribute("myInfo"));
+        if (session.getAttribute("myInfo")==null){
+            return null;
+        } else {
+            LoginResponseDto loginEmp=(LoginResponseDto) session.getAttribute("myInfo");
+            EmployeeDto employeeDto = EmployeeDto.builder()
+                    .employeeEmail(loginEmp.getEmployeeEmail())
+                    .employeeName(loginEmp.getEmployeeName())
+                    .build();
+            return employeeDto;
+        }
+    }
 
     @GetMapping("/fromMe/getRequestList")
-    public List<RequestDto> getFromMeRequestList(HttpSession session) {
-        return requestService.getRequestList(employeeInfo);
+    public List<RequestDto> getFromMeRequestList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getRequestList(myInfo);
     }
 
     @GetMapping("/fromMe/getApproveList")
-    public List<RequestDto> getFromMeApproveList(HttpSession session) {
-        return requestService.getApproveList(employeeInfo);
+    public List<RequestDto> getFromMeApproveList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getApproveList(myInfo);
     }
 
     @GetMapping("/fromMe/getRefuseList")
-    public List<RequestDto> getFromMeRefuseList(HttpSession session) {
-        return requestService.getRefuseList(employeeInfo);
+    public List<RequestDto> getFromMeRefuseList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getRefuseList(myInfo);
     }
 
     @GetMapping("/toMe/getList")
-    public List<RequestDto> getToMeRequestList(HttpSession session) {
-        return requestService.getToMeRequestList(employeeInfo);
+    public List<RequestDto> getToMeRequestList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getToMeRequestList(myInfo);
     }
 
     @GetMapping("/toMe/getCount")
-    public Integer getToMeRequestCount(HttpSession session){
-        return requestService.getToMeRequestCount(employeeInfo);
+    public Integer getToMeRequestCount(HttpServletRequest httpServletRequest){
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getToMeRequestCount(myInfo);
     }
 
     @GetMapping("/toMe/getRequestList")
-    public List<RequestDto> getToTopRequestList(HttpSession session) {
-        return requestService.getToTopRequestList(employeeInfo);
+    public List<RequestDto> getToTopRequestList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getToTopRequestList(myInfo);
     }
 
     @GetMapping("/toMe/getApproveList")
-    public List<RequestDto> getToMeApproveList(HttpSession session) {
-        return requestService.getToTopApproveList(employeeInfo);
+    public List<RequestDto> getToMeApproveList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getToTopApproveList(myInfo);
     }
 
     @GetMapping("/toMe/getRefuseList")
-    public List<RequestDto> getToMeRefuseList(HttpSession session) {
-        return requestService.getToTopRefuseList(employeeInfo);
+    public List<RequestDto> getToMeRefuseList(HttpServletRequest httpServletRequest) {
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.getToTopRefuseList(myInfo);
     }
 
     @GetMapping("/paymentInfo/{paymentId}")
@@ -70,8 +95,9 @@ public class RequestController {
     }
 
     @PostMapping("/sendRequest")
-    public Integer sendRequest(@RequestBody RequestFormDto requestFormDto){
-        return requestService.sendRequest(requestFormDto, employeeInfo);
+    public Integer sendRequest(@RequestBody RequestFormDto requestFormDto, HttpServletRequest httpServletRequest){
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.sendRequest(requestFormDto, myInfo);
     }
 
     @GetMapping("/requestInfo/{paymentId}")
@@ -79,14 +105,21 @@ public class RequestController {
         return requestService.getRequestInfo(paymentId);
     }
 
+    @GetMapping("/requestInfo/bySelectedId/{requestId}")
+    public RequestDto getRequestInfoByRequestId(@PathVariable Integer requestId){
+        return requestService.getRequestInfoByRequestId(requestId);
+    }
+
     @PostMapping("/updateRequest")
-    public Integer updateRequest(@RequestBody RequestFormDto requestFormDto){
-        return requestService.updateRequest(requestFormDto, employeeInfo);
+    public Integer updateRequest(@RequestBody RequestFormDto requestFormDto, HttpServletRequest httpServletRequest){
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.updateRequest(requestFormDto, myInfo);
     }
 
     @PostMapping("/sendToFinanceDept")
-    public Integer confirmRequest(@RequestBody RequestFormDto requestFormDto){
-        return requestService.confirmRequest(requestFormDto, employeeInfo);
+    public Integer confirmRequest(@RequestBody RequestFormDto requestFormDto, HttpServletRequest httpServletRequest){
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.confirmRequest(requestFormDto, myInfo);
     }
 
     @PostMapping("/refuseRequest")

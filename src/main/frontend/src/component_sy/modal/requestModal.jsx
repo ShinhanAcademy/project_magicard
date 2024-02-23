@@ -12,7 +12,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import "./requestModal.css";
 
-const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
+const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
   const [optionPurposeItem, setOptionPurposeItem] = useState([]);
@@ -22,6 +22,8 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
   const [preImg, setPreImg] = useState("");
   const [url, setUrl] = useState("");
   const [memo, setMemo] = useState("");
+  const [selectItemByCategory, setSelectItemByCategory] = useState([]); //모든 category별 item
+  const [selectPurposeItem, setSelectPurposeItem] = useState([]); //option에서 카테코리 별 purpostitem을 알기 위한 변수
 
   //esc keyEvent 추가
   const handleKeyPress = (e) => {
@@ -43,7 +45,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: `/requests/paymentInfo/${selectedPaymentId}`,
+        url: `/requests/paymentInfo/${selectedId}`,
       })
         .then((result) => {
           console.log(result.data);
@@ -58,10 +60,10 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "Get",
-        url: `/gpt/recommend/${selectedPaymentId}`,
+        url: `/gpt/recommend/${selectedId}`,
       })
         .then((res) => {
-          console.log("gpt id : " + selectedPaymentId);
+          console.log("gpt id : " + selectedId);
 
           setPurposeItem(res.data);
           console.log(res.data);
@@ -77,10 +79,10 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     if (isOpen) {
       axios({
         method: "get",
-        url: "/purpose/getList",
+        url: "/pur/categorylist",
       })
         .then((result) => {
-          console.log(result.data);
+          console.log("select 용도 확인 : " + result.data);
           setOptionPurposeItem(result.data);
         })
         .catch((err) => {
@@ -89,8 +91,36 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
   }, [isOpen]);
 
+  //purposeItem 전체 목록
+  useEffect(() => {
+    axios({
+      method: "Get",
+      url: "/purpose/getList",
+    })
+      .then((result) => {
+        setSelectItemByCategory(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [isOpen]);
+
+  // category 별 item 추출
+  useEffect(() => {
+    if (selectedPurpose) {
+      const selectedItems = selectItemByCategory
+        .filter((data) => data.purposeCategory == selectedPurpose) //동일한 카테고리인 data 찾기
+        .map((data) => ({
+          purposeItemUid: data.purposeItemUid,
+          purposeItem: data.purposeItem,
+        })); //각각의 카테고리에서 purposeItem & Uid만 추출
+
+      setSelectPurposeItem(selectedItems);
+    }
+  }, [selectedPurpose]);
+
   const handlePurposeChange = (event) => {
-    setSelectedPurpose(parseInt(event.target.value));
+    setSelectedPurpose(event.target.value);
   };
 
   const handleSubmit = () => {
@@ -100,7 +130,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
     }
     const requestData = {
       requestId: 0,
-      paymentId: selectedPaymentId,
+      paymentId: selectedId,
       purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
       receiptUrl: url,
@@ -189,10 +219,12 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
             <div className="modal-input">
               <img src={purposeImg} />
               용도
-              <span className="ness"> * </span> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              <span className="ness"> * </span> &nbsp; &nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             {purposeItem && (
               <SelectPurpose
+                selectPurposeItem={selectPurposeItem}
                 handlePurposeChange={handlePurposeChange}
                 optionPurposeItem={optionPurposeItem}
                 gptResult={purposeItem}
@@ -205,7 +237,8 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
               <img src={joinImg} />
               참석자
               <span className="ness"> * </span>
-            </div>
+            </div>{" "}
+            &nbsp;&nbsp;
             <input
               placeholder="참석자를 입력하세요."
               value={participant}
@@ -225,7 +258,7 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
           <div className="modal-item">
             <div className="modal-input">
               <img src={penImg} />
-              메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
             <div>
               <textarea className="inputbox" />
@@ -245,7 +278,12 @@ const RequestContext = ({ isOpen, closeModal, selectedPaymentId }) => {
 
 export default RequestContext;
 
-const SelectPurpose = ({ gptResult, optionPurposeItem, handlePurposeChange }) => {
+const SelectPurpose = ({
+  gptResult,
+  optionPurposeItem,
+  handlePurposeChange,
+  selectPurposeItem,
+}) => {
   var [ind, setInd] = useState(0);
 
   var selectedPurpose = gptResult[0]; //추천 초기값
@@ -262,7 +300,11 @@ const SelectPurpose = ({ gptResult, optionPurposeItem, handlePurposeChange }) =>
     return <Select purpose={selectedPurpose} cntInd={cntInd} />;
   } else {
     return (
-      <Option handlePurposeChange={handlePurposeChange} optionPurposeItem={optionPurposeItem} />
+      <Option
+        handlePurposeChange={handlePurposeChange}
+        optionPurposeItem={optionPurposeItem}
+        selectPurposeItem={selectPurposeItem}
+      />
     );
   }
 };
@@ -292,15 +334,26 @@ const Select = ({ purpose, cntInd }) => {
   );
 };
 
-const Option = ({ optionPurposeItem, handlePurposeChange }) => {
+const Option = ({ optionPurposeItem, handlePurposeChange, selectPurposeItem }) => {
   return (
-    <select onChange={handlePurposeChange}>
-      <option value="">선택하세요</option>
-      {optionPurposeItem.map((purpose) => (
-        <option key={purpose.purposeItemUid} value={purpose.purposeItemUid}>
-          {purpose.purposeCategory} || {purpose.purposeItem}
-        </option>
-      ))}
-    </select>
+    <>
+      <select onChange={handlePurposeChange}>
+        <option value=""> 용도를 선택하세요</option>
+        {optionPurposeItem.map((purpose) => (
+          <option key={purpose.purposeCategoryId} value={purpose.purposeCategory}>
+            {purpose.purposeCategory}
+          </option>
+        ))}
+      </select>
+
+      <select onChange={handlePurposeChange}>
+        <option value=""> 세부 용도를 선택하세요</option>
+        {selectPurposeItem.map((selectPurpose) => (
+          <option key={selectPurpose.purposeItemUid} value={selectPurpose.purposeItemUid}>
+            {selectPurpose.purposeItem}
+          </option>
+        ))}
+      </select>
+    </>
   );
 };

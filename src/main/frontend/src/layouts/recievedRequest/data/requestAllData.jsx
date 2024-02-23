@@ -1,11 +1,12 @@
 import axios from "axios";
+import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
 const RequestAllData = () => {
   const [requestList, setRequestList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
@@ -20,9 +21,9 @@ const RequestAllData = () => {
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (requestId) => {
     setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
+    setSelectedId(requestId);
   };
 
   const handleModalClose = () => {
@@ -43,26 +44,41 @@ const RequestAllData = () => {
 
   const rows = requestList.map((request) => {
     const paymentDate = request.paymentInfo.paymentTime.substr(0, 10);
+    const paymentTimeArray = request.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
 
     const handleButtonClick = () => {
       setSendRequest(request.sendRequest);
-      handleModalOpen(request.paymentInfo.paymentId);
+      handleModalOpen(request.requestId);
     };
+
+    let backgroundColor = "";
+    let color = "";
+    if (request.sendRequest === "확인") {
+      backgroundColor = "#2F4F4F";
+      color = "#ffffff";
+    } else if (request.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (request.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
 
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.employee.employeeName}
+          {request.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {request.responseEmployeeEmail}
+          {request.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
@@ -91,7 +107,14 @@ const RequestAllData = () => {
           {request.approvalSteps.approvalStep}
         </SoftTypography>
       ),
-      승인요청: <button onClick={handleButtonClick}>{request.sendRequest}</button>,
+      승인요청: (
+        <SoftButton
+          onClick={handleButtonClick}
+          style={{ backgroundColor: backgroundColor, color: color }}
+        >
+          {request.sendRequest}
+        </SoftButton>
+      ),
     };
   });
   return {
@@ -100,7 +123,7 @@ const RequestAllData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };

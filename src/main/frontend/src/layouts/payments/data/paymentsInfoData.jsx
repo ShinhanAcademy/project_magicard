@@ -1,12 +1,13 @@
 import axios from "axios";
 import SoftTypography from "components/SoftTypography";
 import { useCallback, useEffect, useState } from "react";
-import paymentsInfoDataCss from "./paymentsInfoData.css";
+import "./paymentsInfoData.css";
+import SoftButton from "components/SoftButton";
 
 const paymentInfoData = () => {
   const [paymentList, setPaymentList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [sendRequest, setSendRequest] = useState(null);
 
   useEffect(() => {
@@ -15,15 +16,14 @@ const paymentInfoData = () => {
       url: "/paymentInfo/getList",
     })
       .then((result) => {
-        console.log(result.data);
         setPaymentList(result.data);
       })
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (Id) => {
     setIsModalOpen(true);
-    setSelectedPaymentId(paymentId);
+    setSelectedId(Id);
   };
 
   const handleModalClose = () => {
@@ -43,15 +43,50 @@ const paymentInfoData = () => {
 
   const rows = paymentList.map((payment) => {
     const paymentDate = payment.paymentTime.substr(0, 10);
+    const paymentTimeArray = payment.paymentTime.substr(11, 11).split("").slice(0, 5);
+    const paymentTime = paymentDate + " " + paymentTimeArray.join("");
 
+    // const handleButtonClick = () => {
+    //   setSendRequest(payment.sendRequest);
+    //   handleModalOpen(payment.paymentId);
+    // };
     const handleButtonClick = () => {
       setSendRequest(payment.sendRequest);
-      handleModalOpen(payment.paymentId);
+      if (payment.sendRequest === "신청") {
+        handleModalOpen(payment.paymentId);
+      } else {
+        axios({
+          method: "get",
+          url: `/paymentInfo/getRequestId/${payment.paymentId}`,
+        })
+          .then((result) => {
+            const requestId = result.data;
+            console.log("ㅅㅄㅄㅂ" + requestId);
+            handleModalOpen(requestId);
+          })
+          .catch((err) => {
+            // 오류 처리
+          });
+      }
     };
+
+    let backgroundColor = "";
+    let color = "";
+    if (payment.sendRequest === "신청") {
+      backgroundColor = "#2F4F4F";
+      color = "#ffffff";
+    } else if (payment.sendRequest === "조회") {
+      backgroundColor = "#ffffff";
+      color = "#808080";
+    } else if (payment.sendRequest === "수정") {
+      backgroundColor = "#cbe1d4";
+      color = "#2f4f4f";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {paymentDate}
+          {paymentTime}
         </SoftTypography>
       ),
       사용처: (
@@ -80,18 +115,15 @@ const paymentInfoData = () => {
         </SoftTypography>
       ),
       신청: (
-        <button
-          className={
-            payment.sendRequest == "신청"
-              ? "requestBtn"
-              : payment.sendRequest == "수정"
-              ? "secondBtn"
-              : "checkBtn"
-          }
+        <SoftButton
           onClick={handleButtonClick}
+          style={{
+            backgroundColor: backgroundColor,
+            color: color,
+          }}
         >
-          {payment.sendRequest}{" "}
-        </button>
+          {payment.sendRequest}
+        </SoftButton>
       ),
     };
   });
@@ -101,7 +133,7 @@ const paymentInfoData = () => {
     isModalOpen,
     handleModalOpen,
     handleModalClose,
-    selectedPaymentId,
+    selectedId,
     sendRequest,
   };
 };

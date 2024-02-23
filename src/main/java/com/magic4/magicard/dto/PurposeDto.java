@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PurposeDto {
+        
         private String purposeCategory;
         private String purposeItem;
 }

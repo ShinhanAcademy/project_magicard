@@ -23,8 +23,8 @@ class MagicardApplicationTests {
 // 	@Autowired
 // 	PurposeCategoryRepo purposeCategoryRepo;
 
-// 	@Autowired
-// 	PurposeItemRepo purposeItemRepo;
+	// @Autowired
+	// PurposeItemRepo purposeItemRepo;
 
 // 	@Autowired
 // 	CompanyRepo companyRepo;

@@ -9,32 +9,17 @@ import CheckContext from "component_sy/modal/checkModal";
 import UpdateContext from "component_sy/modal/updateModal";
 
 function RequestAll() {
-  const {
-    columns,
-    rows,
-    isModalOpen,
-    handleModalOpen,
-    handleModalClose,
-    selectedPaymentId,
-    sendRequest,
-  } = RequestAllData();
+  const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
+    RequestAllData();
 
   let modalComponent;
   if (sendRequest === "수정") {
     modalComponent = (
-      <UpdateContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <UpdateContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   } else if (sendRequest === "조회") {
     modalComponent = (
-      <CheckContext
-        isOpen={isModalOpen}
-        closeModal={handleModalClose}
-        selectedPaymentId={selectedPaymentId}
-      />
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   }
 
