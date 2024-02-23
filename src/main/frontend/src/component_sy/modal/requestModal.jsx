@@ -11,7 +11,6 @@ import submitbtn from "assets/images/request_img/submitbtn.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./requestModal.css";
-
 const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
@@ -24,14 +23,13 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [memo, setMemo] = useState("");
   const [selectItemByCategory, setSelectItemByCategory] = useState([]); //모든 category별 item
   const [selectPurposeItem, setSelectPurposeItem] = useState([]); //option에서 카테코리 별 purpostitem을 알기 위한 변수
-
+  const [selectPurposeUid, setSelectPurposeUid] = useState();
   //esc keyEvent 추가
   const handleKeyPress = (e) => {
     if (e.key === "Escape") {
       closeModal();
     }
   };
-
   useEffect(() => {
     if (isOpen) {
       window.addEventListener("keydown", handleKeyPress);
@@ -40,7 +38,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [isOpen, closeModal]);
-
   useEffect(() => {
     if (isOpen) {
       axios({
@@ -54,7 +51,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         .catch((err) => {});
     }
   }, [isOpen]);
-
   //gpt 용도 연결
   useEffect(() => {
     if (isOpen) {
@@ -64,7 +60,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
       })
         .then((res) => {
           console.log("gpt id : " + selectedId);
-
           setPurposeItem(res.data);
           console.log(res.data);
         })
@@ -73,7 +68,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         });
     }
   }, [isOpen]);
-
   // select 용도 목적, 가져오기
   useEffect(() => {
     if (isOpen) {
@@ -90,7 +84,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         });
     }
   }, [isOpen]);
-
   //purposeItem 전체 목록
   useEffect(() => {
     axios({
@@ -104,7 +97,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         console.log(err);
       });
   }, [isOpen]);
-
   // category 별 item 추출
   useEffect(() => {
     if (selectedPurpose) {
@@ -114,15 +106,18 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
           purposeItemUid: data.purposeItemUid,
           purposeItem: data.purposeItem,
         })); //각각의 카테고리에서 purposeItem & Uid만 추출
-
       setSelectPurposeItem(selectedItems);
     }
   }, [selectedPurpose]);
-
   const handlePurposeChange = (event) => {
     setSelectedPurpose(event.target.value);
   };
-
+  const handlePurposeItemUid = (event) => {
+    setSelectPurposeUid(event.target.value);
+  };
+  const handleMemo = (event) => {
+    setMemo(event.target.value);
+  };
   const handleSubmit = () => {
     if (!optionPurposeItem) {
       alert("용도를 선택해주세요.");
@@ -131,12 +126,11 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
     const requestData = {
       requestId: 0,
       paymentId: selectedId,
-      purposeItemUid: selectedPurpose.purposeItemUid,
+      purposeItemUid: selectPurposeUid,
       participant: participant,
       receiptUrl: url,
       memo: memo,
     };
-
     axios({
       method: "post",
       url: "requests/sendRequest",
@@ -144,18 +138,15 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
     })
       .then((res) => {
         alert(res.data === 1 ? "요청 성공" : "요청 실패");
-
         closeModal();
       })
       .catch((e) => {
         console.log("error 입니다.");
       });
   };
-
   function uploadFile(e) {
     let file = e.target.files[0];
     setPostImg(file);
-
     let preview = new FileReader();
     preview.onload = function () {
       setPreImg(preview.result);
@@ -163,10 +154,8 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
     };
     preview.readAsDataURL(file);
   }
-
   if (!isOpen || !paymentInfo || !purposeItem) return null;
   const paymentDate = paymentInfo.paymentTime.substr(0, 10);
-
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
@@ -197,7 +186,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
             </div>
             <input value={paymentDate} readOnly />
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={cardImg} />
@@ -206,7 +194,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
             </div>
             <input value={paymentInfo.payAmount} readOnly />
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={shopImg} />
@@ -214,7 +201,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
             </div>
             <input value={paymentInfo.merchant} readOnly />
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={purposeImg} />
@@ -224,6 +210,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
             </div>
             {purposeItem && (
               <SelectPurpose
+                handlePurposeItemUid={handlePurposeItemUid}
                 selectPurposeItem={selectPurposeItem}
                 handlePurposeChange={handlePurposeChange}
                 optionPurposeItem={optionPurposeItem}
@@ -231,7 +218,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               />
             )}
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={joinImg} />
@@ -245,7 +231,6 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               onChange={(e) => setParticipant(e.target.value)}
             />
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={picImg} />
@@ -254,18 +239,16 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
             {preImg && <img className="preview" alt={preImg} src={preImg} />}
             <input id="file-upload" type="file" onChange={uploadFile}></input>
           </div>
-
           <div className="modal-item">
             <div className="modal-input">
               <img src={penImg} />
               메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
             <div>
-              <textarea className="inputbox" />
+              <textarea className="inputbox" onChange={handleMemo} />
             </div>
           </div>
         </div>
-
         <div>
           <button className="submitButton" onClick={handleSubmit}>
             <img src={submitbtn} />
@@ -275,25 +258,21 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
     </div>
   );
 };
-
 export default RequestContext;
-
 const SelectPurpose = ({
+  handlePurposeItemUid,
   gptResult,
   optionPurposeItem,
   handlePurposeChange,
   selectPurposeItem,
 }) => {
   var [ind, setInd] = useState(0);
-
   var selectedPurpose = gptResult[0]; //추천 초기값
-
   function cntInd() {
     ind++;
     setInd(ind);
     return ind;
   }
-
   //클릭한 경우 3번을 넘어가면 직접 입력란 활성화
   if (ind < 3) {
     selectedPurpose = gptResult[ind];
@@ -301,6 +280,7 @@ const SelectPurpose = ({
   } else {
     return (
       <Option
+        handlePurposeItemUid={handlePurposeItemUid}
         handlePurposeChange={handlePurposeChange}
         optionPurposeItem={optionPurposeItem}
         selectPurposeItem={selectPurposeItem}
@@ -308,7 +288,6 @@ const SelectPurpose = ({
     );
   }
 };
-
 const Select = ({ purpose, cntInd }) => {
   return (
     <div className="purpose-content">
@@ -320,7 +299,6 @@ const Select = ({ purpose, cntInd }) => {
             <span className="purpose-span2"> {purpose.purposeItem}</span>
           </>
         )}
-
         <button className="refreshBtn" onClick={cntInd}>
           <img src={refresh} />{" "}
         </button>
@@ -333,8 +311,12 @@ const Select = ({ purpose, cntInd }) => {
     </div>
   );
 };
-
-const Option = ({ optionPurposeItem, handlePurposeChange, selectPurposeItem }) => {
+const Option = ({
+  optionPurposeItem,
+  handlePurposeChange,
+  selectPurposeItem,
+  handlePurposeItemUid,
+}) => {
   return (
     <>
       <select onChange={handlePurposeChange}>
@@ -345,8 +327,7 @@ const Option = ({ optionPurposeItem, handlePurposeChange, selectPurposeItem }) =
           </option>
         ))}
       </select>
-
-      <select onChange={handlePurposeChange}>
+      <select onChange={handlePurposeItemUid}>
         <option value=""> 세부 용도를 선택하세요</option>
         {selectPurposeItem.map((selectPurpose) => (
           <option key={selectPurpose.purposeItemUid} value={selectPurpose.purposeItemUid}>

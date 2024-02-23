@@ -1,0 +1,24 @@
+  .listItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .department-rank {
+    flex-basis: 2%;
+    text-align: left;
+    font-size: clamp(12px, 2vw, 20px);
+  }
+  .department-name {
+    flex-basis: 60%;
+    text-align: center;
+    font-size: clamp(12px, 2vw, 20px);
+    white-space: nowrap; /* 텍스트를 한 줄에 표시 */
+  }
+  
+  .spend-amount {
+    text-align: right;
+    font-size: clamp(12px, 2vw, 20px);
+    white-space: nowrap; /* 텍스트를 한 줄에 표시 */
+  }
+  
