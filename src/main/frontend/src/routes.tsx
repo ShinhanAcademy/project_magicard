@@ -65,10 +65,10 @@ import IssueCards from "./component_sg/issueCards/components";
 import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
 import Member from "./examples/Icons/Member";
-import Employees from "./layouts/employees";
 import CardPlus from "./examples/Icons/CardPlus";
 import PurposeCategory from "./component_sh/components/PurposeCategory";
 import Tablesjy from "./components_jy/tables";
+import Employees from "./layouts/employees";
 import Dashboard from "./component_jw/dashboard";
 
 const routes = [
@@ -109,7 +109,6 @@ const routes = [
   },
   {
     type: "collapse",
-
     name: "결제 내역",
     key: "payments",
     route: "/payments/*",
@@ -119,7 +118,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "결제 요청 내역",
+    name: "결재 요청 내역",
     key: "recieved-requests",
     route: "/recieved-requests/*",
     icon: <Check size="15px" />,
@@ -185,7 +184,7 @@ const routes = [
 
   {
     type: "collapse",
-    name: "Profile",
+    name: "마이페이지",
     key: "profile",
     route: "/profile",
     icon: <CustomerSupport size="12px" />,
@@ -194,7 +193,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sign In",
+    name: "로그인",
     key: "sign-in",
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
@@ -203,7 +202,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sign Up",
+    name: "회원가입",
     key: "sign-up",
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,

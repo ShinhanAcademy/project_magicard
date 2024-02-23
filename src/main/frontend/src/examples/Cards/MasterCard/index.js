@@ -62,8 +62,8 @@ function MasterCard({ cardType, bgColor, color, number, holder, expires }) {
       }) => ({
         background: gradients[color]
           ? `${linearGradient(
-              rgba(gradients[color].main, 0.15),
-              rgba(gradients[color].state, 0.0)
+              rgba(gradients[color].main, 0.35),
+              rgba(gradients[color].state, 0.1)
               // )}, url(${green})`
             )}`
           : `${linearGradient(

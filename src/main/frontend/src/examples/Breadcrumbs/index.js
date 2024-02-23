@@ -42,6 +42,10 @@ function Breadcrumbs({ icon, title, route, light }) {
     realTitle = "결재 요청 내역";
   } else if (title == "issue-cards") {
     realTitle = "카드 신규 발급";
+  } else if (title == "member-Management") {
+    realTitle = "멤버 관리";
+  } else if (title == "category-Management") {
+    realTitle = "용도 관리";
   }
 
   return (

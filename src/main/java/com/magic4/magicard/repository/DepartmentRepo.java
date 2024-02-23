@@ -85,4 +85,6 @@ public interface DepartmentRepo extends JpaRepository<Department, Integer> {
     "ON department_info.department_id = manager_info.edepartment_id " +
 "WHERE department_id = :departmentId", nativeQuery = true)
 DepartmentDetailDto findByDeptId(@Param("departmentId") Integer departmentId);
+
+   List<Department> findByIsAdminDepartment(boolean isAdminDepartment);
 }
