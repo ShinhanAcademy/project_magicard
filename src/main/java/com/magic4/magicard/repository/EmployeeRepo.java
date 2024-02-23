@@ -27,5 +27,5 @@ public interface EmployeeRepo extends JpaRepository<Employee, String> {
 
     List<Employee> findByEmployeeRankAndDepartment(EmployeeRank employeeRank, Department department);
 
-//    List<Employee> findByCompany(Company company);
+    List<Employee> findAllByDepartmentIn(List<Department> departmentList);
 }
