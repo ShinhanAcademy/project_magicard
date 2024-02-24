@@ -62,6 +62,13 @@ const FinalRefuseData = () => {
       color = "#808080";
     }
 
+    let statusColor = "";
+    if (refuse.approvalSteps.approvalStep === "승인") {
+      statusColor = "skyblue";
+    } else {
+      statusColor = "black";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -105,7 +112,12 @@ const FinalRefuseData = () => {
         </SoftTypography>
       ),
       상태: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: statusColor }}
+        >
           {refuse.approvalSteps.approvalStep}
         </SoftTypography>
       ),

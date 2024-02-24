@@ -108,7 +108,12 @@ const FinalRequestApproveData = () => {
         </SoftTypography>
       ),
       상태: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: "skyblue" }}
+        >
           {approve.approvalSteps.approvalStep}
         </SoftTypography>
       ),

@@ -73,7 +73,9 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
           console.log(err);
         })
         .finally(() => {
-          setIsGptLoading(false);
+          setTimeout(() => {
+            setIsGptLoading(false);
+          }, 3000);
         });
     }
   }, [isOpen]);
@@ -131,6 +133,10 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const handleSubmit = () => {
     if (!optionPurposeItem) {
       alert("용도를 선택해주세요.");
+      return;
+    }
+    if (!participant) {
+      alert("참석자를 선택해주세요.");
       return;
     }
     const requestData = {

@@ -7,6 +7,7 @@ import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 import CheckContext from "component_sy/modal/checkModal";
 import FinalRefuseData from "../data/finalRefuseData";
+import UpdateContext from "component_sy/modal/updateModal";
 
 function FinalRefuse() {
   const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
@@ -16,6 +17,11 @@ function FinalRefuse() {
   if (sendRequest === "조회") {
     modalComponent = (
       <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
+    );
+  }
+  if (sendRequest === "수정") {
+    modalComponent = (
+      <UpdateContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
   }
 

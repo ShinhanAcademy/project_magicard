@@ -48,6 +48,7 @@ const ConfirmContext = ({ isOpen, closeModal, selectedId }) => {
           setRequestInfo(result.data);
           setSelectedPurpose(result.data.purposeItem.purposeItemUid);
           setReceiptUrl(result.data.requestInfo.receiptUrl);
+          setRefuseMessage(result.data.refuseMessage);
         })
         .catch((err) => {});
     }
@@ -192,7 +193,7 @@ const ConfirmContext = ({ isOpen, closeModal, selectedId }) => {
               참석자
               <span className="ness"> * </span>
             </div>
-            <input placeholder="참석자를 입력하세요." value={requestInfo.participant} readOnly />
+            <input value={requestInfo.participant || ""} readOnly />
           </div>
 
           <div className="modal-item">

@@ -39,7 +39,8 @@ const RequestApproveData = () => {
     { name: "가맹점", align: "center" },
     { name: "사용금액", align: "center" },
     { name: "용도", align: "center" },
-    { name: "상태", align: "center" },
+    { name: "부서내", align: "center" },
+    { name: "재무부", align: "center" },
     { name: "승인요청", align: "center" },
   ];
 
@@ -106,9 +107,14 @@ const RequestApproveData = () => {
           {approve.purposeItem.purposeItem}
         </SoftTypography>
       ),
-      상태: (
+      부서내: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.approvalSteps.approvalStep}
+          {approve.paymentInfo.firstStepStatus}
+        </SoftTypography>
+      ),
+      재무부: (
+        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+          {approve.paymentInfo.secondStepStatus}
         </SoftTypography>
       ),
       승인요청: (

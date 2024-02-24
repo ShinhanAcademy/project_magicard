@@ -66,6 +66,19 @@ const FinalRequestAllData = () => {
       color = "#2f4f4f";
     }
 
+    let statusColor = "";
+    let status = request.approvalSteps.approvalStep;
+    if (
+      status === "승인" ||
+      status === "최종 반려" ||
+      status === "반려" ||
+      status === "최종 승인"
+    ) {
+      statusColor = "skyblue";
+    } else {
+      statusColor = "black";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -109,7 +122,12 @@ const FinalRequestAllData = () => {
         </SoftTypography>
       ),
       상태: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: statusColor }}
+        >
           {request.approvalSteps.approvalStep}
         </SoftTypography>
       ),
