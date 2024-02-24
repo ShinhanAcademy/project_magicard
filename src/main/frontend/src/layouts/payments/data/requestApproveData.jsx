@@ -47,6 +47,7 @@ const RequestApproveData = () => {
     const paymentDate = approve.paymentInfo.paymentTime.substr(0, 10);
     const paymentTimeArray = approve.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
     const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+    const payAmount = approve.paymentInfo.payAmount.toLocaleString();
 
     const handleButtonClick = () => {
       setSendRequest(approve.sendRequest);
@@ -85,8 +86,13 @@ const RequestApproveData = () => {
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {approve.paymentInfo.payAmount}
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: "red" }}
+        >
+          {payAmount}원
         </SoftTypography>
       ),
       용도: (

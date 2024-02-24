@@ -2,22 +2,22 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 import Card from "@mui/material/Card";
-
-import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
-import RefuseData from "../data/refuseData";
+import Footer from "examples/Footer";
+import RequestAllData from "../data/finalRequestAllData";
 import CheckContext from "component_sy/modal/checkModal";
+import UpdateContext from "component_sy/modal/updateModal";
 
-function Refuse() {
+function RequestAll() {
   const { columns, rows, isModalOpen, handleModalOpen, handleModalClose, selectedId, sendRequest } =
-    RefuseData();
+    RequestAllData();
 
   let modalComponent;
-  if (sendRequest === "조회") {
+  if (sendRequest === "수정") {
     modalComponent = (
-      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
+      <UpdateContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
-  } else if (sendRequest === "수정") {
+  } else if (sendRequest === "조회") {
     modalComponent = (
       <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
@@ -29,7 +29,7 @@ function Refuse() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h4">반려 내역</SoftTypography>
+              <SoftTypography variant="h4">승인 요청 내역</SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{
@@ -52,4 +52,4 @@ function Refuse() {
   );
 }
 
-export default Refuse;
+export default RequestAll;

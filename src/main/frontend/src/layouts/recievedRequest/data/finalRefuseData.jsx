@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
+// Soft UI Dashboard React components
 import axios from "axios";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
-const RefuseData = () => {
+const FinalRefuseData = () => {
   const [refuseList, setRefuseList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -12,7 +14,7 @@ const RefuseData = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "/requests/fromMe/getRefuseList",
+      url: "/requests/toMe/getRefuseList",
     })
       .then((result) => {
         console.log(result.data);
@@ -21,9 +23,9 @@ const RefuseData = () => {
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (selectedId) => {
+    setSelectedId(selectedId);
     setIsModalOpen(true);
-    setSelectedId(paymentId);
   };
 
   const handleModalClose = () => {
@@ -58,9 +60,6 @@ const RefuseData = () => {
     if (refuse.sendRequest === "조회") {
       backgroundColor = "#ffffff";
       color = "#808080";
-    } else if (refuse.sendRequest === "수정") {
-      backgroundColor = "#cbe1d4";
-      color = "#2f4f4f";
     }
 
     return {
@@ -71,7 +70,7 @@ const RefuseData = () => {
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.employee.employeeName}
+          {refuse.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
@@ -102,7 +101,7 @@ const RefuseData = () => {
           color="secondary"
           fontWeight="medium"
         >
-          {refuse.approvalSteps.approvalStep}
+          {refuse.purposeItem.purposeItem}
         </SoftTypography>
       ),
       상태: (
@@ -134,4 +133,4 @@ const RefuseData = () => {
   };
 };
 
-export default RefuseData;
+export default FinalRefuseData;
