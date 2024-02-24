@@ -54,6 +54,9 @@ import ComparisonWithOthersChart from "./comparisonWithOthersChart";
 import { useState } from "react";
 import MonthlyDonationAmount from "./basicInfo/monthlyDonationAmount";
 import TotalDonationAmount from "./basicInfo/totalDonationAmount";
+import Top5spend from "./top5spend/top5department";
+import Top5department from "./top5spend/top5department";
+import Top5employee from "./top5spend/top5employee";
 
 function Dashboard() {
   const { size } = typography;
@@ -131,19 +134,21 @@ function Dashboard() {
         </SoftBox> 
 
         <SoftBox mb={3}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+          <Grid container spacing={2} justifyContent="center" >
+            <Grid item xs={12} md={9}  >
               지출 추이 (전 년도 대비 지출)
               <CumulativeSpendingChart />
             </Grid>
             <Grid item xs={12} md={6}>
-              타 기업간 분기별 비교
-              <ComparisonWithOthersChart />
+              이 달의 소비부서 TOP5 
+              <Top5department/>
             </Grid>
-          </Grid>
-          
-        
-      </SoftBox>
+            <Grid item xs={12} md={6}>
+              이 달의 소비왕 TOP5 
+              <Top5employee />            
+            </Grid>
+          </Grid> 
+        </SoftBox>
 
         <SoftBox mb={3}>
           부서별 지출 비교
@@ -205,6 +210,7 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
+      */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
             <Projects />
@@ -212,8 +218,9 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid>
-        </Grid> */}
+        </Grid> 
       </SoftBox>
+
       <Footer />
     </DashboardLayout>
   );
