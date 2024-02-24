@@ -8,6 +8,7 @@ const initialState = {
   employeeRank: "",
   department: "",
   company: "",
+  isAdmin: false,
 };
 
 const userSlice = createSlice({
@@ -22,8 +23,7 @@ const userSlice = createSlice({
       state.employeeRank = action.payload.employeeRank;
       state.department = action.payload.department;
       state.company = action.payload.company;
-      // state.authority = action.payload.authority;
-      // state.accessToken = action.payload.accessToken;
+      state.isAdmin = action.payload.isAdmin;
     },
     reset: () => initialState,
   },

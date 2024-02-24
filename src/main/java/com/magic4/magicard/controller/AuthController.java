@@ -43,6 +43,26 @@ public class AuthController {
         return loginResponseDto;
     }
 
+
+    @PostMapping("/adminLogin")
+    public LoginResponseDto adminLogin(HttpServletRequest httpServletRequest){
+
+        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+                .employeeEmail("aa3@naver.com")
+//                .userPassword()
+                .build();
+
+        // 세션을 생성하기 전에 기존의 세션 파기
+        httpServletRequest.getSession().invalidate();
+        HttpSession session = httpServletRequest.getSession();  // Session이 없으면 생성
+
+        LoginResponseDto loginResponseDto=authService.login(loginRequestDto);
+
+        session.setAttribute("myInfo", loginResponseDto);
+
+        return loginResponseDto;
+    }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest){
 

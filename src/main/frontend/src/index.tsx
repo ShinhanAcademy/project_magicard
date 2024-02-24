@@ -21,17 +21,18 @@ import App from "./App";
 // Soft UI Dashboard React Context Provider
 import { SoftUIControllerProvider } from "./context";
 import { Provider } from "react-redux";
-import store from "./mk/store";
+import store, { persistor } from "./mk/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   // <React.StrictMode>
   <HashRouter>
-    {/* <SoftUIControllerProvider> */}
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
-    {/* </SoftUIControllerProvider> */}
   </HashRouter>
   // </React.StrictMode>
 );
