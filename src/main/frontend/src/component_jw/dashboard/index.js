@@ -211,14 +211,14 @@ function Dashboard() {
           </Grid>
         </SoftBox>
       */}
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
             <Projects />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid>
-        </Grid> 
+        </Grid>  */}
       </SoftBox>
 
       <Footer />
