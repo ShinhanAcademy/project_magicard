@@ -24,8 +24,9 @@ function TotalCards(props) {
     return (
         <MiniStatisticsCard
         title={{ text: "총 카드 수 " }}
+        unit="개"
         count={totalCards.toString()} // 문자열로 변환하여 전달
-        percentage={{ color: "success", text: "+55%" }}
+        // percentage={{ color: "success", text: "+55%" }}
         icon={{ color: "success", component: "public" }}
       />
     );

@@ -27,7 +27,8 @@ const formattedTotalPayment = new Intl.NumberFormat('ko-KR').format(totalPayment
         <MiniStatisticsCard
                 title={{ text: "총 사용 금액" }}
                 count={formattedTotalPayment}
-                percentage={{ color: "error", text: "-2%" }}
+                unit="원"
+                // percentage={{ color: "error", text: "-2%" }}
                 icon={{ color: "success", component: "paid" }}
               />
     );

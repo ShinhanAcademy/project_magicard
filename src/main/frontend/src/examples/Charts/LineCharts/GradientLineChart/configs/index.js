@@ -36,7 +36,7 @@ function configs(labels, datasets) {
       },
       scales: {
         y: {
-          beginAtZero:true,
+          
           grid: {
             drawBorder: false,
             display: true,
