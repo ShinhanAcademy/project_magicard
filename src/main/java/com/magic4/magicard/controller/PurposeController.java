@@ -54,15 +54,15 @@ public class PurposeController {
     // 소분류 삭제
     @DeleteMapping("/deletepurposeItem")
     public void deleteSubcategory(@RequestBody PurposeDto purposedto) {
-        String purposeCategory = purposedto.getPurposeCategory();
-        String purposeItem = purposedto.getPurposeItem();
-        purService.deleteSubcategory(purposeCategory, purposeItem);
+        // String purposeCategory = purposedto.getPurposeCategory();
+        // String purposeItem = purposedto.getPurposeItem();
+        purService.deleteSubcategory(purposedto.getPurposeCategory(), purposedto.getPurposeItem());
     }
 
     @DeleteMapping("/deleteAll")
     public void deleteAll(@RequestBody PurposeDto purposedto) {
-        String purposeCategory = purposedto.getPurposeCategory();
-        purService.deletAll(purposeCategory);
+        // String purposeCategory = purposedto.getPurposeCategory();
+        purService.deletAll(purposedto.getPurposeCategory());
 
     }
 }

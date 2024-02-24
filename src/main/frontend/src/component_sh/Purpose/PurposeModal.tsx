@@ -43,7 +43,7 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
     const trimmedPurposeItem = inputValues.purposeItem ? inputValues.purposeItem.trim() : "";
 
     // 입력값이 공백인지 확인
-    if (trimmedPurposeCategory === "" && trimmedPurposeItem === "") {
+    if (trimmedPurposeCategory === "" || trimmedPurposeItem === "") {
       alert("값을 입력하세요.");
       return;
     }
