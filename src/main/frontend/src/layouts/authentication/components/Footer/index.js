@@ -35,7 +35,7 @@ function Footer() {
           <SoftBox display="flex" justifyContent="center" flexWrap="wrap" mb={3}>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
               <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Company
+                마법4
               </SoftTypography>
             </SoftBox>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>

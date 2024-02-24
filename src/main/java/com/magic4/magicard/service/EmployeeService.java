@@ -6,6 +6,7 @@ import com.magic4.magicard.repository.DepartmentRepo;
 import com.magic4.magicard.repository.EmployeeRankRepo;
 import com.magic4.magicard.repository.EmployeeRepo;
 import com.magic4.magicard.vo.Company;
+import com.magic4.magicard.vo.Department;
 import com.magic4.magicard.vo.Employee;
 import com.magic4.magicard.vo.EmployeeRank;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,7 @@ public class EmployeeService {
     }
 
     // 회사의 특정 부서 소속 직원 조회
-    public List<EmployeeInfoDto> getEmpListByDept(int departmentId){
-
-        Company company= companyRepo.findById("SHDS").orElse(null);
+    public List<EmployeeInfoDto> getEmpListByDept(Company company, int departmentId){
 
         // 세션에 등록된 Company 정보로 회사의 직급들을 조회
         List<EmployeeRank> employeeRankList=employeeRankRepo.findEmployeeRanksByCompany(company);
@@ -46,6 +45,9 @@ public class EmployeeService {
         // 특정 부서에 해당하는 직원들 조회
         List<Employee> employees=employeeRepo.findAllByDepartmentAndEmployeeRankIn(departmentRepo.findById(departmentId).orElse(null), employeeRankList);
 
+        for(Employee employee: employees){
+            System.out.println(employee.toString());
+        }
         return makeEmployeeInfoDtoList(employees, company);
     }
     
@@ -57,6 +59,15 @@ public class EmployeeService {
         List<Employee> employees=employeeRepo.findAllByEmployeeRank(employeeRank);
 
         return makeEmployeeInfoDtoList(employees, employeeRank.getCompany());
+    }
+
+    public List<EmployeeInfoDto> getEmpListByAuthority(Company company, boolean isAdmin){
+
+        // 관리 부서인지 아닌지~ 일단 한 회사만 있다고 가정..
+        List<Department> departments=departmentRepo.findByIsAdminDepartment(isAdmin);
+
+        List<Employee> employees=employeeRepo.findAllByDepartmentIn(departments);
+        return makeEmployeeInfoDtoList(employees, company);
     }
 
     // Employee 리스트 => EmployeeInfoDto 리스트 변환

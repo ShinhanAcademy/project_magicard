@@ -16,7 +16,7 @@ import SoftButton from "components/SoftButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
-import curved9 from "assets/images/curved-images/curved-6.jpg";
+import back from "assets/images/mk/loginBackground.png";
 
 function SignIn() {
   const [rememberMe, setRememberMe] = useState(true);
@@ -24,27 +24,23 @@ function SignIn() {
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   return (
-    <CoverLayout
-      title="Welcome back"
-      description="Enter your email and password to sign in"
-      image={curved9}
-    >
+    <CoverLayout title="Login" image={back}>
       <SoftBox component="form" role="form">
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Email
+            <SoftTypography component="label" variant="body2" fontWeight="bold">
+              이메일
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="email" placeholder="Email" />
+          <SoftInput type="email" placeholder="이메일을 입력해 주세요." />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Password
+            <SoftTypography component="label" variant="body2" fontWeight="bold">
+              비밀번호
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="password" placeholder="Password" />
+          <SoftInput type="password" placeholder="비밀번호를 입력해 주세요." />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -54,17 +50,19 @@ function SignIn() {
             onClick={handleSetRememberMe}
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
-            &nbsp;&nbsp;Remember me
+            &nbsp;&nbsp;아이디 저장
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth>
-            sign in
+          <SoftButton variant="gradient" color="success" fullWidth>
+            <SoftTypography color="white" fontWeight="bold">
+              로그인
+            </SoftTypography>
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
+            아직 마법카드 회원이 아니라면 &nbsp;&nbsp;
             <SoftTypography
               component={Link}
               to="/authentication/sign-up"
@@ -73,7 +71,7 @@ function SignIn() {
               fontWeight="medium"
               textGradient
             >
-              Sign up
+              마법사가 되자~
             </SoftTypography>
           </SoftTypography>
         </SoftBox>

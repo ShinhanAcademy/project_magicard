@@ -65,51 +65,16 @@ import IssueCards from "./component_sg/issueCards/components";
 import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
 import Member from "./examples/Icons/Member";
-import Employees from "./layouts/employees";
 import CardPlus from "./examples/Icons/CardPlus";
 import PurposeCategory from "./component_sh/components/PurposeCategory";
 import Tablesjy from "./components_jy/tables";
+import Employees from "./layouts/employees";
 import Dashboard from "./component_jw/dashboard";
 
 const routes = [
+  { type: "title", title: "사용자 메뉴", key: "user-pages" },
   {
     type: "collapse",
-    name: "대시보드",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <DashboardIcon size="14px" />,
-    component: <Dashboard />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "멤버 관리",
-    key: "member-Management",
-    route: "/member-Management",
-    icon: <Member size="14px" />,
-    component: <Employees />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "용도 관리",
-    key: "category-Management",
-    route: "/category-Management",
-    icon: <Settings size="14px" />,
-    component: <PurposeCategory />,
-  },
-  {
-    type: "collapse",
-    name: "부서 관리",
-    key: "departments",
-    route: "/departments",
-    icon: <Office size="14px" />,
-    component: <Tablesjy />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-
     name: "결제 내역",
     key: "payments",
     route: "/payments/*",
@@ -119,7 +84,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "결제 요청 내역",
+    name: "결재 요청 내역",
     key: "recieved-requests",
     route: "/recieved-requests/*",
     icon: <Check size="15px" />,
@@ -135,15 +100,7 @@ const routes = [
     component: <Onboarding />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "카드 신규 발급",
-    key: "issue-cards",
-    route: "/issue-cards",
-    icon: <CardPlus size="14px" />,
-    component: <IssueCards />,
-    noCollapse: true,
-  },
+
   // { type: "title", title: "안 쓰는 페이지", key: "nono" },
   // {
   //   type: "collapse",
@@ -181,35 +138,82 @@ const routes = [
   //   component: <RTL />,
   //   noCollapse: true,
   // },
-  { type: "title", title: "계정 관리", key: "account-pages" },
+
+  { type: "title", title: "관리자 메뉴", key: "manager-pages" },
+  {
+    type: "collapse",
+    name: "대시보드",
+    key: "dashboard",
+    route: "/dashboard",
+    icon: <DashboardIcon size="14px" />,
+    component: <Dashboard />,
+    noCollapse: true,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "멤버 관리",
+  //   key: "member-Management",
+  //   route: "/member-Management",
+  //   icon: <Member size="14px" />,
+  //   component: <Employees />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "부서 관리",
+  //   key: "departments",
+  //   route: "/departments",
+  //   icon: <Office size="14px" />,
+  //   component: <Tablesjy />,
+  //   noCollapse: true,
+  // },
+  {
+    type: "collapse",
+    name: "용도 관리",
+    key: "category-Management",
+    route: "/category-Management",
+    icon: <Settings size="14px" />,
+    component: <PurposeCategory />,
+  },
 
   {
     type: "collapse",
-    name: "Profile",
-    key: "profile",
-    route: "/profile",
-    icon: <CustomerSupport size="12px" />,
-    component: <Profile />,
+    name: "카드 신규 발급",
+    key: "issue-cards",
+    route: "/issue-cards",
+    icon: <CardPlus size="14px" />,
+    component: <IssueCards />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    route: "/authentication/sign-in",
-    icon: <Document size="12px" />,
-    component: <SignIn />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    icon: <SpaceShip size="12px" />,
-    component: <SignUp />,
-    noCollapse: true,
-  },
+  // { type: "title", title: "계정 관리", key: "account-pages" },
+
+  // {
+  //   type: "collapse",
+  //   name: "마이페이지",
+  //   key: "profile",
+  //   route: "/profile",
+  //   icon: <CustomerSupport size="12px" />,
+  //   component: <Profile />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "로그인",
+  //   key: "sign-in",
+  //   route: "/authentication/sign-in",
+  //   icon: <Document size="12px" />,
+  //   component: <SignIn />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "회원가입",
+  //   key: "sign-up",
+  //   route: "/authentication/sign-up",
+  //   icon: <SpaceShip size="12px" />,
+  //   component: <SignUp />,
+  //   noCollapse: true,
+  // },
 ];
 
 export default routes;

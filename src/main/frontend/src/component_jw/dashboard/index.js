@@ -79,7 +79,7 @@ function Dashboard() {
       
 
       <SoftBox py={3}>
-{/*         
+        {/*         
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={6}>
@@ -108,27 +108,27 @@ function Dashboard() {
         </SoftBox> */}
 
         <SoftBox mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} xl={2}>
-            <TotalCards />
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} xl={2}>
+              <TotalCards />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2}>
+              <TotalUses />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2}>
+              <TotalPayment />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2}>
+              <TotalApproval />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2}>
+              <MonthlyDonationAmount />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2}>
+              <TotalDonationAmount />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} xl={2}>
-            <TotalUses />
-          </Grid>
-          <Grid item xs={12} sm={6} xl={2}>
-            <TotalPayment />
-          </Grid>
-          <Grid item xs={12} sm={6} xl={2}>
-            <TotalApproval />
-          </Grid>
-          <Grid item xs={12} sm={6} xl={2}>
-            <MonthlyDonationAmount />
-          </Grid>
-          <Grid item xs={12} sm={6} xl={2}>
-            <TotalDonationAmount />
-          </Grid>
-        </Grid>
-      </SoftBox>
+        </SoftBox> 
 
         <SoftBox mb={3}>
           <Grid container spacing={2}>
@@ -141,25 +141,23 @@ function Dashboard() {
               <ComparisonWithOthersChart />
             </Grid>
           </Grid>
-        </SoftBox> 
-            
-        <SoftBox mb={3}> 
-          부서별 지출 비교 
-          <Grid >
-              <DepartmentalSpendingChart/>
+          
+        
+      </SoftBox>
+
+        <SoftBox mb={3}>
+          부서별 지출 비교
+          <Grid>
+            <DepartmentalSpendingChart />
           </Grid>
         </SoftBox>
-        <SoftBox mb={3}> 
-         용도별 지출 추이 
+        <SoftBox mb={3}>
+          용도별 지출 추이
           <Grid>
-            <SpendingByPurposeChart/>
-          </Grid>    
+            <SpendingByPurposeChart />
+          </Grid>
         </SoftBox>
-         
-
-        
-        
-
+        {/* 
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
@@ -214,7 +212,7 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={4}>
             <OrderOverview />
           </Grid>
-        </Grid>
+        </Grid> */}
       </SoftBox>
       <Footer />
     </DashboardLayout>

@@ -28,7 +28,7 @@
 .back {
   width: 100%;
   position: absolute;
-  transform: perspective(800px) rotateY(180deg) scale(1.05);
+  transform: perspective(800px) rotateY(180deg);
 }
 
 .flip-inner:hover {

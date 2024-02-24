@@ -8,30 +8,25 @@ import SoftBox from "components/SoftBox";
 import Table from "examples/Tables/Table";
 import CategoryDelete from "./CategoryDelete";
 
-function PurposeList({ modalOpen, serachItem }) {
+function PurposeList({ modalOpen, searchItem }) {
   const [purList, setPurList] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [deleteElement, setDeleteElement] = useState("");
   const [categoryCount, setCount] = useState("0");
-
-  //검색기능 구현
+  const [searchItemResult, setSearchItemResult] = useState(searchItem);
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
-      setSelectedCategory(null); // 이미 선택된 카테고리를 다시 클릭하면 선택 해제
+      setSelectedCategory(null);
     } else {
       setSelectedCategory(category);
-      setDeleteElement(category); // 카테고리를 클릭하면 삭제 요소 표시
+      setDeleteElement(category);
     }
   };
 
-  const handleChange = (e) => {
-    setNewCategory(e.target.value);
-  };
-
-  const handleDeletepurposeItem = (purposeItem) => {
-    deletepurposeItem(purposeItem);
+  const handleDeletePurposeItem = (purposeItem) => {
+    deletePurposeItem(purposeItem);
   };
 
   const deleteAll = (categorytest) => {
@@ -45,7 +40,7 @@ function PurposeList({ modalOpen, serachItem }) {
         data: { purposeCategory: categorytest },
       })
         .then((res) => {
-          setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+          setNewCategory(Date.now().toString());
         })
         .catch((err) => {
           console.log(err);
@@ -55,7 +50,7 @@ function PurposeList({ modalOpen, serachItem }) {
     }
   };
 
-  const deletepurposeItem = (purposeItem) => {
+  const deletePurposeItem = (purposeItem) => {
     const confirmed = window.confirm(" 삭제 하시겠습니까?");
     if (confirmed) {
       axios({
@@ -64,7 +59,7 @@ function PurposeList({ modalOpen, serachItem }) {
         data: { purposeCategory: selectedCategory, purposeItem: purposeItem },
       })
         .then((res) => {
-          setNewCategory(Date.now().toString()); // 새로 list를 부르기위해 아무 변수
+          setNewCategory(Date.now().toString());
         })
         .catch((err) => {
           console.log(err);
@@ -82,42 +77,67 @@ function PurposeList({ modalOpen, serachItem }) {
       .then((res) => {
         setPurList(res.data);
         setCount(res.data.length);
+        if (res.data.length > 0) {
+          setSelectedCategory(res.data[0].purposeCategory);
+        }
+        setSearchItemResult(searchItem);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [modalOpen, newCategory]);
+  }, [modalOpen, newCategory, searchItem]);
+
+  useEffect(() => {
+    if (searchItem) {
+      setSelectedCategory(null);
+    }
+  }, [searchItem]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setSearchItemResult(null);
+    }
+  }, [selectedCategory]);
 
   const columns = [
-    { name: "소분류", align: "center" },
+    { name: "상위항목", align: "center" },
+    { name: "하위항목", align: "center" },
     { name: "삭제", align: "center" },
   ];
 
   const rows = () => {
-    if (!selectedCategory) return [];
-    const selectedCategoryItems =
-      purList.find((pur) => pur.purposeCategory === selectedCategory)?.purposeItem || [];
+    if (searchItemResult) {
+      return purList
+        .flatMap((pur) => pur.purposeItem.map((item) => ({ item, category: pur.purposeCategory })))
+        .filter((entry) => entry.item.includes(searchItemResult))
+        .map((entry, index) => {
+          return {
+            상위항목: <SoftTypography variant="body1">{entry.category}</SoftTypography>,
+            하위항목: <SoftTypography variant="body1">{entry.item}</SoftTypography>,
+            삭제: (
+              <SoftButton onClick={() => handleDeletePurposeItem(entry.item)}>
+                <span style={{ fontSize: "13px" }}>삭제</span>
+              </SoftButton>
+            ),
+          };
+        });
+    } else if (selectedCategory) {
+      const selectedCategoryItems =
+        purList.find((pur) => pur.purposeCategory === selectedCategory)?.purposeItem || [];
 
-    return selectedCategoryItems.map((item, index) => ({
-      소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
-      삭제: (
-        <SoftButton onClick={() => handleDeletepurposeItem(item)}>
-          <span style={{ fontSize: "13px" }}>삭제</span>
-        </SoftButton>
-      ),
-    }));
-  };
-
-  const rows2 = Array.isArray(serachItem)
-    ? serachItem.map((item, index) => ({
-        소분류: <SoftTypography variant="body1">{item}</SoftTypography>,
+      return selectedCategoryItems.map((item, index) => ({
+        상위항목: <SoftTypography variant="body1">{selectedCategory}</SoftTypography>,
+        하위항목: <SoftTypography variant="body1">{item}</SoftTypography>,
         삭제: (
-          <SoftButton onClick={() => handleDeletepurposeItem(item)}>
+          <SoftButton onClick={() => handleDeletePurposeItem(item)}>
             <span style={{ fontSize: "13px" }}>삭제</span>
           </SoftButton>
         ),
-      }))
-    : [];
+      }));
+    } else {
+      return [];
+    }
+  };
 
   return (
     <Fragment>
@@ -132,8 +152,8 @@ function PurposeList({ modalOpen, serachItem }) {
       >
         전체 용도 : {categoryCount} 개
       </p>
-      <Card id="delete-account" sx={{ height: "100%" }}>
-        <Grid container spacing={2}>
+      <Card id="delete-account" sx={{ height: "100%", width: "auto" }}>
+        <Grid container spacing={2} style={{ width: "82rem" }}>
           {purList.map((pur, index) => (
             <Grid
               item
@@ -147,33 +167,17 @@ function PurposeList({ modalOpen, serachItem }) {
                 selectedCategory={selectedCategory}
                 handleCategoryClick={handleCategoryClick}
                 deleteElement={deleteElement}
-                handleDeletepurposeItem={handleDeletepurposeItem}
-                deleteAll={deleteAll} // deleteAll 함수를 props로 전달
+                handleDeletePurposeItem={handleDeletePurposeItem}
+                deleteAll={deleteAll}
               />
             </Grid>
           ))}
         </Grid>
 
         <div>
-          {selectedCategory && (
-            <SoftBox
-              sx={{
-                "& .MuiTableRow-root:not(:last-child)": {
-                  "& td": {
-                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                      `${borderWidth[1]} solid ${borderColor}`,
-                  },
-                },
-              }}
-            >
-              <Table columns={columns} rows={rows()} />{" "}
-            </SoftBox>
-          )}
-          {rows2.length > 0 && (
-            <SoftBox>
-              <Table columns={columns} rows={rows2} />
-            </SoftBox>
-          )}
+          <SoftBox>
+            <Table columns={columns} rows={rows()} />
+          </SoftBox>
         </div>
       </Card>
     </Fragment>
