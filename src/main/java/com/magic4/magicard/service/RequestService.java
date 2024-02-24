@@ -47,7 +47,7 @@ public class RequestService {
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
       requestDto.setPaymentInfo(paymentInfoDto);
 
-      PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(request.getPurposeItem().getPurposeItem());
+      PurposeItem purposeItem = purposeItemRepo.findById(request.getPurposeItem().getPurposeItemUid()).orElse(null);
       PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
       requestDto.setPurposeItem(purposeItemDto);
 
@@ -102,11 +102,9 @@ public class RequestService {
   public List<RequestDto> getToMeAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
     List<Request> requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 1);
-
     List<RequestDto> requestDtoList = new ArrayList<>();
     for(Request request : requestList){
       RequestDto requestDto = model.map(request, RequestDto.class);
-
       PaymentInfo paymentInfo = paymentInfoRepo.findById(request.getPaymentInfo().getPaymentId()).orElse(null);
       PaymentInfoDto paymentInfoDto = model.map(paymentInfo, PaymentInfoDto.class);
       requestDto.setPaymentInfo(paymentInfoDto);
@@ -119,7 +117,7 @@ public class RequestService {
       Employee emp = employeeRepo.findById(responseEmployeeEmail).orElse(null);
       requestDto.setResponseEmployeeName(emp.getEmployeeName());
 
-      PurposeItem purposeItem = purposeItemRepo.findByPurposeItem(request.getPurposeItem().getPurposeItem());
+      PurposeItem purposeItem = purposeItemRepo.findById(request.getPurposeItem().getPurposeItemUid()).orElse(null);
       PurposeItemDto purposeItemDto = model.map(purposeItem, PurposeItemDto.class);
       requestDto.setPurposeItem(purposeItemDto);
 
@@ -339,6 +337,7 @@ PurposeItemDto purposeItemDto = null;
 
   public Integer updateRequest(RequestFormDto requestFormDto, EmployeeDto employeeInfo) {
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
+    System.out.println();
     PurposeItem purposeItem = purposeItemRepo.findById(requestFormDto.getPurposeItemUid()).orElse(null);
 
     ApprovalSteps approvalSteps = approvalStepsRepo.findById(1).orElse(null);
