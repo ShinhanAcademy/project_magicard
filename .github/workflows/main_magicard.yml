@@ -13,7 +13,7 @@ jobs:
   delete-old-artifacts:
     runs-on: ubuntu-latest
     permissions:
-      actions: read|write
+      actions: write
     
     steps:
       - uses: kolpav/purge-artifacts-action@v1
