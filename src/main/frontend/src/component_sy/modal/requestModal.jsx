@@ -156,6 +156,10 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   }
   if (!isOpen || !paymentInfo || !purposeItem) return null;
   const paymentDate = paymentInfo.paymentTime.substr(0, 10);
+  const paymentTimeArray = paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+  const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+  const payAmount = paymentInfo.payAmount.toLocaleString();
+
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
@@ -184,7 +188,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               결제일시
               <span className="ness"> * </span>
             </div>
-            <input value={paymentDate} readOnly />
+            <input value={paymentTime} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -192,7 +196,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               사용금액
               <span className="ness"> * </span>
             </div>
-            <input value={paymentInfo.payAmount} readOnly />
+            <input value={payAmount + "원"} style={{ color: "red" }} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
