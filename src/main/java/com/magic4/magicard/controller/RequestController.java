@@ -3,23 +3,32 @@ package com.magic4.magicard.controller;
 import java.util.*;
 
 import com.magic4.magicard.dto.*;
+import com.magic4.magicard.repository.RequestRepo;
 import com.magic4.magicard.service.EmployeeService;
 import com.magic4.magicard.service.RequestService;
 
 import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.*;
 
 import com.magic4.magicard.vo.Request;
 
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/requests")
 public class RequestController {
     private final RequestService requestService;
+
+    @Autowired
+    RequestRepo requestRepo;
+   
 
     public EmployeeDto getLoginInfo(HttpServletRequest httpServletRequest){
         HttpSession session = httpServletRequest.getSession();
@@ -40,6 +49,8 @@ public class RequestController {
             return employeeDto;
         }
     }
+
+    
 
     @GetMapping("/fromMe/getRequestList")
     public List<RequestDto> getFromMeRequestList(HttpServletRequest httpServletRequest) {
@@ -126,4 +137,10 @@ public class RequestController {
     public Integer refuseRequest(@RequestBody RejectFormDto rejectFormDto){
         return requestService.refuseRequest(rejectFormDto);
     }
+
+    @GetMapping("/approvalRequest")
+    public List<Map<String, Object>> findRequestNumWhereApprovalFinal() {
+        return requestRepo.findRequestNumWhereApprovalFinal();
+    }
+    
 }
