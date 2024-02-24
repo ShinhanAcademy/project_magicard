@@ -4,10 +4,7 @@ import java.util.*;
 
 import com.magic4.magicard.dto.EmployeeEmailDto;
 import com.magic4.magicard.repository.EmployeeRepo;
-import com.magic4.magicard.vo.Employee;
-import com.magic4.magicard.vo.IssuedCard;
-import com.magic4.magicard.vo.PaymentInfo;
-import com.magic4.magicard.vo.Request;
+import com.magic4.magicard.vo.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +25,7 @@ public class PaymentInfoService {
   private final RequestRepo requestRepo;
   private final EmployeeRepo employeeRepo;
   private ModelMapper model = new ModelMapper();
+
   public List<PaymentInfoDto> getPaymentInfoList(EmployeeDto employeeDto) {
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
 
@@ -61,10 +59,10 @@ public class PaymentInfoService {
           paymentInfoDto.setSendRequest("조회");
         }
       } else { // 2단계 신청도 들어간 경우
-        int firstStep = request.get(0).getApprovalSteps().getApprovalStatusCode();
-        int secondStep = request.get(1).getApprovalSteps().getApprovalStatusCode();
-        paymentInfoDto.setFirstStepStatus(request.get(0).getApprovalSteps().getApprovalStep());
-        paymentInfoDto.setSecondStepStatus(request.get(1).getApprovalSteps().getApprovalStep());
+        ApprovalSteps firstStep = request.get(0).getApprovalSteps();
+        ApprovalSteps secondStep = request.get(1).getApprovalSteps();
+        paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
+        paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
         // 2단계 신청에서는 내가 수정할 필요는 없,,다!
         paymentInfoDto.setSendRequest("조회");
 //        if(secondStep == 1 || secondStep == 4){ // 2단계 승인 대기중, 반려
@@ -72,7 +70,6 @@ public class PaymentInfoService {
 //        } else if(secondStep == 2 || secondStep == 3 || secondStep == 5){ // 최종 승인, 최종 반려
 //          paymentInfoDto.setSendRequest("조회");
 //        }
-
       }
       paymentInfoDtoList.add(paymentInfoDto);
     }

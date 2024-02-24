@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
+// Soft UI Dashboard React components
 import axios from "axios";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 
-const RefuseData = () => {
+const FinalRefuseData = () => {
   const [refuseList, setRefuseList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -12,7 +14,7 @@ const RefuseData = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "/requests/fromMe/getRefuseList",
+      url: "/requests/toMe/getRefuseList",
     })
       .then((result) => {
         console.log(result.data);
@@ -21,9 +23,9 @@ const RefuseData = () => {
       .catch((err) => {});
   }, []);
 
-  const handleModalOpen = (paymentId) => {
+  const handleModalOpen = (selectedId) => {
+    setSelectedId(selectedId);
     setIsModalOpen(true);
-    setSelectedId(paymentId);
   };
 
   const handleModalClose = () => {
@@ -38,8 +40,7 @@ const RefuseData = () => {
     { name: "가맹점", align: "center" },
     { name: "사용금액", align: "center" },
     { name: "용도", align: "center" },
-    { name: "부서내", align: "center" },
-    { name: "재무부", align: "center" },
+    { name: "상태", align: "center" },
     { name: "승인요청", align: "center" },
   ];
 
@@ -59,9 +60,13 @@ const RefuseData = () => {
     if (refuse.sendRequest === "조회") {
       backgroundColor = "#ffffff";
       color = "#808080";
-    } else if (refuse.sendRequest === "수정") {
-      backgroundColor = "#cbe1d4";
-      color = "#2f4f4f";
+    }
+
+    let statusColor = "";
+    if (refuse.approvalSteps.approvalStep === "승인") {
+      statusColor = "skyblue";
+    } else {
+      statusColor = "black";
     }
 
     return {
@@ -72,7 +77,7 @@ const RefuseData = () => {
       ),
       요청자: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.employee.employeeName}
+          {refuse.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
@@ -106,14 +111,14 @@ const RefuseData = () => {
           {refuse.purposeItem.purposeItem}
         </SoftTypography>
       ),
-      부서내: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.paymentInfo.firstStepStatus}
-        </SoftTypography>
-      ),
-      재무부: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.paymentInfo.secondStepStatus}
+      상태: (
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: statusColor }}
+        >
+          {refuse.approvalSteps.approvalStep}
         </SoftTypography>
       ),
       승인요청: (
@@ -140,4 +145,4 @@ const RefuseData = () => {
   };
 };
 
-export default RefuseData;
+export default FinalRefuseData;
