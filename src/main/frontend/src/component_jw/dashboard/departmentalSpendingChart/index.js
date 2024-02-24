@@ -136,7 +136,7 @@ const DepartmentalSpendingChart = () => {
           focus: "series",
           label: {
             show: true,
-            position: "inside",
+            position: "top",
             formatter: "인건비: {c} 만원",
           },
         },
@@ -153,7 +153,7 @@ const DepartmentalSpendingChart = () => {
           focus: "series",
           label: {
             show: true,
-            position: "inside",
+            position: "top",
             formatter: "행사비: {c} 만원",
           },
         },
@@ -170,7 +170,7 @@ const DepartmentalSpendingChart = () => {
           focus: "series",
           label: {
             show: true,
-            position: "inside",
+            position: "top",
             formatter: "식비: {c} 만원",
           },
         },
