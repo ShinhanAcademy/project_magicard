@@ -36,8 +36,8 @@ const paymentInfoData = () => {
     { name: "사용처", align: "center" },
     { name: "사용금액", align: "center" },
     { name: "카드번호", align: "center" },
-    { name: "1단계", align: "center" },
-    { name: "2단계", align: "center" },
+    { name: "부서내", align: "center" },
+    { name: "재무부", align: "center" },
     { name: "신청", align: "center" },
   ];
 
@@ -45,11 +45,8 @@ const paymentInfoData = () => {
     const paymentDate = payment.paymentTime.substr(0, 10);
     const paymentTimeArray = payment.paymentTime.substr(11, 11).split("").slice(0, 5);
     const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+    const payAmount = payment.payAmount.toLocaleString();
 
-    // const handleButtonClick = () => {
-    //   setSendRequest(payment.sendRequest);
-    //   handleModalOpen(payment.paymentId);
-    // };
     const handleButtonClick = () => {
       setSendRequest(payment.sendRequest);
       if (payment.sendRequest === "신청") {
@@ -61,7 +58,6 @@ const paymentInfoData = () => {
         })
           .then((result) => {
             const requestId = result.data;
-            console.log("ㅅㅄㅄㅂ" + requestId);
             handleModalOpen(requestId);
           })
           .catch((err) => {
@@ -95,8 +91,13 @@ const paymentInfoData = () => {
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {payment.payAmount}
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: "red" }}
+        >
+          {payAmount}원
         </SoftTypography>
       ),
       카드번호: (
@@ -104,12 +105,12 @@ const paymentInfoData = () => {
           {payment.issuedCard.cardNumber}
         </SoftTypography>
       ),
-      "1단계": (
+      부서내: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
           {payment.firstStepStatus}
         </SoftTypography>
       ),
-      "2단계": (
+      재무부: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
           {payment.secondStepStatus}
         </SoftTypography>

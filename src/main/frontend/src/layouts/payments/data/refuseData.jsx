@@ -38,7 +38,8 @@ const RefuseData = () => {
     { name: "가맹점", align: "center" },
     { name: "사용금액", align: "center" },
     { name: "용도", align: "center" },
-    { name: "상태", align: "center" },
+    { name: "부서내", align: "center" },
+    { name: "재무부", align: "center" },
     { name: "승인요청", align: "center" },
   ];
 
@@ -46,6 +47,7 @@ const RefuseData = () => {
     const paymentDate = refuse.paymentInfo.paymentTime.substr(0, 10);
     const paymentTimeArray = refuse.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
     const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+    const payAmount = refuse.paymentInfo.payAmount.toLocaleString();
 
     const handleButtonClick = () => {
       setSendRequest(refuse.sendRequest);
@@ -84,8 +86,13 @@ const RefuseData = () => {
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.paymentInfo.payAmount}
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: "red" }}
+        >
+          {payAmount}원
         </SoftTypography>
       ),
       용도: (
@@ -96,12 +103,17 @@ const RefuseData = () => {
           color="secondary"
           fontWeight="medium"
         >
-          {refuse.approvalSteps.approvalStep}
+          {refuse.purposeItem.purposeItem}
         </SoftTypography>
       ),
-      상태: (
+      부서내: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          {refuse.approvalSteps.approvalStep}
+          {refuse.paymentInfo.firstStepStatus}
+        </SoftTypography>
+      ),
+      재무부: (
+        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+          {refuse.paymentInfo.secondStepStatus}
         </SoftTypography>
       ),
       승인요청: (

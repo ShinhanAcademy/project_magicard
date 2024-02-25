@@ -31,6 +31,7 @@ const departments = [
 ];
 const spend = [
   220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220,
+<<<<<<< HEAD
 ];
 const superDepartments = [
   "경영부문",
@@ -45,6 +46,32 @@ const superDepartments = [
   "인프라본부",
 ];
 
+=======
+];
+
+const superDepartments = [
+  "경영부문",
+  "전략사업부문",
+  "디지털개발부문",
+  "인프라&보안부문",
+  "경영전략본부",
+  "글로벌본부",
+  "디지털본부",
+  "뱅킹Biz본부",
+  "정보보호본부",
+  "인프라본부",
+];
+
+const departmentCategoryData = departments.map((data, index) => ({
+  department: data,
+  spend: {
+    인건비: spend[index],
+    행사비: Math.floor(spend[index] * 0.3),
+    식비: Math.floor(spend[index] * 0.2),
+  },
+}));
+
+>>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
 function getTop5Departments(departments, spend) {
   // 부서와 지출 데이터를 객체의 배열로 결합
   const combinedData = departments.map((department, index) => ({
@@ -79,13 +106,15 @@ const DepartmentalSpendingChart = () => {
       // height:'40rem'
     },
     xAxis: {
-      data: departments,
+      type: "category",
+      data: departmentCategoryData.map((data) => data.department),
       axisLabel: {
         inside: false,
         color: "#333",
         fontSize: 14, // 폰트 크기를 설정
         fontWeight: 600, // 상대적으로 더 두꺼운 폰트
-        // interval: 0, // 모든 레이블을 강제로 표시
+        interval: 0, // 모든 레이블을 강제로 표시
+        rotate: 40,
       },
       axisTick: {
         show: false,
@@ -114,6 +143,7 @@ const DepartmentalSpendingChart = () => {
     series: [
       {
         type: "bar",
+<<<<<<< HEAD
         showBackground: false,
         barWidth: "60%", // 막대의 너비 설정
         itemStyle: {
@@ -133,6 +163,56 @@ const DepartmentalSpendingChart = () => {
           },
         },
         data: spend,
+=======
+        name: "인건비",
+        data: departmentCategoryData.map((data) => data.spend.인건비),
+        stack: "비용",
+        itemStyle: {
+          color: "#FFD700",
+        },
+        emphasis: {
+          focus: "series",
+          label: {
+            show: true,
+            position: "top",
+            formatter: "인건비: {c} 만원",
+          },
+        },
+      },
+      {
+        type: "bar",
+        name: "행사비",
+        data: departmentCategoryData.map((data) => data.spend.행사비),
+        stack: "비용",
+        itemStyle: {
+          color: "#F5F5DC",
+        },
+        emphasis: {
+          focus: "series",
+          label: {
+            show: true,
+            position: "top",
+            formatter: "행사비: {c} 만원",
+          },
+        },
+      },
+      {
+        type: "bar",
+        name: "식비",
+        data: departmentCategoryData.map((data) => data.spend.식비),
+        stack: "비용",
+        itemStyle: {
+          color: "#36454F",
+        },
+        emphasis: {
+          focus: "series",
+          label: {
+            show: true,
+            position: "top",
+            formatter: "식비: {c} 만원",
+          },
+        },
+>>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
       },
     ],
   };
@@ -154,13 +234,6 @@ const DepartmentalSpendingChart = () => {
             ))}
           </Select>
         </Grid>
-        {/* <Grid item xs={12} sm={6} container> 
-          <Select>
-            <MenuItem value="하위 부서">하위 부서</MenuItem>
-            <MenuItem value="하위 부서">하위 부서</MenuItem>
-            <MenuItem value="하위 부서">하위 부서</MenuItem>
-          </Select>
-        </Grid> */}
       </Grid>
       <Grid
         container
@@ -170,7 +243,11 @@ const DepartmentalSpendingChart = () => {
       >
         <Grid className="gridContainer" item xs={2.5} style={{ paddingTop: "2.75rem" }}>
           <SoftTypography variant="h5" fontWeight="bold" gutterBottom mt={3} mb={3}>
+<<<<<<< HEAD
             부서 전체 지출 TOP5
+=======
+            부서 전체 지출 <span className="DepartMent-title">TOP5</span>
+>>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
           </SoftTypography>
           <List>
             {top5Departments.map((item, index) => (

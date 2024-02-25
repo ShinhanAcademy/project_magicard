@@ -10,6 +10,7 @@ import picImg from "assets/images/request_img/pic.png";
 import purposeImg from "assets/images/request_img/purpose.png";
 import shopImg from "assets/images/request_img/shop.png";
 import submitbtn from "assets/images/request_img/submitbtn.png";
+import updatebtn from "assets/images/request_img/update.png";
 
 const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
   const [requestInfo, setRequestInfo] = useState(null);
@@ -47,7 +48,8 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
           console.log(result.data);
           setRequestInfo(result.data);
           setSelectedPurpose(result.data.purposeItem.purposeItemUid);
-          setRequestId(result.data.requestId);
+          setParticipant(result.data.participant);
+          setMemo(result.data.memo);
         })
         .catch((err) => {
           console.error("Error fetching data:", err);
@@ -77,10 +79,12 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
       return;
     }
 
+    console.log("selectedPurpose" + selectedPurpose);
+
     const requestData = {
       requestId: selectedId,
       paymentId: paymentId,
-      purposeItemUid: selectedPurpose.purposeItemUid,
+      purposeItemUid: selectedPurpose,
       participant: participant,
       receiptUrl: receiptUrl,
       memo: memo,
@@ -126,11 +130,17 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
   const paymentTimeArray = requestInfo.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
   const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+  const payAmount = requestInfo.paymentInfo.payAmount.toLocaleString();
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        {requestInfo.refuseMessage && <div>반려 사유 : {requestInfo.refuseMessage}</div>}
+        {requestInfo.refuseMessage && (
+          <>
+            <div style={{ color: "red" }}>반려 사유 : {requestInfo.refuseMessage}</div>
+            <br />
+          </>
+        )}
         <div className="modal-title">
           <div className="modal-title-img">
             <img src={receiptImg}></img>
@@ -164,7 +174,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
               사용금액
               <span className="ness"> * </span>
             </div>
-            <input value={requestInfo.paymentInfo.payAmount} readOnly />
+            <input value={payAmount + "원"} style={{ color: "red" }} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -202,7 +212,7 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
             </div>
             <input
               placeholder="참석자를 입력하세요."
-              value={requestInfo.participant}
+              value={participant}
               onChange={(e) => setParticipant(e.target.value)}
             />
           </div>
@@ -220,13 +230,15 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
               메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
             <div>
-              <textarea className="inputbox" />
+              <textarea className="inputbox" onChange={(e) => setMemo(e.target.value)}>
+                {memo}
+              </textarea>
             </div>
           </div>
         </div>
         <div>
           <button className="submitButton" onClick={handleSubmit}>
-            <img src={submitbtn} />
+            <img src={updatebtn} />
           </button>
         </div>
       </div>

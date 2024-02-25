@@ -20,6 +20,7 @@ import axios from "axios";
 import { setMiniSidenav } from "mk/slices/softui";
 import { setOpenConfigurator } from "mk/slices/softui";
 import userSlice from "mk/slices/user";
+import { persistor } from "mk/store";
 // import { setMiniSidenav, setOpenConfigurator, setTransparentNavbar } fro";
 
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -29,8 +30,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
     (state) => state.layout
   );
   const [openMenu, setOpenMenu] = useState(false);
+  const user = useSelector((state) => state.user);
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
   const loginName = useSelector((state) => state.user.employeeName);
+
+  console.log("유저유저", user);
+  console.log("route", route);
 
   useEffect(() => {
     function handleTransparentNavbar() {
@@ -48,21 +53,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
-  //   initializeUserInfo = async () => {
-  //     const loggedInfo = storage.get('loggedInfo'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
-  //     if(!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
-
-  //     const { UserActions } = this.props;
-  //     UserActions.setLoggedInfo(loggedInfo);
-  //     try {
-  //         await UserActions.checkStatus();
-  //     } catch (e) {
-  //         storage.remove('loggedInfo');
-  //         window.location.href = '/auth/login?expired';
-  //     }
-  // }
-
-  const login = () => {
+  const login = async (isAdmin) => {
+    console.log("login f", isAdmin);
     if (isLoggedIn) {
       // 로그인 -> 로그아웃
       axios
@@ -72,12 +64,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
           console.log("로그아웃");
         })
         .catch((error) => console.error(error));
+      persistor.purge();
       dispatch(userSlice.actions.reset());
       sessionStorage.clear();
     } else {
       // 로그아웃 -> 로그인
+      var url = "/auth/login";
+      if (isAdmin) {
+        url = "/auth/adminLogin";
+        console.log("url", isAdmin);
+      }
       axios
-        .post("/auth/login")
+        .post(url)
         .then((response) => {
           console.log("로그인");
           console.log(response.data);
@@ -92,6 +90,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               employeeRank: response.data.employeeRank.rankName,
               department: response.data.department.departmentName,
               company: response.data.company.companyTicker,
+              isAdmin: response.data.department.adminDepartment,
             })
           );
         })
@@ -134,25 +133,49 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              <IconButton sx={navbarIconButton} onClick={login}>
-                <Icon
-                  sx={({ palette: { dark, white } }) => ({
-                    color: light ? white.main : dark.main,
-                  })}
-                >
-                  account_circle
-                </Icon>
-                {!isLoggedIn ? (
+              {!isLoggedIn ? (
+                <>
+                  <IconButton sx={navbarIconButton} onClick={() => login(true)}>
+                    <SoftBox style={{ display: "flex", alignItems: "center" }}>
+                      <Icon
+                        sx={({ palette: { dark, white } }) => ({
+                          color: light ? white.main : dark.main,
+                        })}
+                      >
+                        account_circle
+                      </Icon>
+                      <SoftTypography
+                        variant="button"
+                        fontWeight="medium"
+                        color={light ? "white" : "dark"}
+                      >
+                        관리자
+                      </SoftTypography>
+                    </SoftBox>
+                  </IconButton>
+                  <IconButton sx={navbarIconButton} onClick={() => login(false)}>
+                    <SoftBox style={{ display: "flex", alignItems: "center" }}>
+                      <Icon
+                        sx={({ palette: { dark, white } }) => ({
+                          color: light ? white.main : dark.main,
+                        })}
+                      >
+                        account_circle
+                      </Icon>
+                      <SoftTypography
+                        variant="button"
+                        fontWeight="medium"
+                        color={light ? "white" : "dark"}
+                      >
+                        사용자
+                      </SoftTypography>
+                    </SoftBox>
+                  </IconButton>
+                </>
+              ) : (
+                <IconButton sx={navbarIconButton} onClick={login}>
                   <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Sign in
-                  </SoftTypography>
-                ) : (
-                  <SoftTypography
-                    style={isLoggedIn ? { maxWidth: "125px", minWidth: "125px" } : {}}
+                    style={{ maxWidth: "125px", minWidth: "125px" }}
                     variant="button"
                     fontWeight="medium"
                   >
@@ -161,8 +184,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     </SoftTypography>
                     님 환영합니다!
                   </SoftTypography>
-                )}
-              </IconButton>
+                </IconButton>
+              )}
+
               <IconButton
                 size="small"
                 color="inherit"

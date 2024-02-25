@@ -28,7 +28,8 @@ function TotalDonationAmount(props) {
         <MiniStatisticsCard
                 title={{ text: "누적 기부 금액 " }}
                 count={formattedTotalDonationAmount}
-                percentage={{ color: "success", text: "+5%" }}
+                unit="원"
+                // percentage={{ color: "success", text: "+5%" }}
                 icon={{ color: "success", component: "paid" }}
               />
     );

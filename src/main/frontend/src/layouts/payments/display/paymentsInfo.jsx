@@ -53,7 +53,20 @@ function PaymentsInfo() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+            <SoftBox
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              p={3}
+            >
+              <SoftTypography variant="h4" fontWeight="bold">
+                결제 내역 관리
+              </SoftTypography>
+              <SoftTypography variant="h6" fontWeight="light" color="secondary">
+                직원의 결제 내역을 관리하고 승인을 요청, 수정, 확인할 수 있습니다.
+              </SoftTypography>
+              <br />
               <div className="money-container">
                 <div className="this-month">
                   <img src={usingMoney} />

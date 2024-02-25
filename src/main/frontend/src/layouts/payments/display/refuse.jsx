@@ -17,6 +17,10 @@ function Refuse() {
     modalComponent = (
       <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
     );
+  } else if (sendRequest === "수정") {
+    modalComponent = (
+      <CheckContext isOpen={isModalOpen} closeModal={handleModalClose} selectedId={selectedId} />
+    );
   }
 
   return (

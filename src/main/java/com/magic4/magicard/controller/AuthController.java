@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +23,38 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponseDto login(HttpServletRequest httpServletRequest){
-
         LoginRequestDto loginRequestDto=LoginRequestDto.builder()
                 .employeeEmail("aa4@naver.com")
+//                .userPassword()
+                .build();
+
+//        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+//                // 상급자
+////                .employeeEmail("aa4@naver.com")
+//                // 상급자의 상급자
+////                .employeeEmail("aa11@naver.com")
+//                // 관리자
+//                .employeeEmail("sdbase@naver.com")
+////                .userPassword()
+//                .build();
+
+        // 세션을 생성하기 전에 기존의 세션 파기
+        httpServletRequest.getSession().invalidate();
+        HttpSession session = httpServletRequest.getSession();  // Session이 없으면 생성
+
+        LoginResponseDto loginResponseDto=authService.login(loginRequestDto);
+
+        session.setAttribute("myInfo", loginResponseDto);
+
+        return loginResponseDto;
+    }
+
+
+    @PostMapping("/adminLogin")
+    public LoginResponseDto adminLogin(HttpServletRequest httpServletRequest){
+
+        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+                .employeeEmail("aa3@naver.com")
 //                .userPassword()
                 .build();
 

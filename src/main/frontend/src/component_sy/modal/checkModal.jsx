@@ -70,11 +70,17 @@ const CheckContext = ({ isOpen, closeModal, selectedId }) => {
   const paymentDate = requestInfo.paymentInfo.paymentTime.substr(0, 10);
   const paymentTimeArray = requestInfo.paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
   const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+  const payAmount = requestInfo.paymentInfo.payAmount.toLocaleString();
 
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
-        {requestInfo.refuseMessage && <div>반려 사유 : {requestInfo.refuseMessage}</div>}
+        {requestInfo.refuseMessage && (
+          <>
+            <div style={{ color: "red" }}>반려 사유 : {requestInfo.refuseMessage}</div>
+            <br />
+          </>
+        )}
         <div className="modal-title">
           <div className="modal-title-img">
             <img src={checkImg}></img>
@@ -107,7 +113,7 @@ const CheckContext = ({ isOpen, closeModal, selectedId }) => {
               사용금액
               <span className="ness"> * </span>
             </div>
-            <input value={requestInfo.paymentInfo.payAmount} readOnly />
+            <input value={payAmount + "원"} readOnly style={{ color: "red" }} />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -140,11 +146,7 @@ const CheckContext = ({ isOpen, closeModal, selectedId }) => {
               참석자
               <span className="ness"> * </span>
             </div>
-            <input
-              placeholder="참석자를 입력하세요."
-              value={requestInfo.participant}
-              onChange={(e) => setParticipant(e.target.value)}
-            />
+            <input value={requestInfo.participant || ""} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -160,7 +162,9 @@ const CheckContext = ({ isOpen, closeModal, selectedId }) => {
               메모 &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
             </div>
             <div>
-              <textarea className="inputbox" />
+              <textarea className="inputbox" readOnly>
+                {requestInfo.memo}
+              </textarea>
             </div>
           </div>
         </div>
