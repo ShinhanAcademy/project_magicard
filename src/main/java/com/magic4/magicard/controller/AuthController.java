@@ -22,7 +22,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest){
+    public LoginResponseDto login(HttpServletRequest httpServletRequest){
+        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+                .employeeEmail("aa4@naver.com")
+//                .userPassword()
+                .build();
 
 //        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
 //                // 상급자
