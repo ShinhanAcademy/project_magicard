@@ -77,7 +77,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
     } else {
       // 로그아웃 -> 로그인
       axios
-        .post("/auth/login")
+        .post("/auth/login", {
+          // main
+          employeeEmail: "aa4@naver.com",
+          // 상급자의 상급자
+          // employeeEmail: "aa11@naver.com",
+          // 관리자
+          // employeeEmail: "sdbase@naver.com",
+        })
         .then((response) => {
           console.log("로그인");
           console.log(response.data);

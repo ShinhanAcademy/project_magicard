@@ -3,14 +3,13 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import { Link, Route, Routes } from "react-router-dom";
-import RequestToMe from "./display/requestToMe";
-import RequestAll from "./display/requestAll";
-import RequestApprove from "./display/requestApprove";
-import Refuse from "./display/refuse";
 import "layouts/recievedRequest/index.css";
 
 import SoftButton from "components/SoftButton";
 import { useSelector } from "react-redux";
+import FinalRefuse from "./display/finalRefuse";
+import FinalRequestApprove from "./display/finalApprove";
+import FinalRequestAll from "./display/finalrequestAll";
 
 function RecievedRequest() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
@@ -29,26 +28,23 @@ function RecievedRequest() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      {isLoggedIn}
       <Link to="requesetToMe">
         <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
-          결재 요청 내역
+          결재 요청 내역 관리
         </SoftButton>
       </Link>
-      <Link to="requestAll">
-        <SoftButton style={{ width: "150px" }}>전체</SoftButton>
-      </Link>
-      <Link to="requestApprove">
+      <Link to="finalRequestApprove">
         <SoftButton style={{ width: "150px" }}>승인</SoftButton>
       </Link>
-      <Link to="refuse">
+      <Link to="finalRefuse">
         <SoftButton style={{ width: "150px" }}>반려</SoftButton>
       </Link>
       <Routes>
-        <Route path="/" element={<RequestToMe />}></Route>
-        <Route path="/requesetToMe" element={<RequestToMe />}></Route>
-        <Route path="/requestAll" element={<RequestAll />}></Route>
-        <Route path="/requestApprove" element={<RequestApprove />}></Route>
-        <Route path="/refuse" element={<Refuse />}></Route>
+        <Route path="/" element={<FinalRequestAll />}></Route>
+        <Route path="/requesetToMe" element={<FinalRequestAll />}></Route>
+        <Route path="/finalRequestApprove" element={<FinalRequestApprove />}></Route>
+        <Route path="/finalRefuse" element={<FinalRefuse />}></Route>
       </Routes>
     </DashboardLayout>
   );

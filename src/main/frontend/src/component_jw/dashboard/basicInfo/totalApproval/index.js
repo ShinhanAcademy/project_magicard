@@ -28,7 +28,8 @@ function TotalApproval(props) {
         <MiniStatisticsCard
                 title={{ text: "총 승인 금액 " }}
                 count={formattedTotalApproval}
-                percentage={{ color: "success", text: "+5%" }}
+                unit="원"
+                // percentage={{ color: "success", text: "+5%" }}
                 icon={{ color: "success", component: "paid" }}
               />
     );

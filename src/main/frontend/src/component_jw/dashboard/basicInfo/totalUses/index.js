@@ -24,8 +24,10 @@ useEffect(() => {
     return (
         <MiniStatisticsCard
                 title={{ text: "총 사용 건수" }}
+                
                 count={totalUses.toString()}
-                percentage={{ color: "success", text: "+3%" }}
+                unit="건"
+                // percentage={{ color: "success", text: "+3%" }}
                 icon={{
                   color: "success",
                   component: "shopping_cart",
