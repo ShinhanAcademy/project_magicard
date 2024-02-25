@@ -123,7 +123,8 @@ public class RequestController {
     }
 
     @PostMapping("/refuseRequest")
-    public Integer refuseRequest(@RequestBody RejectFormDto rejectFormDto){
-        return requestService.refuseRequest(rejectFormDto);
+    public Integer refuseRequest(@RequestBody RejectFormDto rejectFormDto, HttpServletRequest httpServletRequest){
+        EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+        return requestService.refuseRequest(rejectFormDto, myInfo);
     }
 }
