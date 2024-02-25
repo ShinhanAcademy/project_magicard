@@ -59,11 +59,15 @@ public class PaymentInfoService {
           paymentInfoDto.setSendRequest("조회");
         }
       } else { // 2단계 신청도 들어간 경우
-        ApprovalSteps firstStep = request.get(0).getApprovalSteps();
-        ApprovalSteps secondStep = request.get(1).getApprovalSteps();
-        paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
-        paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
-        // 2단계 신청에서는 내가 수정할 필요는 없,,다!
+        for(Request req : request){
+          if(req.getRequestLevel() == 1){
+            ApprovalSteps firstStep = req.getApprovalSteps();
+            paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
+          }else if(req.getRequestLevel() == 2){
+            ApprovalSteps secondStep = req.getApprovalSteps();
+            paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
+          }
+        }
         paymentInfoDto.setSendRequest("조회");
 //        if(secondStep == 1 || secondStep == 4){ // 2단계 승인 대기중, 반려
 //          paymentInfoDto.setSendRequest("수정");
