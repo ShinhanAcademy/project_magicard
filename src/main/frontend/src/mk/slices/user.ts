@@ -1,4 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
+import localStorage from "redux-persist/es/storage";
 
 const initialState = {
   employeeEmail: "",
@@ -8,6 +10,7 @@ const initialState = {
   employeeRank: "",
   department: "",
   company: "",
+  isAdmin: false,
 };
 
 const userSlice = createSlice({
@@ -22,12 +25,16 @@ const userSlice = createSlice({
       state.employeeRank = action.payload.employeeRank;
       state.department = action.payload.department;
       state.company = action.payload.company;
-      // state.authority = action.payload.authority;
-      // state.accessToken = action.payload.accessToken;
+      state.isAdmin = action.payload.isAdmin;
     },
     reset: () => initialState,
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      localStorage.removeItem("persist:root");
+      return initialState;
+    });
+  },
 });
 
 export default userSlice;

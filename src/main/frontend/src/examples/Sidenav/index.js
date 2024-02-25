@@ -24,11 +24,14 @@ import { NavLink, useLocation } from "react-router-dom";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   const { miniSidenav, transparentSidenav } = useSelector((state) => state.layout);
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
 
+  console.log("isLoggedIn!!!!!!!!!!!!", isLoggedIn);
   const closeSidenav = () => {
     dispatch(setMiniSidenav(true));
   };
@@ -49,66 +52,77 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch]);
 
+  useEffect(() => {
+    console.log("admin?", isAdmin);
+    renderRoutes;
+  }, [isAdmin]);
+
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, href }) => {
-    let returnValue;
+  const renderRoutes = routes
+    .filter((route) => {
+      // route.isAdmin (true) => 관리자 메뉴 렌더링
+      console.log(isAdmin);
+      return route.isAdmin ? (isAdmin ? true : false) : true;
+    })
+    .map(({ type, name, icon, title, noCollapse, key, route, href, isAdmin }) => {
+      let returnValue;
 
-    if (type === "collapse") {
-      returnValue = href ? (
-        <Link
-          href={href}
-          key={key}
-          target="_blank"
-          rel="noreferrer"
-          sx={{ textDecoration: "none" }}
-        >
-          <SidenavCollapse
-            color={color}
-            name={name}
-            icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
-          />
-        </Link>
-      ) : (
-        <NavLink to={route} key={key}>
-          <SidenavCollapse
-            color={color}
+      if (type === "collapse") {
+        returnValue = href ? (
+          <Link
+            href={href}
             key={key}
-            name={name}
-            icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
-          />
-        </NavLink>
-      );
-    } else if (type === "title") {
-      returnValue = (
-        <SoftTypography
-          key={key}
-          display="block"
-          variant="caption"
-          fontWeight="bold"
-          textTransform="uppercase"
-          opacity={0.6}
-          pl={3}
-          mt={2}
-          mb={1}
-          ml={1}
-        >
-          {title}
-        </SoftTypography>
-      );
-    } else if (type === "divider") {
-      returnValue = <Divider key={key} />;
-    }
+            target="_blank"
+            rel="noreferrer"
+            sx={{ textDecoration: "none" }}
+          >
+            <SidenavCollapse
+              color={color}
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              noCollapse={noCollapse}
+            />
+          </Link>
+        ) : (
+          <NavLink to={route} key={key}>
+            <SidenavCollapse
+              color={color}
+              key={key}
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              noCollapse={noCollapse}
+            />
+          </NavLink>
+        );
+      } else if (type === "title") {
+        returnValue = (
+          <SoftTypography
+            key={key}
+            display="block"
+            variant="caption"
+            fontWeight="bold"
+            textTransform="uppercase"
+            opacity={0.6}
+            pl={3}
+            mt={2}
+            mb={1}
+            ml={1}
+          >
+            {title}
+          </SoftTypography>
+        );
+      } else if (type === "divider") {
+        returnValue = <Divider key={key} />;
+      }
 
-    return returnValue;
-  });
+      return returnValue;
+    });
 
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <div style={{ backgroundColor: "#CBE1D4" }}>
+      <div style={{ backgroundColor: "#CBE1D4", height: "100vw" }}>
         <SoftBox pt={3} pb={1} px={4} textAlign="center">
           <SoftBox
             display={{ xs: "block", xl: "none" }}
@@ -142,8 +156,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SoftBox>
         </SoftBox>
         <Divider />
-        <List>{renderRoutes}</List>
-        <SoftBox pt={"100%"} pb={20} my={2} mx={2} mt="auto">
+        {isLoggedIn && <List>{renderRoutes}</List>}
+        <SoftBox pt={"100%"} my={2} mx={2} mt="auto">
           {/* <SidenavCard /> */}
         </SoftBox>
       </div>
