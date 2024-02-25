@@ -21,6 +21,8 @@ function PaymentsInfo() {
     paymentInfoData();
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const [top5, setTop5] = useState([]);
+
   useEffect(() => {
     axios({
       method: "get",
@@ -29,6 +31,18 @@ function PaymentsInfo() {
       .then((result) => {
         console.log(result.data);
         setTotalAmount(result.data);
+      })
+      .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "/paymentInfo/getTop5",
+    })
+      .then((result) => {
+        console.log(result.data);
+        setTop5(result.data);
       })
       .catch((err) => {});
   }, []);
@@ -78,6 +92,21 @@ function PaymentsInfo() {
                   <img src={leftMoney} />
                   <h4>이번 달 잔액</h4>
                   <SoftTypography variant="h6">25,000원</SoftTypography>
+                </div>
+                <hr />
+                <div className="this-month">
+                  <SoftTypography variant="h5">
+                    자주 가는 가맹점 <span>Top 5.</span>
+                  </SoftTypography>
+                  {top5.map((toptop, index) => (
+                    <SoftTypography
+                      variant="h6"
+                      key={index}
+                      style={{ color: index === 0 ? "red" : "black" }}
+                    >
+                      {toptop}
+                    </SoftTypography>
+                  ))}
                 </div>
               </div>
             </SoftBox>
