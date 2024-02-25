@@ -31,22 +31,6 @@ const departments = [
 ];
 const spend = [
   220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220,
-<<<<<<< HEAD
-];
-const superDepartments = [
-  "경영부문",
-  "전략사업부문",
-  "디지털개발부문",
-  "인프라&보안부문",
-  "경영전략본부",
-  "글로벌본부",
-  "디지털본부",
-  "뱅킹Biz본부",
-  "정보보호본부",
-  "인프라본부",
-];
-
-=======
 ];
 
 const superDepartments = [
@@ -71,7 +55,6 @@ const departmentCategoryData = departments.map((data, index) => ({
   },
 }));
 
->>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
 function getTop5Departments(departments, spend) {
   // 부서와 지출 데이터를 객체의 배열로 결합
   const combinedData = departments.map((department, index) => ({
@@ -143,27 +126,6 @@ const DepartmentalSpendingChart = () => {
     series: [
       {
         type: "bar",
-<<<<<<< HEAD
-        showBackground: false,
-        barWidth: "60%", // 막대의 너비 설정
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: "#b7d7c8" },
-            { offset: 0.5, color: "#b7d7c8" },
-            { offset: 1, color: "#cbe1d4" },
-          ]),
-        },
-        emphasis: {
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "#b8e994" },
-              { offset: 0.5, color: "#58D68D" },
-              { offset: 1, color: "#28B463" },
-            ]),
-          },
-        },
-        data: spend,
-=======
         name: "인건비",
         data: departmentCategoryData.map((data) => data.spend.인건비),
         stack: "비용",
@@ -212,7 +174,6 @@ const DepartmentalSpendingChart = () => {
             formatter: "식비: {c} 만원",
           },
         },
->>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
       },
     ],
   };
@@ -243,11 +204,7 @@ const DepartmentalSpendingChart = () => {
       >
         <Grid className="gridContainer" item xs={2.5} style={{ paddingTop: "2.75rem" }}>
           <SoftTypography variant="h5" fontWeight="bold" gutterBottom mt={3} mb={3}>
-<<<<<<< HEAD
-            부서 전체 지출 TOP5
-=======
             부서 전체 지출 <span className="DepartMent-title">TOP5</span>
->>>>>>> b7d0afe264e891484c3a6078639b04d6626a3524
           </SoftTypography>
           <List>
             {top5Departments.map((item, index) => (

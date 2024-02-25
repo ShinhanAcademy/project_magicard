@@ -39,26 +39,22 @@ public interface RequestRepo extends JpaRepository<Request, Integer> {
                     "order by p.payment_time desc")
     List<Request> findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(String responseEmployeeEmail, int requestLevel);
 
-    @Query(value = 
-    "SELECT COUNT(payment_id) AS total, purpose_item_uid, purpose_item, purpose_category_id, purpose_category, payment_month " +
-    "FROM ( " +
-        "SELECT purpose_item_uid, purpose_item, purpose_category_id, purpose_category, prpayment_id AS payment_id, TO_CHAR(payment_time, 'YYYY-MM') AS payment_month " +
-        "FROM ( " +
-            "SELECT p.purpose_item_uid AS purpose_item_uid, purpose_item, purpose_category_id, purpose_category, r.payment_id AS prpayment_id " +
-            "FROM ( " +
-                "SELECT i.purpose_item_uid AS purpose_item_uid, i.purpose_item AS purpose_item, i.purpose_category_id AS purpose_category_id, c.purpose_category AS purpose_category " +
-                "FROM purpose_item i " +
-                "JOIN purpose_category c ON i.purpose_category_id = c.purpose_category_id " +
-                "WHERE c.company_ticker = 'SHDS' " +
-            ") AS p " +
-            "JOIN request r ON p.purpose_item_uid = r.purpose_item_uid " +
-            "WHERE r.approval_status_code = 3 " +
-        ") AS pr " +
-        "JOIN payment_info pi ON pr.prpayment_id = pi.payment_id " +
-    ") AS allinfo " +
-    "GROUP BY purpose_item_uid, purpose_item, purpose_category_id, purpose_category, payment_month " +
-    "ORDER BY purpose_item_uid ASC",
-    nativeQuery = true)
+    @Query(value = "SELECT COUNT(ri.payment_id) AS total_num, SUM(pi.pay_amount) AS total_pay_amount, "
+    + "purpose_item_uid, purpose_item, purpose_category_id, purpose_category_id, purpose_category, "
+    + "approval_status_code, TO_CHAR(pi.payment_time, 'YYYY-MM') AS payment_month "
+    + "FROM (SELECT p.purpose_item_uid AS purpose_item_uid, purpose_item, purpose_category_id, purpose_category, "
+    + "r.approval_status_code AS approval_status_code, r.payment_id AS payment_id "
+    + "FROM (SELECT i.purpose_item_uid AS purpose_item_uid, i.purpose_item AS purpose_item, "
+    + "i.purpose_category_id AS purpose_category_id, c.purpose_category AS purpose_category "
+    + "FROM purpose_item i "
+    + "JOIN purpose_category c ON i.purpose_category_id = c.purpose_category_id "
+    + "WHERE c.company_ticker = 'SHDS') AS p "
+    + "JOIN request r ON p.purpose_item_uid = r.purpose_item_uid "
+    + "WHERE approval_status_code = 3) AS ri "
+    + "JOIN payment_info pi ON ri.payment_id = pi.payment_id "
+    + "GROUP BY purpose_item_uid, purpose_item, purpose_category_id, purpose_category_id, "
+    + "purpose_category, approval_status_code, payment_month "
+    + "ORDER BY purpose_item_uid ASC", nativeQuery = true)
    //기간 조건 없음 > front에서 처리
 List<Map<String, Object>> findRequestNumWhereApprovalFinal();
 
