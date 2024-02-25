@@ -1,4 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
+import localStorage from "redux-persist/es/storage";
 
 const initialState = {
   employeeEmail: "",
@@ -27,7 +29,12 @@ const userSlice = createSlice({
     },
     reset: () => initialState,
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      localStorage.removeItem("persist:root");
+      return initialState;
+    });
+  },
 });
 
 export default userSlice;

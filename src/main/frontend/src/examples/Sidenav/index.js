@@ -24,12 +24,14 @@ import { NavLink, useLocation } from "react-router-dom";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
   const isAdmin = useSelector((state) => state.user.isAdmin);
   const { miniSidenav, transparentSidenav } = useSelector((state) => state.layout);
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
 
+  console.log("isLoggedIn!!!!!!!!!!!!", isLoggedIn);
   const closeSidenav = () => {
     dispatch(setMiniSidenav(true));
   };
@@ -120,7 +122,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <div style={{ backgroundColor: "#CBE1D4" }}>
+      <div style={{ backgroundColor: "#CBE1D4", height: "100vw" }}>
         <SoftBox pt={3} pb={1} px={4} textAlign="center">
           <SoftBox
             display={{ xs: "block", xl: "none" }}
@@ -154,8 +156,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SoftBox>
         </SoftBox>
         <Divider />
-        <List>{renderRoutes}</List>
-        <SoftBox pt={"100%"} pb={20} my={2} mx={2} mt="auto">
+        {isLoggedIn && <List>{renderRoutes}</List>}
+        <SoftBox pt={"100%"} my={2} mx={2} mt="auto">
           {/* <SidenavCard /> */}
         </SoftBox>
       </div>

@@ -20,6 +20,7 @@ import axios from "axios";
 import { setMiniSidenav } from "mk/slices/softui";
 import { setOpenConfigurator } from "mk/slices/softui";
 import userSlice from "mk/slices/user";
+import { persistor } from "mk/store";
 // import { setMiniSidenav, setOpenConfigurator, setTransparentNavbar } fro";
 
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -52,7 +53,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
-  const login = (isAdmin) => {
+  const login = async (isAdmin) => {
     console.log("login f", isAdmin);
     if (isLoggedIn) {
       // 로그인 -> 로그아웃
@@ -63,6 +64,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           console.log("로그아웃");
         })
         .catch((error) => console.error(error));
+      persistor.purge();
       dispatch(userSlice.actions.reset());
       sessionStorage.clear();
     } else {
