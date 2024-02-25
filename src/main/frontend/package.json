@@ -48,6 +48,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-session-api": "^1.1.0",
+    "react-spinners": "^0.13.8",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "scope": "^0.10.1",

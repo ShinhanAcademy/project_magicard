@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,12 +22,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public LoginResponseDto login(HttpServletRequest httpServletRequest){
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest){
 
-        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
-                .employeeEmail("aa4@naver.com")
-//                .userPassword()
-                .build();
+//        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+//                // 상급자
+////                .employeeEmail("aa4@naver.com")
+//                // 상급자의 상급자
+////                .employeeEmail("aa11@naver.com")
+//                // 관리자
+//                .employeeEmail("sdbase@naver.com")
+////                .userPassword()
+//                .build();
 
         // 세션을 생성하기 전에 기존의 세션 파기
         httpServletRequest.getSession().invalidate();

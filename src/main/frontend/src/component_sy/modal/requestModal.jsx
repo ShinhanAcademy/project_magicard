@@ -11,6 +11,9 @@ import submitbtn from "assets/images/request_img/submitbtn.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./requestModal.css";
+import { RingLoader } from "react-spinners";
+import { isLabeledStatement } from "typescript";
+import Loading from "layouts/employees/loading/Loading";
 const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [purposeItem, setPurposeItem] = useState([]);
@@ -24,6 +27,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   const [selectItemByCategory, setSelectItemByCategory] = useState([]); //모든 category별 item
   const [selectPurposeItem, setSelectPurposeItem] = useState([]); //option에서 카테코리 별 purpostitem을 알기 위한 변수
   const [selectPurposeUid, setSelectPurposeUid] = useState();
+  const [isGptLoading, setIsGptLoading] = useState();
   //esc keyEvent 추가
   const handleKeyPress = (e) => {
     if (e.key === "Escape") {
@@ -51,8 +55,10 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         .catch((err) => {});
     }
   }, [isOpen]);
+
   //gpt 용도 연결
   useEffect(() => {
+    setIsGptLoading(true);
     if (isOpen) {
       axios({
         method: "Get",
@@ -65,9 +71,15 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setIsGptLoading(false);
+          }, 3000);
         });
     }
   }, [isOpen]);
+
   // select 용도 목적, 가져오기
   useEffect(() => {
     if (isOpen) {
@@ -123,6 +135,10 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
       alert("용도를 선택해주세요.");
       return;
     }
+    if (!participant) {
+      alert("참석자를 선택해주세요.");
+      return;
+    }
     const requestData = {
       requestId: 0,
       paymentId: selectedId,
@@ -156,6 +172,10 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   }
   if (!isOpen || !paymentInfo || !purposeItem) return null;
   const paymentDate = paymentInfo.paymentTime.substr(0, 10);
+  const paymentTimeArray = paymentInfo.paymentTime.substr(11, 11).split("").slice(0, 5);
+  const paymentTime = paymentDate + " " + paymentTimeArray.join("");
+  const payAmount = paymentInfo.payAmount.toLocaleString();
+
   return (
     <div className={isOpen ? "openModal pop" : "pop"}>
       <div className="modal-content">
@@ -184,7 +204,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               결제일시
               <span className="ness"> * </span>
             </div>
-            <input value={paymentDate} readOnly />
+            <input value={paymentTime} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -192,7 +212,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               사용금액
               <span className="ness"> * </span>
             </div>
-            <input value={paymentInfo.payAmount} readOnly />
+            <input value={payAmount + "원"} style={{ color: "red" }} readOnly />
           </div>
           <div className="modal-item">
             <div className="modal-input">
@@ -208,14 +228,18 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
               <span className="ness"> * </span> &nbsp; &nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            {purposeItem && (
-              <SelectPurpose
-                handlePurposeItemUid={handlePurposeItemUid}
-                selectPurposeItem={selectPurposeItem}
-                handlePurposeChange={handlePurposeChange}
-                optionPurposeItem={optionPurposeItem}
-                gptResult={purposeItem}
-              />
+            {isGptLoading ? (
+              <Loader /> // GPT 데이터 로딩 중인 경우 로딩 화면을 표시
+            ) : (
+              purposeItem && (
+                <SelectPurpose
+                  handlePurposeItemUid={handlePurposeItemUid}
+                  selectPurposeItem={selectPurposeItem}
+                  handlePurposeChange={handlePurposeChange}
+                  optionPurposeItem={optionPurposeItem}
+                  gptResult={purposeItem}
+                />
+              )
             )}
           </div>
           <div className="modal-item">
@@ -259,6 +283,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
   );
 };
 export default RequestContext;
+
 const SelectPurpose = ({
   handlePurposeItemUid,
   gptResult,
@@ -268,15 +293,25 @@ const SelectPurpose = ({
 }) => {
   var [ind, setInd] = useState(0);
   var selectedPurpose = gptResult[0]; //추천 초기값
+  const [isLoading, setIsLoading] = useState(); //로딩 상태 저장
+  const handleLoading = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  };
+
   function cntInd() {
     ind++;
     setInd(ind);
+    handleLoading();
     return ind;
   }
+
   //클릭한 경우 3번을 넘어가면 직접 입력란 활성화
   if (ind < 3) {
     selectedPurpose = gptResult[ind];
-    return <Select purpose={selectedPurpose} cntInd={cntInd} />;
+    return <>{isLoading ? <Loader /> : <Select purpose={selectedPurpose} cntInd={cntInd} />}</>;
   } else {
     return (
       <Option
@@ -336,5 +371,14 @@ const Option = ({
         ))}
       </select>
     </>
+  );
+};
+
+const Loader = () => {
+  return (
+    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      <RingLoader color="#2f8f8f" size={45} />
+      <h3 style={{ marginLeft: "1rem" }}> 학습 중입니다.</h3>
+    </div>
   );
 };

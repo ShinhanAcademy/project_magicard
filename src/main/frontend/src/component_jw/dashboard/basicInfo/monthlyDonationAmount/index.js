@@ -28,7 +28,8 @@ function MonthlyDonationAmount(props) {
         <MiniStatisticsCard
                 title={{ text: "이 달 기부 금액 " }}
                 count={formattedMonthlyDonationAmount}
-                percentage={{ color: "success", text: "+5%" }}
+                unit="원"
+                // percentage={{ color: "success", text: "+5%" }}
                 icon={{ color: "success", component: "paid" }}
               />
     );

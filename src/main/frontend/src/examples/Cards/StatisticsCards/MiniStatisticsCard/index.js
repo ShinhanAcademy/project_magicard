@@ -25,13 +25,13 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
+function MiniStatisticsCard({ bgColor, title, unit, count, percentage, icon, direction }) {
   return (
     <Card>
       <SoftBox bgColor={bgColor} variant="gradient">
         <SoftBox p={2}>
           <Grid container alignItems="center">
-            {direction === "left" ? (
+            {direction === "left" && (
               <Grid item>
                 <SoftBox
                   variant="gradient"
@@ -50,15 +50,13 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   </Icon>
                 </SoftBox>
               </Grid>
-            ) : null}
+            )}
             <Grid item xs={8}>
               <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <SoftTypography
                   variant="button"
-                  color={bgColor === "white" ? "text" : "white"}
-                  opacity={bgColor === "white" ? 1 : 0.7}
-                  textTransform="capitalize"
                   fontWeight={title.fontWeight}
+                  color={bgColor === "white" ? "dark" : "white"}
                 >
                   {title.text}
                 </SoftTypography>
@@ -67,14 +65,20 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   fontWeight="bold"
                   color={bgColor === "white" ? "dark" : "white"}
                 >
-                  {count}{" "}
-                  <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
-                    {percentage.text}
-                  </SoftTypography>
+                  {count}{unit && ` ${unit}`}
+                  {percentage && percentage.text && (
+                    <SoftTypography
+                      variant="button"
+                      color={percentage.color}
+                      fontWeight="bold"
+                    >
+                      {` ${percentage.text}`}
+                    </SoftTypography>
+                  )}
                 </SoftTypography>
               </SoftBox>
             </Grid>
-            {direction === "right" ? (
+            {direction === "right" && (
               <Grid item xs={4}>
                 <SoftBox
                   variant="gradient"
@@ -94,13 +98,14 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   </Icon>
                 </SoftBox>
               </Grid>
-            ) : null}
+            )}
           </Grid>
         </SoftBox>
       </SoftBox>
     </Card>
   );
 }
+
 
 // Setting default values for the props of MiniStatisticsCard
 MiniStatisticsCard.defaultProps = {
@@ -114,6 +119,7 @@ MiniStatisticsCard.defaultProps = {
     text: "",
   },
   direction: "right",
+  unit: "", // 단위의 기본값을 빈 문자열로 설정
 };
 
 // Typechecking props for the MiniStatisticsCard
@@ -147,10 +153,11 @@ MiniStatisticsCard.propTypes = {
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   icon: PropTypes.shape({
-    color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+    color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark","#b7d7c8"]),
     component: PropTypes.node.isRequired,
   }).isRequired,
   direction: PropTypes.oneOf(["right", "left"]),
+  unit: PropTypes.string, // 단위에 대한 prop type 추가
 };
 
 export default MiniStatisticsCard;

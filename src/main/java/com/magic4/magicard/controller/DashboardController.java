@@ -35,9 +35,17 @@ public class DashboardController {
     public Long selectTotalPayment(HttpSession session){
         return paymentInfoService.selectTotalPayment(employeeEmailDto);
     }
-
     @GetMapping("/totalApproval")
     public Long selectTotalApproval(HttpSession session){
         return paymentInfoService.selectTotalApproval(employeeEmailDto);
     }
+    @GetMapping("/monthylyDonationAmount")
+    public Long selectMonthlyDonation(HttpSession session){
+        return paymentInfoService.selectTotalApproval(employeeEmailDto);
+    }
+    @GetMapping("/totalDonationAmount")
+    public Long selectTotalDonation(HttpSession session){
+        return paymentInfoService.selectTotalApproval(employeeEmailDto);
+    }
+
 }

@@ -5,7 +5,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import "layouts/payments/index.css";
 import { Link, Route, Routes } from "react-router-dom";
 import PaymentsInfo from "./display/paymentsInfo";
-import RequestAll from "./display/requestAll";
 import RequestApprove from "./display/requestApprove";
 import Refuse from "./display/refuse";
 
@@ -32,11 +31,8 @@ function PaymentsTables() {
       {isLoggedIn}
       <Link to="paymentsInfo">
         <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
-          결제 내역
+          결제 관리
         </SoftButton>
-      </Link>
-      <Link to="requestAll">
-        <SoftButton style={{ width: "150px" }}>승인 요청 전체</SoftButton>
       </Link>
       <Link to="requestApprove">
         <SoftButton style={{ width: "150px" }}>승인</SoftButton>
@@ -46,7 +42,6 @@ function PaymentsTables() {
       </Link>
       <Routes>
         <Route path="/paymentsInfo" element={<PaymentsInfo />}></Route>
-        <Route path="/requestAll" element={<RequestAll />}></Route>
         <Route path="/requestApprove" element={<RequestApprove />}></Route>
         <Route path="/refuse" element={<Refuse />}></Route>
       </Routes>
