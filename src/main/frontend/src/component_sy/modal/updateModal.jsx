@@ -83,8 +83,8 @@ const UpdateContext = ({ isOpen, closeModal, selectedId }) => {
 
     const requestData = {
       requestId: selectedId,
-      paymentId: paymentId,
-      purposeItemUid: selectedPurpose,
+      paymentId: 0,
+      purposeItemUid: selectedPurpose.purposeItemUid,
       participant: participant,
       receiptUrl: receiptUrl,
       memo: memo,
