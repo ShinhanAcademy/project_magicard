@@ -53,10 +53,15 @@ public class RequestService {
         paymentInfoDto.setFirstStepStatus(findByPayment.get(0).getApprovalSteps().getApprovalStep());
         paymentInfoDto.setSecondStepStatus("");
       }else if (findByPayment.size() == 2){
-        ApprovalSteps firstStep = findByPayment.get(0).getApprovalSteps();
-        ApprovalSteps secondStep = findByPayment.get(1).getApprovalSteps();
-        paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
-        paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
+        for(Request req : findByPayment){
+          if(req.getRequestLevel() == 1){
+            ApprovalSteps firstStep = req.getApprovalSteps();
+            paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
+          }else if(req.getRequestLevel() == 2){
+            ApprovalSteps secondStep = req.getApprovalSteps();
+            paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
+          }
+        }
       }
 
       requestDto.setPaymentInfo(paymentInfoDto);
@@ -180,10 +185,18 @@ public class RequestService {
     return requestDtoList.size();
   }
 
-  // 재무부에게 요청한 리스트
+  // 그 다음 단계에 요청한 리스트
+  // 상급자면 재무부에 요청한 리스트
+  // 재무부면 최종 리스트
   public List<RequestDto> getToTopAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
-    List<Request> requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 2);
+    List<Request> requestList = null;
+    Employee myInfo = employeeRepo.findById(responseEmployeeEmail).orElse(null);
+    if(myInfo.getDepartment().isAdminDepartment()){
+      requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 2);
+    } else {
+      requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderByPaymentTime(responseEmployeeEmail,2);
+    }
 
     List<RequestDto> requestDtoList = new ArrayList<>();
     for(Request request : requestList){
@@ -205,13 +218,13 @@ public class RequestService {
 
       requestDto.setPaymentInfo(paymentInfoDto);
 
-      // employee는 카드 긁은 사람으로다가 보여지게 해야함
+      // employee는 카드 긁은 사람으로다가 보여지게 해야함,, 사실 아님
       Employee employee = paymentInfo.getIssuedCard().getEmployee();
       EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
       requestDto.setEmployee(sendEmpDto);
 
-      Employee requestEmp = employeeRepo.findById(responseEmployeeEmail).orElse(null);
-      requestDto.setRequestEmployeeName(requestEmp.getEmployeeName());
+//      Employee requestEmp = employeeRepo.findById(request.getEmployee().getEmployeeEmail()).orElse(null);
+      requestDto.setRequestEmployeeName(request.getEmployee().getEmployeeName());
 
       Employee responseEmp = employeeRepo.findById(request.getResponseEmployeeEmail()).orElse(null);
       requestDto.setResponseEmployeeName(responseEmp.getEmployeeName());
@@ -444,10 +457,15 @@ public class RequestService {
   }
 
   // 요청 반려하기
-    public Integer refuseRequest(RejectFormDto rejectFormDto) {
+    public Integer refuseRequest(RejectFormDto rejectFormDto, EmployeeDto employeeDto) {
     ApprovalSteps approvalSteps4 = approvalStepsRepo.findById(4).orElse(null);
     ApprovalSteps approvalSteps5 = approvalStepsRepo.findById(5).orElse(null);
-      Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
+    Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
+
+    if(employeeDto.getDepartment().isAdminDepartment()){
+      request.setApprovalSteps(approvalSteps5);
+      return 1;
+    } else {
       int refuseCount = request.getRefuseCount();
       request.setRefuseMessage(rejectFormDto.getRefuseMessage());
       request.setRefuseCount(refuseCount+1);
@@ -460,6 +478,8 @@ public class RequestService {
       }
       requestRepo.save(request);
       return 1;
+    }
+
     }
 
 }

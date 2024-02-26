@@ -1,153 +1,287 @@
-import React, { useState, useEffect } from 'react';
-import ReactECharts from 'echarts-for-react';
-// `echarts`를 직접 import합니다.
-import * as echarts from 'echarts/core';
-import { Card, Grid, MenuItem, Select } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Card, Grid, MenuItem, Select } from "@mui/material";
+import axios from "axios";
+import ReactECharts from "echarts-for-react";
+import * as echarts from "echarts/core";
+import { PieChart } from "echarts/charts";
+import { TitleComponent, TooltipComponent, LegendComponent } from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
 
-const departments = {
-  "인사팀": [120, 132, 101, 134, 90, 230, 210, 310],
-  "재무팀": [220, 182, 191, 234, 290, 330, 310, 410],
-};
-const dataAxis = ["용도1","용도2","용도3","용도4","용도5","용도6","용도7","용도8"];
-
+// 필요한 컴포넌트 등록
+echarts.use([PieChart, TitleComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
 
 const SpendingByPurposeChart = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState(Object.keys(departments)[0]);
-  const [barOption, setBarOption] = useState({});
-  const [pieOption, setPieOption] = useState({});
-
+  const purposeCategory = ["인테리어 비용", "인건비"]; //전체 prupose_category
+  const [selectedPurposeCategory, setSelectedPurposeCategory] = useState(purposeCategory[0]);
+  const [purposeData, setPurposeData] = useState([]); //조건 없는 전체 purpose에 따른 data
+  const [pieOption, setPieOption] = useState([]); //이번 달 금액&&purpose_item
+  const [pieAmountData, setPieAmountData] = useState([]);
+  const [piePurposeItem, setPiePurposeItem] = useState([]);
+  const [newData, setNewData] = useState([]);
+  const [monthLabels, setMonthLabels] = useState([]);
+  const [lineChartOption, setLineChartOption] = useState();
+  const [lineData, setLineData] = useState([]);
+  const [seriesData, setSeriesData] = useState([]);
+  // 전체 data 가져오기(조건X)
   useEffect(() => {
-    const data = departments[selectedDepartment];
-    const pieSeriesData = dataAxis.map((item, index) => ({
-      value: data[index], name: item
+    axios({
+      method: "Get",
+      url: "/requests/approvalRequest",
+    })
+      .then((res) => {
+        setPurposeData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  //Pie 데이터 불러오기 및 가공
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+
+    const filteredDate = purposeData.filter((data) => {
+      const dataDate = new Date(data.payment_month);
+      const dataYear = dataDate.getFullYear();
+      const dataMonth = dataDate.getMonth() + 1;
+      return (
+        dataYear === currentYear &&
+        dataMonth === currentMonth &&
+        data.purpose_category === selectedPurposeCategory
+      );
+    });
+
+    const newPieData = filteredDate.map((data) => ({
+      purposeItem: data.purpose_item,
+      totalAmount: data.total_pay_amount,
     }));
 
-    setBarOption ({
-    title: {
-      subtext: '스크롤하여 그래프 확대 가능',
-      subtextStyle: {
-        align: 'right' 
-      },
-      right: '10%', // 오른쪽 여백을 5%로 설정합니다.
-      top: '5%', // 상단 여백을 5%로 설정합니다.
+    setPieOption(newPieData);
+    const newPieAmountData = newPieData.map((data) => data.totalAmount);
+    setPieAmountData(newPieAmountData);
+    const newPiePurposeItem = newPieData.map((data) => data.purposeItem);
+    setPiePurposeItem(newPiePurposeItem);
+  }, [purposeData, selectedPurposeCategory]);
 
+  // 무작위 색상 생성 함수
+  const getRandomColor = (count, existingColors) => {
+    const colors = [];
+    const isValidColor = (color) => {
+      // 기존 색상과 중복되지 않는지 확인
+      return !existingColors.includes(color);
+    };
+
+    while (colors.length < count) {
+      // const r = Math.floor(Math.random() * 256);
+      // const g = Math.floor(Math.random() * 256);
+      // const b = Math.floor(Math.random() * 256);
+      const alpha = Math.random() * (0.5 - 0.1) + 0.1;
+      const color = `rgba(185,38,74, ${alpha})`;
+
+      if (isValidColor(color)) {
+        colors.push(color);
+        existingColors.push(color); // 새로운 색상을 기존 목록에 추가
+      }
+    }
+
+    return colors;
+  };
+
+  //pie chart
+  // 데이터의 가장 큰 값의 인덱스 찾기
+  const maxIndex = pieOption.reduce((maxIndex, item, index, arr) => {
+    return item.totalAmount > arr[maxIndex].totalAmount ? index : maxIndex;
+  }, 0);
+
+  // getRandomColor 함수를 호출하여 colors 변수 초기화
+  const colors = getRandomColor(pieOption.length, []);
+
+  // Pie 차트 옵션 설정
+  const pieChartOptions = {
+    title: {
+      text: "용도별 지출 비율",
+      textStyle: {
+        fontSize: 18,
+      },
+      left: "center",
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: function (params) {
+        const formattedValue = params.data.value.toLocaleString();
+        return `${params.name} <br/> 총 ${formattedValue}원 (${params.percent}%)`;
+      },
+    },
+
+    // legend: {
+    //   orient: "horizontal",
+    //   bottom: 0,
+    //   data: piePurposeItem,
+    // },
+    series: [
+      {
+        name: "Purpose Item",
+        type: "pie",
+        radius: "80%", // 차트 크기 조절
+        center: ["50%", "50%"],
+        avoidLabelOverlap: false,
+        label: {
+          show: true,
+        },
+
+        labelLine: {
+          show: true,
+        },
+        data: pieOption.map((item, index) => ({
+          value: item.totalAmount,
+          name: item.purposeItem,
+          itemStyle: {
+            color: index === maxIndex ? "rgb(185,38,74)" : colors[index],
+          },
+        })),
+      },
+    ],
+  };
+  //
+
+  //Line 데이터 불러오기 및 가공
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth() + 1;
+
+    // 6개월 전의 달 구하기
+    let sixMonthsAgoMonth = currentMonth - 6;
+    let sixMonthsAgoYear = currentYear;
+
+    // 현재 달이 6개월 이전의 달보다 작은 경우
+    if (sixMonthsAgoMonth <= 0) {
+      sixMonthsAgoMonth += 12; // 12를 더하면 이전 해의 달이 됨
+      sixMonthsAgoYear -= 1; // 연도를 하나 줄임
+    }
+
+    // 6개월 전의 날짜 구하기
+    const sixMonthsAgoDate = new Date(sixMonthsAgoYear, sixMonthsAgoMonth - 1);
+
+    // 6개월 전부터 현재까지의 연월을 저장할 배열
+    const newMonthLabels = [];
+
+    // 6개월 전부터 현재까지의 연월을 배열에 넣기
+    for (let i = 0; i < 6; i++) {
+      newMonthLabels.push(`${sixMonthsAgoYear}-${sixMonthsAgoMonth}`);
+
+      // 다음 달로 이동
+      sixMonthsAgoMonth += 1;
+      if (sixMonthsAgoMonth > 12) {
+        sixMonthsAgoMonth = 1;
+        sixMonthsAgoYear += 1;
+      }
+    }
+    setMonthLabels(newMonthLabels);
+
+    const filteredData = purposeData.filter((data) => {
+      const dataDate = new Date(data.payment_month);
+
+      // 데이터의 날짜가 6개월 전 날짜 이후인지 확인하고, 선택된 카테고리와 일치하는지 확인
+      return dataDate >= sixMonthsAgoDate && data.purpose_category === selectedPurposeCategory;
+    });
+
+    const newData = {};
+    filteredData.forEach((data) => {
+      const dataDate = new Date(data.payment_month);
+      const diffMonths =
+        (currentYear - dataDate.getFullYear()) * 12 + (currentMonth - dataDate.getMonth());
+
+      if (!newData[data.purpose_item]) {
+        newData[data.purpose_item] = Array.from({ length: 6 }, () => 0);
+      }
+
+      // 데이터를 월에 맞게 저장합니다.
+      newData[data.purpose_item][6 - diffMonths] += data.total_pay_amount;
+    });
+
+    const newLineData = Object.entries(newData).map(([purposeItem, totalAmounts]) => ({
+      purposeItem,
+      totalAmounts,
+    }));
+
+    setLineData(newLineData);
+
+    const newSeriesData = newLineData.map((item) => ({
+      name: item.purposeItem,
+      type: "line",
+      data: item.totalAmounts, // 각 항목의 총 지출액 데이터
+    }));
+
+    setSeriesData(newSeriesData);
+  }, [purposeData, selectedPurposeCategory]);
+
+  // Echarts 옵션 설정
+  const lineChartOptions = {
+    title: {
+      text: "6개월간 각 항목별 지출",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        animation: false,
+        label: {
+          backgroundColor: "#283b56",
+        },
+      },
+    },
+    legend: {
+      data: lineData.map((item) => item.purposeItem),
+      top: 30,
     },
     xAxis: {
-      data: dataAxis,
-      axisLabel: {
-        inside: false,
-        color: '#333',
-        fontSize: 14, // 폰트 크기를 설정
-        fontWeight: 600, // 상대적으로 더 두꺼운 폰트
-        interval: 0, // 모든 레이블을 강제로 표시
-      },
-      axisTick: {
-        show: false,
-      },
-      axisLine: {
-        show: false,
-      },
-      z: 10,
-      
+      type: "category",
+      boundaryGap: false,
+      data: monthLabels, // 현재로부터 6개월 전까지의 연월 정보
     },
     yAxis: {
-      axisLine: {
-        show: false,
-      },
-      axisTick: {
-        show: false,
-      },
+      type: "value",
       axisLabel: {
-        color: '#999',
+        formatter: "{value} 원",
       },
     },
-    dataZoom: [
-      {
-        type: 'inside',
-      },
-    ],
-    series: [
-      {
-        type: 'bar',
-        showBackground: false,
-        barWidth: '60%', // 막대의 너비 설정
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#b7d7c8' },
-            { offset: 0.5, color: '#b7d7c8' },
-            { offset: 1, color: '#cbe1d4' },
-          ]),
-        },
-        emphasis: {
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#b8e994' },
-              { offset: 0.5, color: '#58D68D' },
-              { offset: 1, color: '#28B463' },
-            ]),
-          },
-        },
-        data: data,
-      },
-    ],
-  });
+    series: seriesData, // 각 항목별 라인 차트 데이터
+  };
 
-  setPieOption({
-    // color: ['#FF0000', '#00FF00', '#0000FF'], // 사용하고 싶은 색상 코드 배열
-    tooltip: { trigger: 'item' },
-    series: [
-      {
-        name: '지출 분포',
-        type: 'pie',
-        radius: '55%',
-        data: pieSeriesData,
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ],
-    // 파이 차트 옵션 설정을 여기에 추가
-  });
-
-}, [selectedDepartment]);
-
-
-
-const handleDepartmentChange = (event) => {
-  setSelectedDepartment(event.target.value);
-};
+  //handle purpose_category
+  const handlePurposeCategory = (e) => {
+    setSelectedPurposeCategory(e.target.value);
+  };
 
   return (
     <Card>
-      <Grid container spacing={2} >
+      <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container justifyContent="flex-space-evenly" style={{ padding: '16px' }}>
-            <Select
-              value={selectedDepartment}
-              onChange={handleDepartmentChange}
-              displayEmpty
-            >
-              {Object.keys(departments).map((department) => (
-                <MenuItem key={department} value={department}>{department}</MenuItem>
+          <Grid container justifyContent="flex-space-evenly" style={{ padding: "16px" }}>
+            <Select value={selectedPurposeCategory} onChange={handlePurposeCategory} displayEmpty>
+              {purposeCategory.map((category, ind) => (
+                <MenuItem key={ind} value={category}>
+                  {category}
+                </MenuItem>
               ))}
             </Select>
           </Grid>
         </Grid>
         <Grid container spacing={2}>
-  <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center' }}>
-    <ReactECharts option={pieOption} style={{ height: '400px', width: '100%' }} />
-  </Grid>
-  <Grid item xs={12} md={8} style={{ display: 'flex', justifyContent: 'center' }}>
-    <ReactECharts option={barOption} style={{ height: '400px', width: '100%' }} />
-  </Grid>
-</Grid>
+          <Grid item xs={12} md={4} style={{ display: "flex", justifyContent: "center" }}>
+            <ReactECharts option={pieChartOptions} style={{ width: "100%", height: "400px" }} />
+          </Grid>
+          <Grid item xs={12} md={8} style={{ display: "flex", justifyContent: "center" }}>
+            <ReactECharts option={lineChartOptions} style={{ height: "400px", width: "100%" }} />
+          </Grid>
+        </Grid>
       </Grid>
     </Card>
-  );      
+  );
 };
 
 export default SpendingByPurposeChart;
