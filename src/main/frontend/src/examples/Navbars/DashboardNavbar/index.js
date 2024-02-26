@@ -7,7 +7,7 @@ import SoftInput from "components/SoftInput";
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
 import { PropTypes } from "prop-types";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   navbar,
   navbarContainer,
@@ -33,6 +33,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const user = useSelector((state) => state.user);
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
   const loginName = useSelector((state) => state.user.employeeName);
+
+  const navigate = useNavigate();
 
   console.log("유저유저", user);
   console.log("route", route);
@@ -95,6 +97,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
           );
         })
         .catch((error) => console.error(error));
+    }
+    if (isAdmin) {
+      navigate("/dashboard");
+    } else {
+      navigate("/payments/*");
     }
   };
 
