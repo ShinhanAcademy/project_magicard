@@ -55,25 +55,22 @@ public class PaymentInfoService {
 
         if(firstStep == 1 || firstStep == 4){ // 승인 대기중, 반려
           paymentInfoDto.setSendRequest("수정");
-        } else if(firstStep == 2|| firstStep == 5){ // 승인, 최종 반려
+        } else if(firstStep == 2 ||  firstStep == 3 || firstStep == 5){ // 승인, 최종 반려
           paymentInfoDto.setSendRequest("조회");
         }
       } else { // 2단계 신청도 들어간 경우
+        ApprovalSteps firstStep = null;
+        ApprovalSteps secondStep = null;
         for(Request req : request){
           if(req.getRequestLevel() == 1){
-            ApprovalSteps firstStep = req.getApprovalSteps();
+            firstStep = req.getApprovalSteps();
             paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
           }else if(req.getRequestLevel() == 2){
-            ApprovalSteps secondStep = req.getApprovalSteps();
+            secondStep = req.getApprovalSteps();
             paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
           }
         }
         paymentInfoDto.setSendRequest("조회");
-//        if(secondStep == 1 || secondStep == 4){ // 2단계 승인 대기중, 반려
-//          paymentInfoDto.setSendRequest("수정");
-//        } else if(secondStep == 2 || secondStep == 3 || secondStep == 5){ // 최종 승인, 최종 반려
-//          paymentInfoDto.setSendRequest("조회");
-//        }
       }
       paymentInfoDtoList.add(paymentInfoDto);
     }
