@@ -3,15 +3,12 @@ package com.magic4.magicard.controller;
 import com.magic4.magicard.dto.LoginRequestDto;
 import com.magic4.magicard.dto.LoginResponseDto;
 import com.magic4.magicard.service.AuthService;
-import com.magic4.magicard.service.EmployeeService;
 
+import com.magic4.magicard.service.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

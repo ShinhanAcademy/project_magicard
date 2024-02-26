@@ -3,15 +3,11 @@ package com.magic4.magicard.controller;
 import java.util.*;
 
 import com.magic4.magicard.dto.*;
-import com.magic4.magicard.service.EmployeeService;
 import com.magic4.magicard.service.RequestService;
 
-import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
-
-import com.magic4.magicard.vo.Request;
 
 import lombok.RequiredArgsConstructor;
 
