@@ -74,11 +74,11 @@ const SpendingByPurposeChart = () => {
     };
 
     while (colors.length < count) {
-      // const r = Math.floor(Math.random() * 256);
-      // const g = Math.floor(Math.random() * 256);
-      // const b = Math.floor(Math.random() * 256);
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
       const alpha = Math.random() * (0.5 - 0.1) + 0.1;
-      const color = `rgba(185,38,74, ${alpha})`;
+      const color = `rgba(${r},${g},${b}, ${alpha})`;
 
       if (isValidColor(color)) {
         colors.push(color);
@@ -99,7 +99,7 @@ const SpendingByPurposeChart = () => {
   const colors = getRandomColor(pieOption.length, []);
 
   // Pie 차트 옵션 설정
-  const pieChartOptions = {
+  const inPieChartOptions = {
     title: {
       text: "용도별 지출 비율",
       textStyle: {
@@ -138,9 +138,56 @@ const SpendingByPurposeChart = () => {
           value: item.totalAmount,
           name: item.purposeItem,
           itemStyle: {
-            color: index === maxIndex ? "rgb(185,38,74)" : colors[index],
+            color: index === maxIndex ? "red" : colors[index],
           },
         })),
+      },
+    ],
+  };
+
+  const peoPieChartOptions = {
+    title: {
+      text: "용도별 지출 비율",
+      textStyle: {
+        fontSize: 18,
+      },
+      left: "center",
+    },
+
+    tooltip: {
+      trigger: "item",
+      formatter: function (params) {
+        const formattedValue = params.data.value.toLocaleString();
+        return `${params.name} <br/> 총 ${formattedValue}원 (${params.percent}%)`;
+      },
+    },
+
+    // legend: {
+    //   orient: "horizontal",
+    //   bottom: 0,
+    //   data: piePurposeItem,
+    // },
+    series: [
+      {
+        name: "Purpose Item",
+        type: "pie",
+        radius: "80%", // 차트 크기 조절
+        center: ["50%", "50%"],
+        avoidLabelOverlap: false,
+        label: {
+          show: true,
+        },
+
+        labelLine: {
+          show: true,
+        },
+        data: [
+          { value: 985641200, name: "급여" },
+          { value: 132546000, name: "4대 보험" },
+          { value: 2834780, name: "식대" },
+          { value: 1002400000, name: "월급" },
+          { value: 1997800, name: "기타 인건비1" },
+        ],
       },
     ],
   };
@@ -172,14 +219,14 @@ const SpendingByPurposeChart = () => {
     for (let i = 0; i < 6; i++) {
       newMonthLabels.push(`${sixMonthsAgoYear}-${sixMonthsAgoMonth}`);
 
-      // 다음 달로 이동
+      // 다음 년도 1월로 이동
       sixMonthsAgoMonth += 1;
       if (sixMonthsAgoMonth > 12) {
         sixMonthsAgoMonth = 1;
         sixMonthsAgoYear += 1;
       }
     }
-    setMonthLabels(newMonthLabels);
+    setMonthLabels(newMonthLabels); // 현재까지 년도 배열 저장
 
     const filteredData = purposeData.filter((data) => {
       const dataDate = new Date(data.payment_month);
@@ -206,7 +253,6 @@ const SpendingByPurposeChart = () => {
       purposeItem,
       totalAmounts,
     }));
-
     setLineData(newLineData);
 
     const newSeriesData = newLineData.map((item) => ({
@@ -219,7 +265,7 @@ const SpendingByPurposeChart = () => {
   }, [purposeData, selectedPurposeCategory]);
 
   // Echarts 옵션 설정
-  const lineChartOptions = {
+  const inlineChartOptions = {
     title: {
       text: "6개월간 각 항목별 지출",
       left: "center",
@@ -252,8 +298,69 @@ const SpendingByPurposeChart = () => {
     series: seriesData, // 각 항목별 라인 차트 데이터
   };
 
+  const peolineChartOptions = {
+    title: {
+      text: "6개월간 각 항목별 지출",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        animation: false,
+        label: {
+          backgroundColor: "#283b56",
+        },
+      },
+    },
+    legend: {
+      data: ["급여", "4대 보험", "식대", "월급", "기타 인건비1"],
+      top: 30,
+    },
+    xAxis: {
+      type: "category",
+      boundaryGap: false,
+      data: monthLabels, // 현재로부터 6개월 전까지의 연월 정보
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: {
+        formatter: "{value} 원",
+      },
+    },
+    series: [
+      {
+        name: "급여",
+        type: "line",
+        data: [1332000000, 1230754600, 985643291, 1754632590, 875426932, 985641200],
+      },
+      {
+        name: "4대 보험",
+        type: "line",
+        data: [119880000, 102354587, 123602450, 98754260, 124503500, 132546000],
+      },
+      {
+        name: "식대",
+        type: "line",
+        data: [2010580, 2214560, 1987560, 2410320, 1245030, 2834780],
+      },
+
+      {
+        name: "월급",
+        type: "line",
+        data: [1332000000, 1332450000, 1331867000, 1454900000, 1331900000, 1002400000],
+      },
+      {
+        name: "기타 인건비1",
+        type: "line",
+        data: [2000000, 1998500, 2001400, 2505100, 2003200, 1997800],
+      },
+    ],
+  };
+
   //handle purpose_category
   const handlePurposeCategory = (e) => {
+    console.log(selectedPurposeCategory);
     setSelectedPurposeCategory(e.target.value);
   };
 
@@ -273,10 +380,22 @@ const SpendingByPurposeChart = () => {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} style={{ display: "flex", justifyContent: "center" }}>
-            <ReactECharts option={pieChartOptions} style={{ width: "100%", height: "400px" }} />
+            <ReactECharts
+              option={
+                selectedPurposeCategory === "인테리어 비용" ? inPieChartOptions : peoPieChartOptions
+              }
+              style={{ width: "100%", height: "500px" }}
+            />
           </Grid>
           <Grid item xs={12} md={8} style={{ display: "flex", justifyContent: "center" }}>
-            <ReactECharts option={lineChartOptions} style={{ height: "400px", width: "100%" }} />
+            <ReactECharts
+              option={
+                selectedPurposeCategory === "인테리어 비용"
+                  ? inlineChartOptions
+                  : peolineChartOptions
+              }
+              style={{ height: "500px", width: "100%" }}
+            />
           </Grid>
         </Grid>
       </Grid>
