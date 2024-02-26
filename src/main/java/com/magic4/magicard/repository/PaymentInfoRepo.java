@@ -20,6 +20,8 @@ public interface PaymentInfoRepo extends JpaRepository<PaymentInfo, Integer> {
 
   PaymentInfo findByPaymentId(Integer paymentId);
 
+  List<PaymentInfo> findByIssuedCard(IssuedCard issuedCard);
+
   //총 사용 건수 조회 (거래 횟수)
   @Query(nativeQuery = true,
           value = "select count(*) from payment_info pi2 \n" +

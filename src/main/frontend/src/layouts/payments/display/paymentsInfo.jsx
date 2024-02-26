@@ -30,7 +30,8 @@ function PaymentsInfo() {
     })
       .then((result) => {
         console.log(result.data);
-        setTotalAmount(result.data);
+        setTotalAmount(result.data.toLocaleString());
+        // const payAmount = payment.payAmount;
       })
       .catch((err) => {});
   }, []);

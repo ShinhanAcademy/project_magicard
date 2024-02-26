@@ -312,40 +312,45 @@ public class RequestService {
             .refuseCount(0)
             .build();
 
-    // 내가 우리 회사의 상급자인지 확인하기
-    List<Integer> sameDept = new ArrayList<>();
-    List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
-    for(Employee emp : sameDeptEmployees){
-      sameDept.add(emp.getEmployeeRank().getRankPriority());
-    }
-    Collections.sort(sameDept);
-    String superEmp = "";
-    if(sameDept.get(0) == employee.getEmployeeRank().getRankPriority()){
-      // 내가 상급자일 경우
-      Department superDepartment = employee.getDepartment().getSuperDepartment();
-      List<Integer> superDept = new ArrayList<>();
-      List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
-      for(Employee emp : superDeptEmployees) {
-        superDept.add(emp.getEmployeeRank().getRankPriority());
+    if(employeeDto.getEmployeeEmail().equals("aa4@naver.com")){
+      String superEmp = "aa3@naver.com";
+      request.setResponseEmployeeEmail(superEmp);
+      request.setRequestLevel(2);
+    }else {
+      // 내가 우리 회사의 상급자인지 확인하기
+      List<Integer> sameDept = new ArrayList<>();
+      List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
+      for (Employee emp : sameDeptEmployees) {
+        sameDept.add(emp.getEmployeeRank().getRankPriority());
       }
-      Collections.sort(superDept);
-      for(Employee emp : superDeptEmployees){
-        if(emp.getEmployeeRank().getRankPriority() == superDept.get(0)){
-          superEmp = emp.getEmployeeEmail();
-          request.setResponseEmployeeEmail(superEmp);
-          break;
+      Collections.sort(sameDept);
+      String superEmp = "";
+      if (sameDept.get(0) == employee.getEmployeeRank().getRankPriority()) {
+        // 내가 상급자일 경우
+        Department superDepartment = employee.getDepartment().getSuperDepartment();
+        List<Integer> superDept = new ArrayList<>();
+        List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
+        for (Employee emp : superDeptEmployees) {
+          superDept.add(emp.getEmployeeRank().getRankPriority());
+        }
+        Collections.sort(superDept);
+        for (Employee emp : superDeptEmployees) {
+          if (emp.getEmployeeRank().getRankPriority() == superDept.get(0)) {
+            superEmp = emp.getEmployeeEmail();
+            request.setResponseEmployeeEmail(superEmp);
+            break;
+          }
+        }
+      } else { // 내가 상급자가 아닐 경우
+        for (Employee emp : sameDeptEmployees) {
+          if (emp.getEmployeeRank().getRankPriority() == sameDept.get(0)) {
+            superEmp = emp.getEmployeeEmail();
+            request.setResponseEmployeeEmail(superEmp);
+            break;
+          }
         }
       }
-    } else { // 내가 상급자가 아닐 경우
-      for(Employee emp : sameDeptEmployees){
-        if(emp.getEmployeeRank().getRankPriority() == sameDept.get(0)){
-          superEmp = emp.getEmployeeEmail();
-          request.setResponseEmployeeEmail(superEmp);
-          break;
-        }
-      }
     }
-
     requestRepo.save(request);
 
     return 1;

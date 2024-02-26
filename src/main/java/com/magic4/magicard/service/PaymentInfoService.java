@@ -97,7 +97,7 @@ public class PaymentInfoService {
   public List<String> getTop5(EmployeeDto myInfo) {
     Employee employee = employeeRepo.findById(myInfo.getEmployeeEmail()).orElse(null);
     IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
-    List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCardAndThisMonth(issuedCard);
+    List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCard(issuedCard);
 
     HashMap<String, Integer> findList = new HashMap<>();
     List<String> topList = new ArrayList<>();
