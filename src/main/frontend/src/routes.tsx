@@ -63,6 +63,7 @@ import Dashboard from "./component_jw/dashboard";
 import { Navigate } from "react-router-dom";
 import Member from "./examples/Icons/Member";
 import Employees from "./layouts/employees";
+import CustomerSupport from "./examples/Icons/CustomerSupport";
 
 interface RouteProps {
   path: string;
@@ -215,15 +216,7 @@ const routes = [
   //   component: <Profile />,
   //   noCollapse: true,
   // },
-  // {
-  //   type: "collapse",
-  //   name: "로그인",
-  //   key: "sign-in",
-  //   route: "/authentication/sign-in",
-  //   icon: <Document size="12px" />,
-  //   component: <SignIn />,
-  //   noCollapse: true,
-  // },
+
   // {
   //   type: "collapse",
   //   name: "회원가입",
