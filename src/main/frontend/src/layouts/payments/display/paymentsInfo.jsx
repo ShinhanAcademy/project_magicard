@@ -97,7 +97,7 @@ function PaymentsInfo() {
                 <hr />
                 <div className="this-month">
                   <SoftTypography variant="h5">
-                    자주 가는 가맹점 <span>Top 5.</span>
+                    자주 가는 가맹점 <span style={{ color: "red" }}>Top 5.</span>
                   </SoftTypography>
                   {top5.map((toptop, index) => (
                     <SoftTypography
