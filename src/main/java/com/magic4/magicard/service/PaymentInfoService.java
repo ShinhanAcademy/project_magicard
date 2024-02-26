@@ -80,7 +80,6 @@ public class PaymentInfoService {
     return paymentInfoDtoList;
   }
 
-
   public int getTotalAmount(EmployeeDto employeeDto) {
     int totalAmount = 0;
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
@@ -93,6 +92,30 @@ public class PaymentInfoService {
     }
 
     return totalAmount;
+  }
+
+  public List<String> getTop5(EmployeeDto myInfo) {
+    Employee employee = employeeRepo.findById(myInfo.getEmployeeEmail()).orElse(null);
+    IssuedCard issuedCard = issuedCardRepo.findByEmployee(employee);
+    List<PaymentInfo> paymentInfoList = paymentInfoRepo.findByIssuedCard(issuedCard);
+
+    HashMap<String, Integer> findList = new HashMap<>();
+    List<String> topList = new ArrayList<>();
+
+    for(PaymentInfo paymentInfo : paymentInfoList){
+        String merchant = paymentInfo.getMerchant();
+        Integer payAmount = paymentInfo.getPayAmount();
+        findList.put(merchant, findList.getOrDefault(merchant, 0) + payAmount);
+    }
+
+    List<Map.Entry<String, Integer>> useEntry = new ArrayList<>(findList.entrySet()); // hashmap 정렬하는 방법 공부하자
+    useEntry.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
+    for (int i = 0; i < Math.min(5, useEntry.size()); i++) {
+      topList.add(useEntry.get(i).getKey());
+    }
+
+    return topList;
   }
 
   public Long selectTotalUses(EmployeeEmailDto employeeEmailDto){
@@ -111,9 +134,9 @@ public class PaymentInfoService {
 
   }
 
-    public int getRequestInfoByRequestId(int paymentId) {
-      PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
-      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
-      return request.get(0).getRequestID();
-    }
+  public int getRequestInfoByRequestId(int paymentId) {
+    PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
+    List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+    return request.get(0).getRequestID();
+  }
 }
