@@ -3,14 +3,14 @@ const quarterlyData = {
     labels: ["1분기","2분기","3분기","4분기",],
     datasets: [
       {
-        label: "Mobile apps",
+        label: "This year",
         color: "info",
-        data: [300, 220, 500, 250,],
+        data: [830, 870, 1145, 1030,],
       },
       {
-        label: "Websites",
+        label: "Last year",
         color: "dark",
-        data: [140, 290, 290, 340,],
+        data: [770, 720, 970, 1130,],
       },
     ],
   };
