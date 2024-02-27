@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import FinalRefuse from "./display/finalRefuse";
 import FinalRequestApprove from "./display/finalApprove";
 import FinalRequestAll from "./display/finalrequestAll";
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function RecievedRequest() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
@@ -28,18 +30,35 @@ function RecievedRequest() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {isLoggedIn}
-      <Link to="requesetToMe">
-        <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
-          결재 요청 내역 관리
-        </SoftButton>
-      </Link>
-      <Link to="finalRequestApprove">
-        <SoftButton style={{ width: "150px" }}>승인</SoftButton>
-      </Link>
-      <Link to="finalRefuse">
-        <SoftButton style={{ width: "150px" }}>반려</SoftButton>
-      </Link>
+      <SoftBox style={{ display: "flex" }}>
+        <SoftBox mr={1}>
+          <Link to="requesetToMe">
+            <SoftButton ref={softButtonRef} style={{ width: "170px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                결재 요청 내역 관리
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+        <SoftBox mr={1}>
+          <Link to="finalRequestApprove">
+            <SoftButton style={{ width: "150px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                승인
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+        <SoftBox mr={1}>
+          <Link to="finalRefuse">
+            <SoftButton style={{ width: "150px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                반려
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+      </SoftBox>
       <Routes>
         <Route path="/" element={<FinalRequestAll />}></Route>
         <Route path="/requesetToMe" element={<FinalRequestAll />}></Route>
