@@ -145,7 +145,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             justifyContent="center"
           >
             {brand && (
-              <SoftBox mt={2} mb={1} component="img" src={brand} alt="Soft UI Logo" width="7rem" />
+              <SoftBox mt={1} component="img" src={brand} alt="Soft UI Logo" width="9rem" />
             )}
             <SoftBox
               width={!brandName && "100%"}
