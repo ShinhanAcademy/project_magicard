@@ -219,9 +219,5 @@ public class PaymentInfoService {
 //    )).collect(Collectors.toList());
 //  }
 
-  public int getRequestInfoByRequestId(int paymentId) {
-    PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
-    List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
-    return request.get(0).getRequestID();
-  }
+
 }

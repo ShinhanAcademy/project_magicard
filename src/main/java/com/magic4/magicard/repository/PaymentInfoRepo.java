@@ -103,6 +103,8 @@ public interface PaymentInfoRepo extends JpaRepository<PaymentInfo, Integer> {
                 " left join employee_rank er on er.employee_rank_id =e.rank_priority\n" +
                 " left join company c on c.company_ticker =er.company_ticker\n" +
                 " where e.employee_email = :employeeEmail )" +
+                "AND EXTRACT(YEAR FROM pi2.payment_time) = EXTRACT(YEAR FROM CURRENT_DATE)\n" +
+                "AND EXTRACT(MONTH FROM pi2.payment_time) = EXTRACT(MONTH FROM CURRENT_DATE)" +
                 "group by e.employee_name, d.department_name, c.company_name \n" +
                 "order by totalPayAmount desc \n" +
                 "limit 5;")
