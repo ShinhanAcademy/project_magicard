@@ -39,6 +39,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   console.log("유저유저", user);
   console.log("route", route);
 
+  console.log("transparentNavbar", transparentNavbar);
+  console.log("fixedNavbar", fixedNavbar);
+
   useEffect(() => {
     function handleTransparentNavbar() {
       dispatch(setTransparentNavbar((fixedNavbar && window.scrollY === 0) || !fixedNavbar));

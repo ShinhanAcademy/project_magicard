@@ -186,7 +186,7 @@ public class GptService {
             recommendDtos.add(candidateDtos.get(idx));
         }
 
-        if (merchant.contains("수영") || merchant.contains("헬스")) {
+        if (merchant.contains("수영") || merchant.contains("헬스") || merchant.contains("휘트니스")) {
             PurposeCategory pc = purposeCategoryRepo.findByPurposeCategory("복지비");
             PurposeItem pi = purposeItemRepo.findByPurposeCategoryAndPurposeItem(pc, "운동지원비").get(0);
 
@@ -197,6 +197,32 @@ public class GptService {
                 recommendDtos.set(0, healthItem);
             }
 
+        }
+
+        // 카페에서 5만원 이상 결제시 교육비로 분류 (신입사원 교육비 지원)
+        if ((merchant.contains("카페") || merchant.contains("투썸")) && payAmount >= 50000) {
+            PurposeCategory pc = purposeCategoryRepo.findByPurposeCategory("활동비");
+            PurposeItem pi = purposeItemRepo.findByPurposeCategoryAndPurposeItem(pc, "교육비").get(0);
+
+            if (pc != null && pi != null) {
+                GptResultDto educationItem = GptResultDto.builder().purposeCategory(pc.getPurposeCategory())
+                        .purposeItem(pi.getPurposeItem()).purposeCategoryId(pc.getPurposeCategoryId())
+                        .purposeItemUid(pi.getPurposeItemUid()).build();
+                recommendDtos.set(0, educationItem);
+            }
+        }
+
+        // 카페에서 5만원 이상 결제시 교육비로 분류 (신입사원 교육비 지원)
+        if ((merchant.contains("카페") || merchant.contains("투썸")) && payAmount < 11000) {
+            PurposeCategory pc = purposeCategoryRepo.findByPurposeCategory("인건비");
+            PurposeItem pi = purposeItemRepo.findByPurposeCategoryAndPurposeItem(pc, "식대").get(0);
+
+            if (pc != null && pi != null) {
+                GptResultDto foodItem = GptResultDto.builder().purposeCategory(pc.getPurposeCategory())
+                        .purposeItem(pi.getPurposeItem()).purposeCategoryId(pc.getPurposeCategoryId())
+                        .purposeItemUid(pi.getPurposeItemUid()).build();
+                recommendDtos.set(0, foodItem);
+            }
         }
 
         return recommendDtos;

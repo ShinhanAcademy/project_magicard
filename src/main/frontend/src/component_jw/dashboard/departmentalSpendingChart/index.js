@@ -22,7 +22,6 @@ const DepartmentalSpendingChart = () => {
 
   const onChange = (e) => {
     setSelect(parseInt(e.target.value, 10)); // e.target.value를 숫자로 변환
-
   };
 
   return (

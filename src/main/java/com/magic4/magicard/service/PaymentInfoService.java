@@ -190,7 +190,6 @@ public class PaymentInfoService {
   }
 
 
-
 //  public List<EmployeeSpendDto> findTop5Spenders(String employeeEmail) {
 //    String sql = "SELECT e.employee_name as employeeName, d.department_name as departmentName, SUM(pi2.pay_amount) as totalPayAmount " +
 //            "FROM payment_info pi2 " +
@@ -218,6 +217,4 @@ public class PaymentInfoService {
 //            (BigDecimal) obj[2] // totalPayAmount
 //    )).collect(Collectors.toList());
 //  }
-
-
 }

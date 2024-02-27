@@ -17,11 +17,17 @@ function PageLayout({ background, children }) {
 
   return (
     <SoftBox
-      width="100vw"
-      height="100%"
-      minHeight="100vh"
-      bgColor={background}
-      sx={{ overflowX: "hidden" }}
+      sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
+        p: 3,
+        position: "relative",
+
+        [breakpoints.up("xl")]: {
+          transition: transitions.create(["margin-left", "margin-right"], {
+            easing: transitions.easing.easeInOut,
+            duration: transitions.duration.standard,
+          }),
+        },
+      })}
     >
       {children}
     </SoftBox>
