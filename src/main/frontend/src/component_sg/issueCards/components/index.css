@@ -1,6 +1,8 @@
 .flip-container {
   display: flex;
   justify-content: space-evenly;
+  margin-top: 20px;
+  padding-top: 40px;
 }
 
 .flip-outer {
@@ -124,4 +126,88 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.recommend-card {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-top: 20px;
+  padding-top: 80px;
+  /* height: 200px; */
+  /* padding-bottom: 0; */
+}
+
+.sol-card-images {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 40px;
+  height: 300px;
+}
+
+.sol-card-sero {
+  height: 189.96px;
+  width: 320px;
+  transform: rotate(90deg);
+}
+
+.sol-card-sero img {
+  height: 189.96px;
+  width: 320px;
+  /* transform: rotate(90deg); */
+}
+
+.sol-card-garo {
+  height: 189.96px;
+  width: 320px;
+}
+
+.sol-card-garo img {
+  height: 189.96px;
+  width: 320px;
+}
+
+.nextButton {
+  border: 0;
+  outline: 0;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.slider {
+  /* background-color: yellow; */
+  top: -50px;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.sol-travel-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-right: 10%;
+}
+
+.sol-benefit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.sol-benefit img {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.benefit-text {
+  font-size: 20px;
+}
+
+.recommend {
+  text-align: right;
+  margin-right: 15%;
 }
