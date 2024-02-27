@@ -174,19 +174,30 @@ function IssueCards() {
                       신한카드 SOL트래블 체크
                     </SoftTypography>
                     <SoftTypography variant="h6">해외여행은 SOL트래블로!</SoftTypography>
-                    <SoftTypography variant="h6">연회비 1만원</SoftTypography>
-                    <div className="sol-benefit">
+                    <SoftTypography variant="h6" mb={1}>
+                      연회비 1만원
+                    </SoftTypography>
+                    <SoftBox
+                      className="sol-benefit"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
                       <img src="https://www.shinhancard.com/pconts/images/contents/card/ico_card_benefit_m_14.png"></img>
                       <span className="benefit-text">해외 이용 수수료 면제</span>
-                    </div>
-                    <div className="sol-benefit">
+                    </SoftBox>
+                    <SoftBox
+                      className="sol-benefit"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
                       <img src="https://www.shinhancard.com/pconts/images/contents/card/ico_card_benefit_m_16.png"></img>
                       <span className="benefit-text">더라운지 본인 무료 입장</span>
-                    </div>
-                    <div className="sol-benefit">
+                    </SoftBox>
+                    <SoftBox
+                      className="sol-benefit"
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
                       <img src="https://www.shinhancard.com/pconts/images/contents/card/ico_card_benefit_m_18.png"></img>
                       <span className="benefit-text">해외 대중교통 1% 결제일 할인</span>
-                    </div>
+                    </SoftBox>
                   </div>
                 </div>
               </SoftBox>

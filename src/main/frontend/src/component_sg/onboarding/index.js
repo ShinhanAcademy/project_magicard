@@ -36,7 +36,7 @@ import Transactions from "layouts/billing/components/Transactions";
 import OnboardingTransactions from "./components/Transactions";
 import VideoBox from "component_sg/onboarding/components/VideoBox";
 import CardDetail from "./components/CardDetail";
-import ad from "assets/images/mk/ad.jpg";
+import ad from "assets/images/mk/ad.png";
 import { Card } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";

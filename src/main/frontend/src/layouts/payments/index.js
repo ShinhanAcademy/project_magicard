@@ -10,6 +10,8 @@ import Refuse from "./display/refuse";
 
 import SoftButton from "components/SoftButton";
 import { useSelector } from "react-redux";
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 
 function PaymentsTables() {
   const isLoggedIn = useSelector((state) => !!state.user.employeeName);
@@ -28,18 +30,36 @@ function PaymentsTables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {isLoggedIn}
-      <Link to="paymentsInfo">
-        <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
-          결제 관리
-        </SoftButton>
-      </Link>
-      <Link to="requestApprove">
-        <SoftButton style={{ width: "150px" }}>승인</SoftButton>
-      </Link>
-      <Link to="refuse">
-        <SoftButton style={{ width: "150px" }}>반려</SoftButton>
-      </Link>
+      <SoftBox style={{ display: "flex" }}>
+        <SoftBox mr={1}>
+          <Link to="paymentsInfo">
+            <SoftButton ref={softButtonRef} style={{ width: "150px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                결제 관리
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+        <SoftBox mr={1}>
+          <Link to="requestApprove">
+            <SoftButton style={{ width: "150px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                승인
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+        <SoftBox mr={1}>
+          <Link to="refuse">
+            <SoftButton style={{ width: "150px" }}>
+              <SoftTypography variant="h6" color="dark" fontWeight="bold">
+                반려
+              </SoftTypography>
+            </SoftButton>
+          </Link>
+        </SoftBox>
+      </SoftBox>
+
       <Routes>
         <Route path="/paymentsInfo" element={<PaymentsInfo />}></Route>
         <Route path="/requestApprove" element={<RequestApprove />}></Route>
