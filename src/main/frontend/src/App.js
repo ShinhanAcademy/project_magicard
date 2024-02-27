@@ -16,6 +16,7 @@ import routes from "routes";
 import brand from "assets/images/mk/magicardLogoBlack.png";
 import { setMiniSidenav } from "mk/slices/softui";
 import { setOpenConfigurator } from "mk/slices/softui";
+import SignIn from "layouts/authentication/sign-in";
 
 export default function App() {
   const controller = useSelector((state) => state.layout); // 상태 가져오기
@@ -24,6 +25,26 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const isLoggedIn = useSelector((state) => state.user.employeeCode);
+  const isAdmin = useSelector((state) => state.user.isAdmin);
+
+  //   initializeUserInfo = async () => {
+  //     const loggedInfo = storage.get('loggedInfo'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
+  //     if(!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
+
+  //     const { UserActions } = this.props;
+  //     UserActions.setLoggedInfo(loggedInfo);
+  //     try {
+  //         await UserActions.checkStatus();
+  //     } catch (e) {
+  //         storage.remove('loggedInfo');
+  //         window.location.href = '/auth/login?expired';
+  //     }
+  // }
+
+  // componentDidMount() {
+  //     this.initializeUserInfo();
+  // }
 
   useMemo(() => {
     const cacheRtl = createCache({
@@ -60,18 +81,23 @@ export default function App() {
   }, [pathname]);
 
   const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+    allRoutes
+      .filter((route) => {
+        console.log(isAdmin);
+        return route.isAdmin ? (isAdmin ? true : false) : true;
+      })
+      .map((route) => {
+        if (route.collapse) {
+          return getRoutes(route.collapse);
+        }
 
-      if (route.route) {
-        // console.log(route.route);
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
+        if (route.route) {
+          // console.log(route.route);
+          return <Route exact path={route.route} element={route.component} key={route.key} />;
+        }
 
-      return null;
-    });
+        return null;
+      });
 
   const configsButton = (
     <SoftBox
@@ -140,10 +166,41 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
-      <Routes>
+      {isLoggedIn ? (
+        <Routes>
+          {getRoutes(routes)}
+          {isAdmin ? (
+            <>
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </>
+          ) : (
+            <>
+              <Route path="*" element={<Navigate to="/payments/*" />} />
+            </>
+          )}
+        </Routes>
+      ) : (
+        <Routes>
+          {getRoutes([
+            {
+              name: "로그인",
+              key: "sign-in",
+              route: "/authentication/sign-in",
+              component: <SignIn />,
+              noCollapse: true,
+            },
+          ])}
+          <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+        </Routes>
+      )}
+      {/* <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
+        {isAdmin ? (
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        ) : (
+          <Route path="*" element={<Navigate to="/payments/*" />} />
+        )}
+      </Routes> */}
     </ThemeProvider>
   );
 }

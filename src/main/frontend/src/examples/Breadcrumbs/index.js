@@ -29,16 +29,17 @@ import SoftTypography from "components/SoftTypography";
 
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
-  let realTitle = "";
-  console.log(title);
+  let realTitle =
+    route[0] === "payments" || "recieved-requests" ? route[0] : route[route.length - 1];
+  console.log("title", title);
 
   if (title == "onboarding") {
     realTitle = "카드 사용 등록";
   } else if (title == "dashboard") {
     realTitle = "대시보드";
-  } else if (title == "payments") {
+  } else if (realTitle == "payments") {
     realTitle = "결제 내역";
-  } else if (title == "recieved-requests") {
+  } else if (realTitle == "recieved-requests") {
     realTitle = "결재 요청 내역";
   } else if (title == "issue-cards") {
     realTitle = "카드 신규 발급";

@@ -63,7 +63,7 @@ const FinalRefuseData = () => {
     }
 
     let statusColor = "";
-    if (refuse.approvalSteps.approvalStep === "승인") {
+    if (refuse.approvalSteps.approvalStep === "최종 반려") {
       statusColor = "skyblue";
     } else {
       statusColor = "black";

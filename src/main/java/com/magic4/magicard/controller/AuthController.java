@@ -19,7 +19,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest){
+    public LoginResponseDto login(HttpServletRequest httpServletRequest){
+        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+                .employeeEmail("aa4@naver.com")
+//                .userPassword()
+                .build();
 
 //        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
 //                // 상급자
@@ -30,6 +34,26 @@ public class AuthController {
 //                .employeeEmail("sdbase@naver.com")
 ////                .userPassword()
 //                .build();
+
+        // 세션을 생성하기 전에 기존의 세션 파기
+        httpServletRequest.getSession().invalidate();
+        HttpSession session = httpServletRequest.getSession();  // Session이 없으면 생성
+
+        LoginResponseDto loginResponseDto=authService.login(loginRequestDto);
+
+        session.setAttribute("myInfo", loginResponseDto);
+
+        return loginResponseDto;
+    }
+
+
+    @PostMapping("/adminLogin")
+    public LoginResponseDto adminLogin(HttpServletRequest httpServletRequest){
+
+        LoginRequestDto loginRequestDto=LoginRequestDto.builder()
+                .employeeEmail("aa3@naver.com")
+//                .userPassword()
+                .build();
 
         // 세션을 생성하기 전에 기존의 세션 파기
         httpServletRequest.getSession().invalidate();

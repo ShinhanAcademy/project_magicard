@@ -49,30 +49,93 @@ import Shop from "./examples/Icons/Shop";
 
 import Check from "./examples/Icons/Check";
 import Money from "./examples/Icons/Money";
-
-import Office from "./examples/Icons/Office";
 import Settings from "./examples/Icons/Settings";
-import Document from "./examples/Icons/Document";
-import SpaceShip from "./examples/Icons/SpaceShip";
-import CustomerSupport from "./examples/Icons/CustomerSupport";
 import CreditCard from "./examples/Icons/CreditCard";
-import Cube from "./examples/Icons/Cube";
-
 import DashboardIcon from "./examples/Icons/Dashboard";
 
 import Onboarding from "./component_sg/onboarding";
 import IssueCards from "./component_sg/issueCards/components";
 import RecievedRequest from "./layouts/recievedRequest";
 import PaymentsTables from "./layouts/payments";
-import Member from "./examples/Icons/Member";
 import CardPlus from "./examples/Icons/CardPlus";
 import PurposeCategory from "./component_sh/components/PurposeCategory";
-import Tablesjy from "./components_jy/tables";
-import Employees from "./layouts/employees";
 import Dashboard from "./component_jw/dashboard";
+import { Navigate } from "react-router-dom";
+import Member from "./examples/Icons/Member";
+import Employees from "./layouts/employees";
+import CustomerSupport from "./examples/Icons/CustomerSupport";
+
+interface RouteProps {
+  path: string;
+  component: {};
+  exact?: boolean;
+}
+
+// 일반사용자
+// const userRoutes: Array<RouteProps> = [
+// { path: "/", exact: true, component: <Navigate to="/" /> }];
+{
+  /* <Route exact path={route.route} element={route.component} key={route.key} /> */
+}
+
+// 관리자
+const adminRoutes: Array<RouteProps> = [
+  // { path: "/login", component: <Login /> },
+  // { path: "/login/choose", component: <LoginChoose /> },
+  // { path: "/login/verification", component: <LoginVerification /> },
+];
 
 const routes = [
-  { type: "title", title: "사용자 메뉴", key: "user-pages" },
+  { type: "title", title: "관리자 메뉴", key: "manager-pages", isAdmin: true },
+  {
+    type: "collapse",
+    name: "대시보드",
+    key: "dashboard",
+    route: "/dashboard",
+    icon: <DashboardIcon size="14px" />,
+    component: <Dashboard />,
+    noCollapse: true,
+    isAdmin: true,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "멤버 관리",
+  //   key: "member-Management",
+  //   route: "/member-Management",
+  //   icon: <Member size="14px" />,
+  //   component: <Employees />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "부서 관리",
+  //   key: "departments",
+  //   route: "/departments",
+  //   icon: <Office size="14px" />,
+  //   component: <Tablesjy />,
+  //   noCollapse: true,
+  // },
+  {
+    type: "collapse",
+    name: "용도 관리",
+    key: "category-Management",
+    route: "/category-Management",
+    icon: <Settings size="14px" />,
+    component: <PurposeCategory />,
+    isAdmin: true,
+  },
+
+  {
+    type: "collapse",
+    name: "카드 신규 발급",
+    key: "issue-cards",
+    route: "/issue-cards",
+    icon: <CardPlus size="14px" />,
+    component: <IssueCards />,
+    noCollapse: true,
+    isAdmin: true,
+  },
+  { type: "title", title: "사용자 메뉴", key: "user-pages", isAdmin: false },
   {
     type: "collapse",
     name: "결제 내역",
@@ -81,6 +144,7 @@ const routes = [
     icon: <Money size="15px" />,
     component: <PaymentsTables />,
     noCollapse: true,
+    isAdmin: false,
   },
   {
     type: "collapse",
@@ -90,6 +154,7 @@ const routes = [
     icon: <Check size="15px" />,
     component: <RecievedRequest />,
     noCollapse: true,
+    isAdmin: false,
   },
   {
     type: "collapse",
@@ -99,6 +164,7 @@ const routes = [
     icon: <CreditCard size="13px" />,
     component: <Onboarding />,
     noCollapse: true,
+    isAdmin: false,
   },
 
   // { type: "title", title: "안 쓰는 페이지", key: "nono" },
@@ -139,52 +205,6 @@ const routes = [
   //   noCollapse: true,
   // },
 
-  { type: "title", title: "관리자 메뉴", key: "manager-pages" },
-  {
-    type: "collapse",
-    name: "대시보드",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <DashboardIcon size="14px" />,
-    component: <Dashboard />,
-    noCollapse: true,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "멤버 관리",
-  //   key: "member-Management",
-  //   route: "/member-Management",
-  //   icon: <Member size="14px" />,
-  //   component: <Employees />,
-  //   noCollapse: true,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "부서 관리",
-  //   key: "departments",
-  //   route: "/departments",
-  //   icon: <Office size="14px" />,
-  //   component: <Tablesjy />,
-  //   noCollapse: true,
-  // },
-  {
-    type: "collapse",
-    name: "용도 관리",
-    key: "category-Management",
-    route: "/category-Management",
-    icon: <Settings size="14px" />,
-    component: <PurposeCategory />,
-  },
-
-  {
-    type: "collapse",
-    name: "카드 신규 발급",
-    key: "issue-cards",
-    route: "/issue-cards",
-    icon: <CardPlus size="14px" />,
-    component: <IssueCards />,
-    noCollapse: true,
-  },
   // { type: "title", title: "계정 관리", key: "account-pages" },
 
   // {
@@ -196,15 +216,7 @@ const routes = [
   //   component: <Profile />,
   //   noCollapse: true,
   // },
-  // {
-  //   type: "collapse",
-  //   name: "로그인",
-  //   key: "sign-in",
-  //   route: "/authentication/sign-in",
-  //   icon: <Document size="12px" />,
-  //   component: <SignIn />,
-  //   noCollapse: true,
-  // },
+
   // {
   //   type: "collapse",
   //   name: "회원가입",
