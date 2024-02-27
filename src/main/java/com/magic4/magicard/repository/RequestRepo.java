@@ -55,7 +55,7 @@ public interface RequestRepo extends JpaRepository<Request, Integer> {
     + "GROUP BY purpose_item_uid, purpose_item, purpose_category_id, purpose_category_id, "
     + "purpose_category, approval_status_code, payment_month "
     + "ORDER BY purpose_item_uid ASC", nativeQuery = true)
-   //기간 조건 없음 > front에서 처리
+   
 List<Map<String, Object>> findRequestNumWhereApprovalFinal();
 
 

@@ -158,7 +158,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "카드 사용 등록",
+    name: "카드사용 시작가이드",
     key: "onboarding",
     route: "/onboarding",
     icon: <CreditCard size="13px" />,

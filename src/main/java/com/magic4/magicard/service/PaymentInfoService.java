@@ -217,5 +217,4 @@ public class PaymentInfoService {
 //            (BigDecimal) obj[2] // totalPayAmount
 //    )).collect(Collectors.toList());
 //  }
-
 }

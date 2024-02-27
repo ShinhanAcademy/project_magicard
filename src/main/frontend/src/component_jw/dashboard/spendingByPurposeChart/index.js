@@ -6,12 +6,26 @@ import * as echarts from "echarts/core";
 import { PieChart } from "echarts/charts";
 import { TitleComponent, TooltipComponent, LegendComponent } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
+import {
+  purposeCategory,
+  peoPurposeItem,
+  carPurposeItem,
+  outPurposeItem,
+  advPurposeItem,
+  peoOtion,
+  carOption,
+  outOption,
+  advOption,
+  peoLine,
+  carLine,
+  outLine,
+  advLine,
+} from "../../data/spendingByPurposeChartData/spendingByPurposeChartData";
 
 // 필요한 컴포넌트 등록
 echarts.use([PieChart, TitleComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
 
 const SpendingByPurposeChart = () => {
-  const purposeCategory = ["인테리어 비용", "인건비"]; //전체 prupose_category
   const [selectedPurposeCategory, setSelectedPurposeCategory] = useState(purposeCategory[0]);
   const [purposeData, setPurposeData] = useState([]); //조건 없는 전체 purpose에 따른 data
   const [pieOption, setPieOption] = useState([]); //이번 달 금액&&purpose_item
@@ -74,11 +88,8 @@ const SpendingByPurposeChart = () => {
     };
 
     while (colors.length < count) {
-      const r = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
       const alpha = Math.random() * (0.5 - 0.1) + 0.1;
-      const color = `rgba(${r},${g},${b}, ${alpha})`;
+      const color = `rgb(255,112,112, ${alpha})`;
 
       if (isValidColor(color)) {
         colors.push(color);
@@ -115,13 +126,31 @@ const SpendingByPurposeChart = () => {
       },
     },
 
-    // legend: {
-    //   orient: "horizontal",
-    //   bottom: 0,
-    //   data: piePurposeItem,
-    // },
+    legend: {
+      orient: "horizontal",
+      bottom: 0,
+      data: (() => {
+        if (selectedPurposeCategory === "인테리어 비용") {
+          return piePurposeItem;
+        } else if (selectedPurposeCategory === "인건비") {
+          return peoPurposeItem;
+        } else if (selectedPurposeCategory === "차랑유지비") {
+          return carPurposeItem;
+        } else if (selectedPurposeCategory === "출장비") {
+          return outPurposeItem;
+        } else if (selectedPurposeCategory === "광고비") {
+          return advPurposeItem;
+        }
+        return [];
+      })(),
+    },
+
     series: [
       {
+        itemStyle: {
+          borderWidth: "3",
+          borderColor: "#ffffff",
+        },
         name: "Purpose Item",
         type: "pie",
         radius: "80%", // 차트 크기 조절
@@ -129,69 +158,38 @@ const SpendingByPurposeChart = () => {
         avoidLabelOverlap: false,
         label: {
           show: true,
+          align: "center",
+          position: "inside",
+          formatter: `{b} \n \n {d}%`,
+          fontSize: 13,
+          color: "black",
         },
-
         labelLine: {
-          show: true,
+          show: false,
         },
-        data: pieOption.map((item, index) => ({
-          value: item.totalAmount,
-          name: item.purposeItem,
-          itemStyle: {
-            color: index === maxIndex ? "red" : colors[index],
-          },
-        })),
+        data: (() => {
+          if (selectedPurposeCategory === "인테리어 비용") {
+            return pieOption.map((item, index) => ({
+              value: item.totalAmount,
+              name: item.purposeItem,
+              itemStyle: {
+                color: index === maxIndex ? "rgb(255,112,112)" : colors[index],
+              },
+            }));
+          } else if (selectedPurposeCategory === "인건비") {
+            return peoOtion;
+          } else if (selectedPurposeCategory === "차랑유지비") {
+            return carOption;
+          } else if (selectedPurposeCategory === "출장비") {
+            return outOption;
+          } else if (selectedPurposeCategory === "광고비") {
+            return advOption;
+          }
+          return [];
+        })(),
       },
     ],
   };
-
-  const peoPieChartOptions = {
-    title: {
-      text: "용도별 지출 비율",
-      textStyle: {
-        fontSize: 18,
-      },
-      left: "center",
-    },
-
-    tooltip: {
-      trigger: "item",
-      formatter: function (params) {
-        const formattedValue = params.data.value.toLocaleString();
-        return `${params.name} <br/> 총 ${formattedValue}원 (${params.percent}%)`;
-      },
-    },
-
-    // legend: {
-    //   orient: "horizontal",
-    //   bottom: 0,
-    //   data: piePurposeItem,
-    // },
-    series: [
-      {
-        name: "Purpose Item",
-        type: "pie",
-        radius: "80%", // 차트 크기 조절
-        center: ["50%", "50%"],
-        avoidLabelOverlap: false,
-        label: {
-          show: true,
-        },
-
-        labelLine: {
-          show: true,
-        },
-        data: [
-          { value: 985641200, name: "급여" },
-          { value: 132546000, name: "4대 보험" },
-          { value: 2834780, name: "식대" },
-          { value: 1002400000, name: "월급" },
-          { value: 1997800, name: "기타 인건비1" },
-        ],
-      },
-    ],
-  };
-  //
 
   //Line 데이터 불러오기 및 가공
   useEffect(() => {
@@ -281,7 +279,20 @@ const SpendingByPurposeChart = () => {
       },
     },
     legend: {
-      data: lineData.map((item) => item.purposeItem),
+      data: (() => {
+        if (selectedPurposeCategory === "인테리어 비용") {
+          return lineData.map((item) => item.purposeItem);
+        } else if (selectedPurposeCategory === "인건비") {
+          return peoPurposeItem;
+        } else if (selectedPurposeCategory === "차랑유지비") {
+          return carPurposeItem;
+        } else if (selectedPurposeCategory === "출장비") {
+          return outPurposeItem;
+        } else if (selectedPurposeCategory === "광고비") {
+          return advPurposeItem;
+        }
+        return [];
+      })(),
       top: 30,
     },
     xAxis: {
@@ -295,67 +306,20 @@ const SpendingByPurposeChart = () => {
         formatter: "{value} 원",
       },
     },
-    series: seriesData, // 각 항목별 라인 차트 데이터
-  };
-
-  const peolineChartOptions = {
-    title: {
-      text: "6개월간 각 항목별 지출",
-      left: "center",
-    },
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "cross",
-        animation: false,
-        label: {
-          backgroundColor: "#283b56",
-        },
-      },
-    },
-    legend: {
-      data: ["급여", "4대 보험", "식대", "월급", "기타 인건비1"],
-      top: 30,
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: monthLabels, // 현재로부터 6개월 전까지의 연월 정보
-    },
-    yAxis: {
-      type: "value",
-      axisLabel: {
-        formatter: "{value} 원",
-      },
-    },
-    series: [
-      {
-        name: "급여",
-        type: "line",
-        data: [1332000000, 1230754600, 985643291, 1754632590, 875426932, 985641200],
-      },
-      {
-        name: "4대 보험",
-        type: "line",
-        data: [119880000, 102354587, 123602450, 98754260, 124503500, 132546000],
-      },
-      {
-        name: "식대",
-        type: "line",
-        data: [2010580, 2214560, 1987560, 2410320, 1245030, 2834780],
-      },
-
-      {
-        name: "월급",
-        type: "line",
-        data: [1332000000, 1332450000, 1331867000, 1454900000, 1331900000, 1002400000],
-      },
-      {
-        name: "기타 인건비1",
-        type: "line",
-        data: [2000000, 1998500, 2001400, 2505100, 2003200, 1997800],
-      },
-    ],
+    series: (() => {
+      if (selectedPurposeCategory === "인테리어 비용") {
+        return seriesData;
+      } else if (selectedPurposeCategory === "인건비") {
+        return peoLine;
+      } else if (selectedPurposeCategory === "차랑유지비") {
+        return carLine;
+      } else if (selectedPurposeCategory === "출장비") {
+        return outLine;
+      } else if (selectedPurposeCategory === "광고비") {
+        return advLine;
+      }
+      return [];
+    })(),
   };
 
   //handle purpose_category
@@ -380,22 +344,10 @@ const SpendingByPurposeChart = () => {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} style={{ display: "flex", justifyContent: "center" }}>
-            <ReactECharts
-              option={
-                selectedPurposeCategory === "인테리어 비용" ? inPieChartOptions : peoPieChartOptions
-              }
-              style={{ width: "100%", height: "500px" }}
-            />
+            <ReactECharts option={inPieChartOptions} style={{ width: "100%", height: "500px" }} />
           </Grid>
           <Grid item xs={12} md={8} style={{ display: "flex", justifyContent: "center" }}>
-            <ReactECharts
-              option={
-                selectedPurposeCategory === "인테리어 비용"
-                  ? inlineChartOptions
-                  : peolineChartOptions
-              }
-              style={{ height: "500px", width: "100%" }}
-            />
+            <ReactECharts option={inlineChartOptions} style={{ height: "500px", width: "100%" }} />
           </Grid>
         </Grid>
       </Grid>
