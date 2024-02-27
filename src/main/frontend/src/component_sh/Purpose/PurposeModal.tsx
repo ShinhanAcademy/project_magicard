@@ -61,7 +61,7 @@ function PurposeModal({ setModalOpen }: ModalProps): JSX.Element {
           const dpcateory = res.data;
           alert(`추가하는 항목이 상위 항목  "${dpcateory}" 에 중복되어있습니다(추가 실패). `);
         } else {
-          alert("성공");
+          alert("용도가 추가되었습니다.");
           loadListData();
           setModalOpen(false);
         }
