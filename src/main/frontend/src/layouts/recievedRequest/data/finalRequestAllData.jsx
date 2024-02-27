@@ -68,63 +68,52 @@ const FinalRequestAllData = () => {
 
     let statusColor = "";
     let status = request.approvalSteps.approvalStep;
-    if (
-      status === "승인" ||
-      status === "최종 반려" ||
-      status === "반려" ||
-      status === "최종 승인"
-    ) {
-      statusColor = "skyblue";
+    if (status === "승인" || status === "최종 승인") {
+      statusColor = "#2697FF";
+    } else if (status === "반려" || status === "최종 반려") {
+      statusColor = "#E92222";
     } else {
-      statusColor = "black";
+      statusColor = "";
     }
 
     return {
       결제일시: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {paymentTime}
         </SoftTypography>
       ),
       요청자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {request.requestEmployeeName}
         </SoftTypography>
       ),
       권한자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {request.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {request.paymentInfo.merchant}
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-          style={{ color: "red" }}
-        >
-          {payAmount}원
+        <SoftTypography variant="body3" color="dark" fontWeight="bold" style={{ color: "red" }}>
+          {payAmount}{" "}
+          <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
+            원
+          </SoftTypography>
         </SoftTypography>
       ),
       용도: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
+        <SoftTypography component="a" href="#" variant="body3" color="dark" fontWeight="bold">
           {request.purposeItem.purposeItem}
         </SoftTypography>
       ),
       상태: (
         <SoftTypography
-          variant="caption"
-          color="secondary"
+          variant="body3"
+          color="dark"
           fontWeight="medium"
           style={{ color: statusColor }}
         >

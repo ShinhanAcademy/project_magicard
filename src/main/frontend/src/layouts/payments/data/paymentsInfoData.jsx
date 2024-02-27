@@ -83,15 +83,19 @@ const paymentInfoData = () => {
     let statusColor2 = "";
     let status_1 = payment.firstStepStatus;
     let status_2 = payment.secondStepStatus;
-    if (status_1 === "최종 반려") {
-      statusColor1 = "skyblue";
+    if (status_1 === "반려") {
+      statusColor1 = "#E92222";
+    } else if (status_1 === "승인") {
+      statusColor1 = "#2697FF";
     } else {
-      statusColor1 = "black";
+      statusColor1 = "";
     }
-    if (status_2 === "최종 승인" || status_2 === "최종 반려") {
-      statusColor2 = "skyblue";
+    if (status_2 === "최종 승인") {
+      statusColor2 = "#2697FF";
+    } else if (status_2 === "최종 반려") {
+      statusColor2 = "#E92222";
     } else {
-      statusColor2 = "black";
+      statusColor2 = "";
     }
 
     return {
@@ -101,12 +105,12 @@ const paymentInfoData = () => {
         </SoftTypography>
       ),
       사용처: (
-        <SoftTypography variant="body2" color="dark" fontWeight="bold">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {payment.merchant}
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography variant="body2" color="dark" fontWeight="bold" style={{ color: "#E92222" }}>
+        <SoftTypography variant="body3" color="dark" fontWeight="bold" style={{ color: "#E92222" }}>
           {payAmount}{" "}
           <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
             원
@@ -120,7 +124,7 @@ const paymentInfoData = () => {
       ),
       부서내: (
         <SoftTypography
-          variant="body2"
+          variant="body3"
           color="dark"
           fontWeight="medium"
           style={{ color: statusColor1 }}
@@ -130,7 +134,7 @@ const paymentInfoData = () => {
       ),
       재무부: (
         <SoftTypography
-          variant="body2"
+          variant="body3"
           color="dark"
           fontWeight="medium"
           style={{ color: statusColor2 }}

@@ -65,6 +65,25 @@ const RequestApproveData = () => {
       color = "#2f4f4f";
     }
 
+    let statusColor1 = "";
+    let statusColor2 = "";
+    let status_1 = approve.paymentInfo.firstStepStatus;
+    let status_2 = approve.paymentInfo.secondStepStatus;
+    if (status_1 === "반려") {
+      statusColor1 = "#E92222";
+    } else if (status_1 === "승인") {
+      statusColor1 = "#2697FF";
+    } else {
+      statusColor1 = "";
+    }
+    if (status_2 === "최종 승인") {
+      statusColor2 = "#2697FF";
+    } else if (status_2 === "최종 반려") {
+      statusColor2 = "#E92222";
+    } else {
+      statusColor2 = "";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="body3" color="dark" fontWeight="medium">
@@ -72,27 +91,22 @@ const RequestApproveData = () => {
         </SoftTypography>
       ),
       요청자: (
-        <SoftTypography variant="body2" color="dark" fontWeight="bold">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {approve.employee.employeeName}
         </SoftTypography>
       ),
       권한자: (
-        <SoftTypography variant="body2" color="dark" fontWeight="bold">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
-        <SoftTypography variant="body2" color="dark" fontWeight="bold">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {approve.paymentInfo.merchant}
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography
-          variant="body2"
-          color="secondary"
-          fontWeight="medium"
-          style={{ color: "#E92222" }}
-        >
+        <SoftTypography variant="body3" fontWeight="bold" style={{ color: "#E92222" }}>
           {payAmount}{" "}
           <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
             원
@@ -100,17 +114,27 @@ const RequestApproveData = () => {
         </SoftTypography>
       ),
       용도: (
-        <SoftTypography component="a" href="#" variant="body2" color="dark" fontWeight="bold">
+        <SoftTypography component="a" href="#" variant="body3" color="dark" fontWeight="bold">
           {approve.purposeItem.purposeItem}
         </SoftTypography>
       ),
       부서내: (
-        <SoftTypography variant="body3" color="dark" fontWeight="medium">
+        <SoftTypography
+          variant="body3"
+          color="dark"
+          fontWeight="medium"
+          style={{ color: statusColor1 }}
+        >
           {approve.paymentInfo.firstStepStatus}
         </SoftTypography>
       ),
       재무부: (
-        <SoftTypography variant="body3" color="dark" fontWeight="medium">
+        <SoftTypography
+          variant="body3"
+          color="dark"
+          fontWeight="medium"
+          style={{ color: statusColor2 }}
+        >
           {approve.paymentInfo.secondStepStatus}
         </SoftTypography>
       ),
