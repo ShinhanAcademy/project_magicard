@@ -67,53 +67,50 @@ const RequestApproveData = () => {
 
     return {
       결제일시: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {paymentTime}
         </SoftTypography>
       ),
       요청자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body2" color="dark" fontWeight="bold">
           {approve.employee.employeeName}
         </SoftTypography>
       ),
       권한자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body2" color="dark" fontWeight="bold">
           {approve.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body2" color="dark" fontWeight="bold">
           {approve.paymentInfo.merchant}
         </SoftTypography>
       ),
       사용금액: (
         <SoftTypography
-          variant="caption"
+          variant="body2"
           color="secondary"
           fontWeight="medium"
-          style={{ color: "red" }}
+          style={{ color: "#E92222" }}
         >
-          {payAmount}원
+          {payAmount}{" "}
+          <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
+            원
+          </SoftTypography>
         </SoftTypography>
       ),
       용도: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
+        <SoftTypography component="a" href="#" variant="body2" color="dark" fontWeight="bold">
           {approve.purposeItem.purposeItem}
         </SoftTypography>
       ),
       부서내: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {approve.paymentInfo.firstStepStatus}
         </SoftTypography>
       ),
       재무부: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {approve.paymentInfo.secondStepStatus}
         </SoftTypography>
       ),

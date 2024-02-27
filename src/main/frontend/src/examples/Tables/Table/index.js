@@ -68,8 +68,8 @@ function Table({ columns, rows }) {
         pr={align === "right" ? pr : 3}
         textAlign={align}
         fontSize={size.xs}
-        fontWeight={fontWeightBold}
-        color="secondary"
+        // fontWeight={fontWeightBold}
+        color="dark"
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
       >

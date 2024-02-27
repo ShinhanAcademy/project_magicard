@@ -74,6 +74,7 @@ function PaymentsInfo() {
               justifyContent="space-between"
               alignItems="flex-start"
               p={3}
+              pb={5}
             >
               <SoftTypography variant="h4" fontWeight="bold">
                 결제 내역 관리
@@ -85,27 +86,35 @@ function PaymentsInfo() {
               <div className="money-container">
                 <div className="this-month">
                   <img src={usingMoney} />
-                  <h4>이번 달 결제 금액</h4>
-                  <SoftTypography variant="h6">{totalAmount}원</SoftTypography>
+                  <SoftTypography variant="h6" mt={2} fontWeight="bold">
+                    이번 달 결제 금액
+                  </SoftTypography>
+                  <SoftTypography variant="h4" fontWeight="bold">
+                    {totalAmount} 원
+                  </SoftTypography>
                 </div>
-                <hr />
+                <hr color="#CBE1D4" />
                 <div className="this-month">
                   <img src={leftMoney} />
-                  <h4>이번 달 잔액</h4>
-                  <SoftTypography variant="h6">25,000원</SoftTypography>
+                  <SoftTypography variant="h6" mt={2} fontWeight="bold">
+                    이번 달 잔액
+                  </SoftTypography>
+                  <SoftTypography variant="h4" fontWeight="bold">
+                    25,000 원
+                  </SoftTypography>
                 </div>
-                <hr />
+                <hr color="#CBE1D4" />
                 <div className="this-month">
-                  <SoftTypography variant="h5">
-                    자주 가는 가맹점 <span style={{ color: "red" }}>Top 5.</span>
+                  <SoftTypography variant="h5" fontWeight="bold" pb={1}>
+                    자주 가는 가맹점 <span style={{ color: "#E92222" }}>Top 5.</span>
                   </SoftTypography>
                   {top5.map((toptop, index) => (
                     <SoftTypography
                       variant="h6"
                       key={index}
-                      style={{ color: index === 0 ? "red" : "black" }}
+                      style={{ color: index === 0 ? "#E92222" : "#FF7155" }}
                     >
-                      {toptop}
+                      {index + 1 + ". " + toptop}
                     </SoftTypography>
                   ))}
                 </div>

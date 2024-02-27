@@ -96,34 +96,32 @@ const paymentInfoData = () => {
 
     return {
       결제일시: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {paymentTime}
         </SoftTypography>
       ),
       사용처: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body2" color="dark" fontWeight="bold">
           {payment.merchant}
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-          style={{ color: "red" }}
-        >
-          {payAmount}원
+        <SoftTypography variant="body2" color="dark" fontWeight="bold" style={{ color: "#E92222" }}>
+          {payAmount}{" "}
+          <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
+            원
+          </SoftTypography>
         </SoftTypography>
       ),
       카드번호: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {payment.issuedCard.cardNumber}
         </SoftTypography>
       ),
       부서내: (
         <SoftTypography
-          variant="caption"
-          color="secondary"
+          variant="body2"
+          color="dark"
           fontWeight="medium"
           style={{ color: statusColor1 }}
         >
@@ -132,8 +130,8 @@ const paymentInfoData = () => {
       ),
       재무부: (
         <SoftTypography
-          variant="caption"
-          color="secondary"
+          variant="body2"
+          color="dark"
           fontWeight="medium"
           style={{ color: statusColor2 }}
         >
