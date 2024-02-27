@@ -23,9 +23,12 @@ function FinalRequestApprove() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h4">승인 내역</SoftTypography>
+            <SoftBox display="flex" flexDirection="column" justifyContent="space-between" p={3}>
+              <SoftTypography variant="h4" fontWeight="bold">
+                승인 내역
+              </SoftTypography>
             </SoftBox>
+
             <SoftBox
               sx={{
                 "& .MuiTableRow-root:not(:last-child)": {

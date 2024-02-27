@@ -28,8 +28,13 @@ function Refuse() {
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h4">반려 내역</SoftTypography>
+            <SoftBox display="flex" flexDirection="column" justifyContent="space-between" p={3}>
+              <SoftTypography variant="h4" fontWeight="bold">
+                반려 내역
+              </SoftTypography>
+              <SoftTypography variant="h6" fontWeight="light" color="secondary">
+                반려된 요청 내역을 볼 수 있습니다.
+              </SoftTypography>
             </SoftBox>
             <SoftBox
               sx={{

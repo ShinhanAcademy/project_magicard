@@ -66,53 +66,55 @@ const RefuseData = () => {
 
     return {
       결제일시: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="medium">
           {paymentTime}
         </SoftTypography>
       ),
       요청자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {refuse.employee.employeeName}
         </SoftTypography>
       ),
       권한자: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {refuse.responseEmployeeName}
         </SoftTypography>
       ),
       가맹점: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography variant="body3" color="dark" fontWeight="bold">
           {refuse.paymentInfo.merchant}
         </SoftTypography>
       ),
       사용금액: (
-        <SoftTypography
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-          style={{ color: "red" }}
-        >
-          {payAmount}원
+        <SoftTypography variant="body3" color="dark" fontWeight="bold" style={{ color: "#E92222" }}>
+          {payAmount}{" "}
+          <SoftTypography variant="caption" color="#E92222" fontWeight="bold">
+            원
+          </SoftTypography>
         </SoftTypography>
       ),
       용도: (
-        <SoftTypography
-          component="a"
-          href="#"
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
+        <SoftTypography component="a" href="#" variant="body3" color="dark" fontWeight="bold">
           {refuse.purposeItem.purposeItem}
         </SoftTypography>
       ),
       부서내: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="body3"
+          color="dark"
+          style={{ color: refuse.paymentInfo.firstStepStatus === "반려" ? "#E92222" : "dark" }}
+          fontWeight="medium"
+        >
           {refuse.paymentInfo.firstStepStatus}
         </SoftTypography>
       ),
       재무부: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="body3"
+          color="dark"
+          style={{ color: refuse.paymentInfo.firstStepStatus === "반려" ? "#E92222" : "dark" }}
+          fontWeight="medium"
+        >
           {refuse.paymentInfo.secondStepStatus}
         </SoftTypography>
       ),
