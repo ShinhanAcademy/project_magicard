@@ -2,20 +2,19 @@ package com.magic4.magicard.service;
 
 import java.util.*;
 
-import com.magic4.magicard.dto.EmployeeEmailDto;
-import com.magic4.magicard.repository.EmployeeRepo;
+import com.magic4.magicard.dto.*;
+import com.magic4.magicard.dto.top5.DepartmentSpendDto;
+import com.magic4.magicard.dto.top5.EmployeeSpendDto;
+import com.magic4.magicard.repository.*;
 import com.magic4.magicard.vo.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.magic4.magicard.repository.RequestRepo;
-import com.magic4.magicard.dto.EmployeeDto;
-import com.magic4.magicard.dto.IssuedCardDto;
-import com.magic4.magicard.dto.PaymentInfoDto;
-import com.magic4.magicard.repository.IssuedCardRepo;
-import com.magic4.magicard.repository.PaymentInfoRepo;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +23,7 @@ public class PaymentInfoService {
   private final PaymentInfoRepo paymentInfoRepo;
   private final RequestRepo requestRepo;
   private final EmployeeRepo employeeRepo;
+  private final DepartmentRepo departmentRepo;
   private ModelMapper model = new ModelMapper();
 
   public List<PaymentInfoDto> getPaymentInfoList(EmployeeDto employeeDto) {
@@ -126,10 +126,98 @@ public class PaymentInfoService {
   public Long selectTotalApproval(EmployeeEmailDto employeeEmailDto) {
     return paymentInfoRepo.totalApproval(changeDtoToEntity(employeeEmailDto).getEmployeeEmail());
   }
+
+  public Long selectTotalDonationAmount(EmployeeEmailDto employeeEmailDto) {
+    double totalDonationAmount = paymentInfoRepo.totalApproval(changeDtoToEntity(employeeEmailDto).getEmployeeEmail())*0.0015;
+    return (long)totalDonationAmount;
+    
+  }
+
   private Employee changeDtoToEntity(EmployeeEmailDto employeeEmailDto) {
     return Employee.builder().employeeEmail(employeeEmailDto.getEmployeeEmail()).build();
 
   }
+
+    public int getRequestInfoByRequestId(int paymentId) {
+      PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
+      List<Request> request = requestRepo.findByPaymentInfo(paymentInfo);
+      return request.get(0).getRequestID();
+    }
+
+  public List<DepartmentSpendDto> selectTop5Department(EmployeeEmailDto employeeEmailDto){
+    List<String> departmentNameList = departmentRepo.selectTop5Department(employeeEmailDto.getEmployeeEmail());
+    List<Integer> totalPayAmountList = paymentInfoRepo.selectTop5Department(employeeEmailDto.getEmployeeEmail());
+    List<Double> departmentSpendRatioList = paymentInfoRepo.selectTop5DepartmentRatio(employeeEmailDto.getEmployeeEmail());
+
+    List<DepartmentSpendDto> departmentSpendDtoList= new ArrayList<>();
+
+    // 리스트의 크기가 서로 동일하다고 가정하고 리스트 순회
+    for (int i = 0; i < departmentNameList.size(); i++) {
+      // 객체 생성
+      DepartmentSpendDto dto = DepartmentSpendDto
+              .builder()
+              .departmentName(departmentNameList.get(i))// DepartmentDto에서 부서 이름을 가져옴
+              .totalPayAmount(totalPayAmountList.get(i))// PaymentInfoDto에서 총 지급 금액을 가져옴
+              .departmentSpendRatio(departmentSpendRatioList.get(i))
+              .build();
+      // 생성된 DTO를 리스트에 추가
+      departmentSpendDtoList.add(dto);
+    }
+    return departmentSpendDtoList;
+  }
+
+  public List<EmployeeSpendDto> selectTop5Employee(EmployeeEmailDto employeeEmailDto) {
+    // 각각의 DTO 리스트를 가져오는 로직
+    List<String> employeeNameList = employeeRepo.selectTop5Employee(employeeEmailDto.getEmployeeEmail());
+    List<String> departmentNameList = departmentRepo.selectTop5Employee(employeeEmailDto.getEmployeeEmail());
+    List<Integer> totalPayAmountList = paymentInfoRepo.selectTop5Employee(employeeEmailDto.getEmployeeEmail());
+
+    List<EmployeeSpendDto> employeeSpendDtoList = new ArrayList<>();
+
+    // 리스트의 크기가 서로 동일하다고 가정하고 각 리스트를 순회
+    for (int i = 0; i < employeeNameList.size(); i++) {
+      // EmployeeSpendDto 객체 생성
+      EmployeeSpendDto dto = EmployeeSpendDto
+              .builder()
+              .employeeName(employeeNameList.get(i))// EmployeeDto에서 직원 이름을 가져옴
+              .departmentName(departmentNameList.get(i))// DepartmentDto에서 부서 이름을 가져옴
+              .totalPayAmount(totalPayAmountList.get(i))// PaymentInfoDto에서 총 지급 금액을 가져옴
+              .build();
+              // 생성된 DTO를 리스트에 추가
+      employeeSpendDtoList.add(dto);
+    }
+    return employeeSpendDtoList;
+  }
+
+
+
+//  public List<EmployeeSpendDto> findTop5Spenders(String employeeEmail) {
+//    String sql = "SELECT e.employee_name as employeeName, d.department_name as departmentName, SUM(pi2.pay_amount) as totalPayAmount " +
+//            "FROM payment_info pi2 " +
+//            "JOIN issued_card ic ON ic.issued_card_id = pi2.issued_card_id " +
+//            "JOIN employee e ON e.employee_email = ic.employee_email " +
+//            "JOIN department d ON e.department_id = d.department_id " +
+//            "JOIN employee_rank er ON er.rank_priority = e.rank_priority " +
+//            "JOIN company c ON c.company_ticker = er.company_ticker " +
+//            "WHERE c.company_name = ( " +
+//            "    SELECT c.company_name FROM employee e " +
+//            "    LEFT JOIN employee_rank er ON er.employee_rank_id = e.rank_priority " +
+//            "    LEFT JOIN company c ON c.company_ticker = er.company_ticker " +
+//            "    WHERE e.employee_email = :employeeEmail) " +
+//            "GROUP BY e.employee_name, d.department_name, c.company_name " +
+//            "ORDER BY totalPayAmount DESC " +
+//            "LIMIT 5";
+//
+//    Query query = entityManager.createNativeQuery(sql);
+//    query.setParameter("employeeEmail", employeeEmail);
+//    List<Object[]> result = query.getResultList();
+//
+//    return result.stream().map(obj -> new EmployeeSpendDto(
+//            (String) obj[0], // employeeName
+//            (String) obj[1], // departmentName
+//            (BigDecimal) obj[2] // totalPayAmount
+//    )).collect(Collectors.toList());
+//  }
 
   public int getRequestInfoByRequestId(int paymentId) {
     PaymentInfo paymentInfo = paymentInfoRepo.findByPaymentId(paymentId);
