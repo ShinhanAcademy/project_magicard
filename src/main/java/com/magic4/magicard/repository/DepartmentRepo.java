@@ -1,6 +1,8 @@
 package com.magic4.magicard.repository;
 
 import com.magic4.magicard.dto.DepartmentDetailDto;
+import com.magic4.magicard.dto.DepartmentDto;
+import com.magic4.magicard.dto.EmployeeDto;
 import com.magic4.magicard.vo.Department;
 
 import java.util.List;
@@ -87,4 +89,41 @@ public interface DepartmentRepo extends JpaRepository<Department, Integer> {
 DepartmentDetailDto findByDeptId(@Param("departmentId") Integer departmentId);
 
    List<Department> findByIsAdminDepartment(boolean isAdminDepartment);
+
+
+    @Query(nativeQuery = true,
+            value = "select d.department_name \n" +
+                    "from payment_info pi2 \n" +
+                    "join issued_card ic on ic.issued_card_id =pi2.issued_card_id \n" +
+                    "join employee e on e.employee_email =ic.employee_email \n" +
+                    "join department d on e.department_id =d.department_id \n" +
+                    "join employee_rank er on er.rank_priority =e.rank_priority \n" +
+                    "join company c on c.company_ticker =er.company_ticker\n" +
+                    "where c.company_name =(\n" +
+                    " \t\t\t\t\tselect c.company_name from employee e \n" +
+                    "\t\t\t\t\tleft join employee_rank er on er.employee_rank_id =e.rank_priority\n" +
+                    "\t\t\t\t\tleft join company c on c.company_ticker =er.company_ticker\n" +
+                    "\t\t\t\t\twhere e.employee_email =?)\t\t\t\t\t\n" +
+                    "group by e.employee_name, d.department_name, c.company_name \n" +
+                    "order by sum(pi2.pay_amount) desc \n" +
+                    "limit 5;")
+    List<String> selectTop5Employee(String employeeEmail);
+
+    @Query(nativeQuery = true,
+            value = "select d.department_name \n" +
+                    "from payment_info pi2 \n" +
+                    "join issued_card ic on ic.issued_card_id =pi2.issued_card_id \n" +
+                    "join employee e on e.employee_email =ic.employee_email \n" +
+                    "join department d on e.department_id =d.department_id \n" +
+                    "join employee_rank er on er.rank_priority =e.rank_priority \n" +
+                    "where er.company_ticker =(\n" +
+                    " \t\t\t\t\tselect c.company_ticker from employee e \n" +
+                    "\t\t\t\t\tleft join employee_rank er on er.employee_rank_id =e.rank_priority\n" +
+                    "\t\t\t\t\tleft join company c on c.company_ticker =er.company_ticker\n" +
+                    "\t\t\t\t\twhere e.employee_email =?)\n" +
+                    "AND date_trunc('month', pi2.payment_time) = date_trunc('month', CURRENT_DATE) \n" +
+                    "group by d.department_name, er.company_ticker \n" +
+                    "order by sum(pi2.pay_amount) desc\n" +
+                    "limit 5;")
+    List<String> selectTop5Department(String employeeEmail);
 }

@@ -79,18 +79,19 @@ const paymentInfoData = () => {
       color = "#2f4f4f";
     }
 
-    let statusColor = "";
+    let statusColor1 = "";
+    let statusColor2 = "";
     let status_1 = payment.firstStepStatus;
     let status_2 = payment.secondStepStatus;
-    if (
-      status_1 === "승인" ||
-      status_1 === "최종 반려" ||
-      status_2 === "최종 승인" ||
-      status_2 === "최종 반려"
-    ) {
-      statusColor = "skyblue";
+    if (status_1 === "최종 반려") {
+      statusColor1 = "skyblue";
     } else {
-      statusColor = "black";
+      statusColor1 = "black";
+    }
+    if (status_2 === "최종 승인" || status_2 === "최종 반려") {
+      statusColor2 = "skyblue";
+    } else {
+      statusColor2 = "black";
     }
 
     return {
@@ -124,7 +125,7 @@ const paymentInfoData = () => {
           variant="caption"
           color="secondary"
           fontWeight="medium"
-          style={{ color: statusColor }}
+          style={{ color: statusColor1 }}
         >
           {payment.firstStepStatus}
         </SoftTypography>
@@ -134,7 +135,7 @@ const paymentInfoData = () => {
           variant="caption"
           color="secondary"
           fontWeight="medium"
-          style={{ color: statusColor }}
+          style={{ color: statusColor2 }}
         >
           {payment.secondStepStatus}
         </SoftTypography>

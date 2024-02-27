@@ -7,15 +7,12 @@ import com.magic4.magicard.repository.RequestRepo;
 import com.magic4.magicard.service.EmployeeService;
 import com.magic4.magicard.service.RequestService;
 
-import com.magic4.magicard.vo.PaymentInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.*;
-
-import com.magic4.magicard.vo.Request;
 
 import lombok.RequiredArgsConstructor;
 
