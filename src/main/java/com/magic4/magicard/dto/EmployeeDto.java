@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -19,4 +21,5 @@ public class EmployeeDto {
     private EmployeeRankDto employeeRank;
     private DepartmentDto department;
     private CompanyDto company;
+    private List<EmployeeDto> employeeDtoList;
 }

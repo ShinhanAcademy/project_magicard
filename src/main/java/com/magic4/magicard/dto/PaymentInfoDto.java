@@ -25,4 +25,6 @@ public class PaymentInfoDto {
     private String firstStepStatus; // 1단계 => 승인 대기중, 승인, 반려, 최종 반려
     private String secondStepStatus; // 2단계  => 승인 대기중, 승인, 반려, 최종 반려, 최종 승인
     private String sendRequest; // 신청, 요청
+
+    private Integer totalPayAmount;
 }
