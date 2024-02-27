@@ -47,6 +47,8 @@ function Breadcrumbs({ icon, title, route, light }) {
     realTitle = "멤버 관리";
   } else if (title == "category-Management") {
     realTitle = "용도 관리";
+  } else if (title == "sign-in") {
+    realTitle = "Home";
   }
 
   return (

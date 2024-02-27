@@ -45,6 +45,8 @@ public interface EmployeeRepo extends JpaRepository<Employee, String> {
                     "\t\t\t\t\tleft join employee_rank er on er.employee_rank_id =e.rank_priority\n" +
                     "\t\t\t\t\tleft join company c on c.company_ticker =er.company_ticker\n" +
                     "\t\t\t\t\twhere e.employee_email =?)\t\t\t\t\t\n" +
+                    "AND EXTRACT(YEAR FROM pi2.payment_time) = EXTRACT(YEAR FROM CURRENT_DATE)\n" +
+                    "AND EXTRACT(MONTH FROM pi2.payment_time) = EXTRACT(MONTH FROM CURRENT_DATE)" +
                     "group by e.employee_name, d.department_name, c.company_name \n" +
                     "order by sum(pi2.pay_amount) desc \n" +
                     "limit 5;")
