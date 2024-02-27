@@ -130,7 +130,7 @@ const DepartmentalSpendingChart = () => {
         data: departmentCategoryData.map((data) => data.spend.인건비),
         stack: "비용",
         itemStyle: {
-          color: "#FFD700",
+          color: "#b7d7c8",
         },
         emphasis: {
           focus: "series",
@@ -147,7 +147,7 @@ const DepartmentalSpendingChart = () => {
         data: departmentCategoryData.map((data) => data.spend.행사비),
         stack: "비용",
         itemStyle: {
-          color: "#F5F5DC",
+          color: "#ffd700",
         },
         emphasis: {
           focus: "series",

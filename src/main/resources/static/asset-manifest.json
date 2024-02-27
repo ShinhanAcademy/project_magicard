@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.9296fa29.css",
-    "main.js": "/static/js/main.70690a38.js",
+    "main.css": "/static/css/main.95a462f0.css",
+    "main.js": "/static/js/main.31893f0b.js",
     "static/media/ChungbukUniversity.otf": "/static/media/ChungbukUniversity.ad0f9691528043ec3b72.otf",
     "static/media/waves-white.svg": "/static/media/waves-white.eac3c8078f7e1e28ef33f010c9782f40.svg",
     "static/media/rocket-white.png": "/static/media/rocket-white.de5786399f850a27a362.png",
@@ -30,7 +30,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.9296fa29.css",
-    "static/js/main.70690a38.js"
+    "static/css/main.95a462f0.css",
+    "static/js/main.31893f0b.js"
   ]
 }
