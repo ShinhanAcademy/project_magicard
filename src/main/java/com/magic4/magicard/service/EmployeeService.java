@@ -50,7 +50,7 @@ public class EmployeeService {
         }
         return makeEmployeeInfoDtoList(employees, company);
     }
-    
+
     public List<EmployeeInfoDto> getEmpListByRank(int employeeRankId){
 
         EmployeeRank employeeRank= employeeRankRepo.findById(employeeRankId).orElse(null);

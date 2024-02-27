@@ -101,6 +101,10 @@ public class RequestService {
       if(requestDto.getApprovalSteps().getApprovalStatusCode() == 2){
         requestDtoList.add(requestDto);
       }
+      String second = requestDto.getPaymentInfo().getSecondStepStatus();
+      if(second.equals("최종 반려") || second.equals("반려")){
+        requestDtoList.add(requestDto);
+      }
     }
     return requestDtoList;
   }
@@ -312,11 +316,7 @@ public class RequestService {
             .refuseCount(0)
             .build();
 
-    if(employeeDto.getEmployeeEmail().equals("aa4@naver.com")){
-      String superEmp = "aa3@naver.com";
-      request.setResponseEmployeeEmail(superEmp);
-      request.setRequestLevel(2);
-    }else {
+
       // 내가 우리 회사의 상급자인지 확인하기
       List<Integer> sameDept = new ArrayList<>();
       List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
@@ -350,7 +350,7 @@ public class RequestService {
           }
         }
       }
-    }
+
     requestRepo.save(request);
 
     return 1;
@@ -420,7 +420,6 @@ public class RequestService {
   public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
 
-
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
     if(request.getRequestLevel() == 1){ // 1단계 승인하고 2단계 신청하기
       ApprovalSteps approvalSteps3 = approvalStepsRepo.findById(2).orElse(null);
@@ -451,14 +450,12 @@ public class RequestService {
               .requestLevel(2)
               .build();
       requestRepo.save(sendRequest);
-      return 1;
     }else { // 2단계 승인 후 최종 승인, 그냥 승인만 바꿔주면 된다.
       ApprovalSteps approvalSteps = approvalStepsRepo.findById(3).orElse(null);
       request.setApprovalSteps(approvalSteps);
       requestRepo.save(request);
-      return 1;
     }
-
+    return 1;
   }
 
   // 요청 반려하기
@@ -467,9 +464,10 @@ public class RequestService {
     ApprovalSteps approvalSteps5 = approvalStepsRepo.findById(5).orElse(null);
     Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
 
-    if(employeeDto.getDepartment().isAdminDepartment()){
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+
+    if(employee.getDepartment().isAdminDepartment()){
       request.setApprovalSteps(approvalSteps5);
-      return 1;
     } else {
       int refuseCount = request.getRefuseCount();
       request.setRefuseMessage(rejectFormDto.getRefuseMessage());
@@ -482,9 +480,9 @@ public class RequestService {
         request.setApprovalSteps(approvalSteps4);
       }
       requestRepo.save(request);
-      return 1;
-    }
 
+    }
+      return 1;
     }
 
 }

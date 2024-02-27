@@ -27,8 +27,5 @@
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html"
   },
-  "entrypoints": [
-    "static/css/main.95a462f0.css",
-    "static/js/main.2f54e237.js"
-  ]
+  "entrypoints": ["static/css/main.95a462f0.css", "static/js/main.2f54e237.js"]
 }
