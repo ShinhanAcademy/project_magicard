@@ -19,16 +19,26 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 import back from "assets/images/mk/loginBackground.png";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import main from "assets/images/mk/main.png";
+import { useDispatch, useSelector } from "react-redux";
+import { setTransparentSidenav } from "mk/slices/softui";
+import { setFixedNavbar } from "mk/slices/softui";
+import PageLayout from "examples/LayoutContainers/PageLayout";
 
 function SignIn() {
-  const [rememberMe, setRememberMe] = useState(true);
+  const dispatch = useDispatch();
+  const { transparentNavbar, fixedNavbar } = useSelector((state) => state.layout);
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  // console.log("transparentNavbar", transparentNavbar);
+  // console.log("fixedNavbar", fixedNavbar);
 
   return (
-    <DashboardLayout>
+    <PageLayout>
       <DashboardNavbar />
-    </DashboardLayout>
+      <SoftBox>
+        <img src={main} alt="main" style={{ width: "100%" }} />
+      </SoftBox>
+    </PageLayout>
   );
 }
 
