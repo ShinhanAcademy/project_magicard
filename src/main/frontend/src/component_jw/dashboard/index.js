@@ -112,22 +112,22 @@ function Dashboard() {
 
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} xl={2}>
+            <Grid item xs={12} sm={6} xl={2.4}>
               <TotalCards />
             </Grid>
-            <Grid item xs={12} sm={6} xl={2}>
+            <Grid item xs={12} sm={6} xl={2.4}>
               <TotalUses />
             </Grid>
-            <Grid item xs={12} sm={6} xl={2}>
+            <Grid item xs={12} sm={6} xl={2.4}>
               <TotalPayment />
             </Grid>
-            <Grid item xs={12} sm={6} xl={2}>
+            <Grid item xs={12} sm={6} xl={2.4}>
               <TotalApproval />
             </Grid>
-            <Grid item xs={12} sm={6} xl={2}>
+            {/* <Grid item xs={12} sm={6} xl={2}>
               <MonthlyDonationAmount />
-            </Grid>
-            <Grid item xs={12} sm={6} xl={2}>
+            </Grid> */}
+            <Grid item xs={12} sm={6} xl={2.4}>
               <TotalDonationAmount />
             </Grid>
           </Grid>
@@ -135,21 +135,26 @@ function Dashboard() {
 
         <SoftBox mb={3}>
           <Grid container spacing={2} justifyContent="center" >
-            <Grid item xs={12} md={9}  >
+            <Grid item xs={12} md={12}  >
               지출 추이 (전 년도 대비 지출)
               <CumulativeSpendingChart />
             </Grid>
-            <Grid item xs={12} md={6}>
+          </Grid> 
+        </SoftBox>
+        
+        <SoftBox mb={3}>
+          <Grid container spacing={2} justifyContent="center">  
+            <Grid item xs={12} md={6}>  
               이 달의 소비부서 TOP5 
               <Top5department/>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6}>  
               이 달의 소비왕 TOP5 
               <Top5employee />            
             </Grid>
           </Grid> 
         </SoftBox>
-
+        
         <SoftBox mb={3}>
           부서별 지출 비교
           <Grid>

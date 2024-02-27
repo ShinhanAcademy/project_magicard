@@ -16,6 +16,7 @@ import routes from "routes";
 import brand from "assets/images/mk/magicardLogoBlack.png";
 import { setMiniSidenav } from "mk/slices/softui";
 import { setOpenConfigurator } from "mk/slices/softui";
+import SignIn from "layouts/authentication/sign-in";
 
 export default function App() {
   const controller = useSelector((state) => state.layout); // 상태 가져오기
@@ -24,6 +25,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const isLoggedIn = useSelector((state) => state.user.employeeCode);
   const isAdmin = useSelector((state) => state.user.isAdmin);
 
   //   initializeUserInfo = async () => {
@@ -164,14 +166,41 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
-      <Routes>
+      {isLoggedIn ? (
+        <Routes>
+          {getRoutes(routes)}
+          {isAdmin ? (
+            <>
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </>
+          ) : (
+            <>
+              <Route path="*" element={<Navigate to="/payments/*" />} />
+            </>
+          )}
+        </Routes>
+      ) : (
+        <Routes>
+          {getRoutes([
+            {
+              name: "로그인",
+              key: "sign-in",
+              route: "/authentication/sign-in",
+              component: <SignIn />,
+              noCollapse: true,
+            },
+          ])}
+          <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+        </Routes>
+      )}
+      {/* <Routes>
         {getRoutes(routes)}
         {isAdmin ? (
           <Route path="*" element={<Navigate to="/dashboard" />} />
         ) : (
           <Route path="*" element={<Navigate to="/payments/*" />} />
         )}
-      </Routes>
+      </Routes> */}
     </ThemeProvider>
   );
 }

@@ -238,6 +238,7 @@ const RequestContext = ({ isOpen, closeModal, selectedId }) => {
                   handlePurposeChange={handlePurposeChange}
                   optionPurposeItem={optionPurposeItem}
                   gptResult={purposeItem}
+                  setSelectPurposeUid={setSelectPurposeUid}
                 />
               )
             )}
@@ -290,6 +291,7 @@ const SelectPurpose = ({
   optionPurposeItem,
   handlePurposeChange,
   selectPurposeItem,
+  setSelectPurposeUid,
 }) => {
   var [ind, setInd] = useState(0);
   var selectedPurpose = gptResult[0]; //추천 초기값
@@ -311,6 +313,7 @@ const SelectPurpose = ({
   //클릭한 경우 3번을 넘어가면 직접 입력란 활성화
   if (ind < 3) {
     selectedPurpose = gptResult[ind];
+    setSelectPurposeUid(selectedPurpose.purposeItemUid);
     return <>{isLoading ? <Loader /> : <Select purpose={selectedPurpose} cntInd={cntInd} />}</>;
   } else {
     return (

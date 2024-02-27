@@ -51,6 +51,12 @@ public class PaymentInfoController {
     return paymentInfoService.getTotalAmount(myInfo);
   }
 
+  @GetMapping("/getTop5")
+  public List<String> getTop5(HttpServletRequest httpServletRequest) {
+    EmployeeDto myInfo = getLoginInfo(httpServletRequest);
+    return paymentInfoService.getTop5(myInfo);
+  }
+
   @GetMapping("/getRequestId/{paymentId}")
   public int getRequestInfoByRequestId(@PathVariable Integer paymentId){
     return paymentInfoService.getRequestInfoByRequestId(paymentId);

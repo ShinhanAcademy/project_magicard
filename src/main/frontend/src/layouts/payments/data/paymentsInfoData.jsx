@@ -79,6 +79,21 @@ const paymentInfoData = () => {
       color = "#2f4f4f";
     }
 
+    let statusColor1 = "";
+    let statusColor2 = "";
+    let status_1 = payment.firstStepStatus;
+    let status_2 = payment.secondStepStatus;
+    if (status_1 === "최종 반려") {
+      statusColor1 = "skyblue";
+    } else {
+      statusColor1 = "black";
+    }
+    if (status_2 === "최종 승인" || status_2 === "최종 반려") {
+      statusColor2 = "skyblue";
+    } else {
+      statusColor2 = "black";
+    }
+
     return {
       결제일시: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -106,12 +121,22 @@ const paymentInfoData = () => {
         </SoftTypography>
       ),
       부서내: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: statusColor1 }}
+        >
           {payment.firstStepStatus}
         </SoftTypography>
       ),
       재무부: (
-        <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+        <SoftTypography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          style={{ color: statusColor2 }}
+        >
           {payment.secondStepStatus}
         </SoftTypography>
       ),

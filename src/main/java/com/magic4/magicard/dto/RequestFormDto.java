@@ -2,7 +2,6 @@ package com.magic4.magicard.dto;
 
 import lombok.*;
 
-import java.sql.Timestamp;
 
 @Getter
 @Setter

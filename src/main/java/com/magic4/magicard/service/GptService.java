@@ -27,9 +27,12 @@ import com.magic4.magicard.dto.PaymentInfoDto;
 import com.magic4.magicard.repository.ApprovalStepsRepo;
 import com.magic4.magicard.repository.PaymentInfoRepo;
 import com.magic4.magicard.repository.PurposeCategoryRepo;
+import com.magic4.magicard.repository.PurposeItemRepo;
 import com.magic4.magicard.repository.RequestRepo;
 import com.magic4.magicard.vo.ApprovalSteps;
 import com.magic4.magicard.vo.PaymentInfo;
+import com.magic4.magicard.vo.PurposeCategory;
+import com.magic4.magicard.vo.PurposeItem;
 import com.magic4.magicard.vo.Request;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +56,9 @@ public class GptService {
 
     @Autowired
     private PurposeCategoryRepo purposeCategoryRepo;
+
+    @Autowired
+    private PurposeItemRepo purposeItemRepo;
 
     public GptService(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
         this.restTemplate = restTemplateBuilder.build();
@@ -178,6 +184,19 @@ public class GptService {
         for (String s : orderStr.split(", ")) {
             int idx = Integer.parseInt(s) - 1;
             recommendDtos.add(candidateDtos.get(idx));
+        }
+
+        if (merchant.contains("수영") || merchant.contains("헬스")) {
+            PurposeCategory pc = purposeCategoryRepo.findByPurposeCategory("복지비");
+            PurposeItem pi = purposeItemRepo.findByPurposeCategoryAndPurposeItem(pc, "운동지원비").get(0);
+
+            if (pc != null && pi != null) {
+                GptResultDto healthItem = GptResultDto.builder().purposeCategory(pc.getPurposeCategory())
+                        .purposeItem(pi.getPurposeItem()).purposeCategoryId(pc.getPurposeCategoryId())
+                        .purposeItemUid(pi.getPurposeItemUid()).build();
+                recommendDtos.set(0, healthItem);
+            }
+
         }
 
         return recommendDtos;

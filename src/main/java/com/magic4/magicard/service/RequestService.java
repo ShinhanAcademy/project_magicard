@@ -53,10 +53,15 @@ public class RequestService {
         paymentInfoDto.setFirstStepStatus(findByPayment.get(0).getApprovalSteps().getApprovalStep());
         paymentInfoDto.setSecondStepStatus("");
       }else if (findByPayment.size() == 2){
-        ApprovalSteps firstStep = findByPayment.get(0).getApprovalSteps();
-        ApprovalSteps secondStep = findByPayment.get(1).getApprovalSteps();
-        paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
-        paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
+        for(Request req : findByPayment){
+          if(req.getRequestLevel() == 1){
+            ApprovalSteps firstStep = req.getApprovalSteps();
+            paymentInfoDto.setFirstStepStatus(firstStep.getApprovalStep());
+          }else if(req.getRequestLevel() == 2){
+            ApprovalSteps secondStep = req.getApprovalSteps();
+            paymentInfoDto.setSecondStepStatus(secondStep.getApprovalStep());
+          }
+        }
       }
 
       requestDto.setPaymentInfo(paymentInfoDto);
@@ -94,6 +99,10 @@ public class RequestService {
 
     for(RequestDto requestDto : allRequest){
       if(requestDto.getApprovalSteps().getApprovalStatusCode() == 2){
+        requestDtoList.add(requestDto);
+      }
+      String second = requestDto.getPaymentInfo().getSecondStepStatus();
+      if(second.equals("최종 반려") || second.equals("반려")){
         requestDtoList.add(requestDto);
       }
     }
@@ -180,10 +189,18 @@ public class RequestService {
     return requestDtoList.size();
   }
 
-  // 재무부에게 요청한 리스트
+  // 그 다음 단계에 요청한 리스트
+  // 상급자면 재무부에 요청한 리스트
+  // 재무부면 최종 리스트
   public List<RequestDto> getToTopAllRequestList(EmployeeDto employeeDto) {
     String responseEmployeeEmail = employeeDto.getEmployeeEmail();
-    List<Request> requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 2);
+    List<Request> requestList = null;
+    Employee myInfo = employeeRepo.findById(responseEmployeeEmail).orElse(null);
+    if(myInfo.getDepartment().isAdminDepartment()){
+      requestList = requestRepo.findByResponseEmployeeEmailAndRequestLevelOrderByPaymentTime(employeeDto.getEmployeeEmail(), 2);
+    } else {
+      requestList = requestRepo.findByRequestEmployeeEmailAndRequestLevelOrderByPaymentTime(responseEmployeeEmail,2);
+    }
 
     List<RequestDto> requestDtoList = new ArrayList<>();
     for(Request request : requestList){
@@ -205,13 +222,13 @@ public class RequestService {
 
       requestDto.setPaymentInfo(paymentInfoDto);
 
-      // employee는 카드 긁은 사람으로다가 보여지게 해야함
+      // employee는 카드 긁은 사람으로다가 보여지게 해야함,, 사실 아님
       Employee employee = paymentInfo.getIssuedCard().getEmployee();
       EmployeeDto sendEmpDto = model.map(employee, EmployeeDto.class);
       requestDto.setEmployee(sendEmpDto);
 
-      Employee requestEmp = employeeRepo.findById(responseEmployeeEmail).orElse(null);
-      requestDto.setRequestEmployeeName(requestEmp.getEmployeeName());
+//      Employee requestEmp = employeeRepo.findById(request.getEmployee().getEmployeeEmail()).orElse(null);
+      requestDto.setRequestEmployeeName(request.getEmployee().getEmployeeName());
 
       Employee responseEmp = employeeRepo.findById(request.getResponseEmployeeEmail()).orElse(null);
       requestDto.setResponseEmployeeName(responseEmp.getEmployeeName());
@@ -299,39 +316,40 @@ public class RequestService {
             .refuseCount(0)
             .build();
 
-    // 내가 우리 회사의 상급자인지 확인하기
-    List<Integer> sameDept = new ArrayList<>();
-    List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
-    for(Employee emp : sameDeptEmployees){
-      sameDept.add(emp.getEmployeeRank().getRankPriority());
-    }
-    Collections.sort(sameDept);
-    String superEmp = "";
-    if(sameDept.get(0) == employee.getEmployeeRank().getRankPriority()){
-      // 내가 상급자일 경우
-      Department superDepartment = employee.getDepartment().getSuperDepartment();
-      List<Integer> superDept = new ArrayList<>();
-      List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
-      for(Employee emp : superDeptEmployees) {
-        superDept.add(emp.getEmployeeRank().getRankPriority());
+
+      // 내가 우리 회사의 상급자인지 확인하기
+      List<Integer> sameDept = new ArrayList<>();
+      List<Employee> sameDeptEmployees = employeeRepo.findByDepartment(employee.getDepartment());
+      for (Employee emp : sameDeptEmployees) {
+        sameDept.add(emp.getEmployeeRank().getRankPriority());
       }
-      Collections.sort(superDept);
-      for(Employee emp : superDeptEmployees){
-        if(emp.getEmployeeRank().getRankPriority() == superDept.get(0)){
-          superEmp = emp.getEmployeeEmail();
-          request.setResponseEmployeeEmail(superEmp);
-          break;
+      Collections.sort(sameDept);
+      String superEmp = "";
+      if (sameDept.get(0) == employee.getEmployeeRank().getRankPriority()) {
+        // 내가 상급자일 경우
+        Department superDepartment = employee.getDepartment().getSuperDepartment();
+        List<Integer> superDept = new ArrayList<>();
+        List<Employee> superDeptEmployees = employeeRepo.findByDepartment(superDepartment);
+        for (Employee emp : superDeptEmployees) {
+          superDept.add(emp.getEmployeeRank().getRankPriority());
+        }
+        Collections.sort(superDept);
+        for (Employee emp : superDeptEmployees) {
+          if (emp.getEmployeeRank().getRankPriority() == superDept.get(0)) {
+            superEmp = emp.getEmployeeEmail();
+            request.setResponseEmployeeEmail(superEmp);
+            break;
+          }
+        }
+      } else { // 내가 상급자가 아닐 경우
+        for (Employee emp : sameDeptEmployees) {
+          if (emp.getEmployeeRank().getRankPriority() == sameDept.get(0)) {
+            superEmp = emp.getEmployeeEmail();
+            request.setResponseEmployeeEmail(superEmp);
+            break;
+          }
         }
       }
-    } else { // 내가 상급자가 아닐 경우
-      for(Employee emp : sameDeptEmployees){
-        if(emp.getEmployeeRank().getRankPriority() == sameDept.get(0)){
-          superEmp = emp.getEmployeeEmail();
-          request.setResponseEmployeeEmail(superEmp);
-          break;
-        }
-      }
-    }
 
     requestRepo.save(request);
 
@@ -402,7 +420,6 @@ public class RequestService {
   public Integer confirmRequest(RequestFormDto requestFormDto, EmployeeDto employeeDto) {
     Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
 
-
     Request request = requestRepo.findById(requestFormDto.getRequestId()).orElse(null);
     if(request.getRequestLevel() == 1){ // 1단계 승인하고 2단계 신청하기
       ApprovalSteps approvalSteps3 = approvalStepsRepo.findById(2).orElse(null);
@@ -433,21 +450,25 @@ public class RequestService {
               .requestLevel(2)
               .build();
       requestRepo.save(sendRequest);
-      return 1;
     }else { // 2단계 승인 후 최종 승인, 그냥 승인만 바꿔주면 된다.
       ApprovalSteps approvalSteps = approvalStepsRepo.findById(3).orElse(null);
       request.setApprovalSteps(approvalSteps);
       requestRepo.save(request);
-      return 1;
     }
-
+    return 1;
   }
 
   // 요청 반려하기
-    public Integer refuseRequest(RejectFormDto rejectFormDto) {
+    public Integer refuseRequest(RejectFormDto rejectFormDto, EmployeeDto employeeDto) {
     ApprovalSteps approvalSteps4 = approvalStepsRepo.findById(4).orElse(null);
     ApprovalSteps approvalSteps5 = approvalStepsRepo.findById(5).orElse(null);
-      Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
+    Request request = requestRepo.findById(rejectFormDto.getRequestId()).orElse(null);
+
+    Employee employee = employeeRepo.findById(employeeDto.getEmployeeEmail()).orElse(null);
+
+    if(employee.getDepartment().isAdminDepartment()){
+      request.setApprovalSteps(approvalSteps5);
+    } else {
       int refuseCount = request.getRefuseCount();
       request.setRefuseMessage(rejectFormDto.getRefuseMessage());
       request.setRefuseCount(refuseCount+1);
@@ -459,6 +480,8 @@ public class RequestService {
         request.setApprovalSteps(approvalSteps4);
       }
       requestRepo.save(request);
+
+    }
       return 1;
     }
 

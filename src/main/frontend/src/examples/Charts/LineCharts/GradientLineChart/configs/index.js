@@ -36,6 +36,7 @@ function configs(labels, datasets) {
       },
       scales: {
         y: {
+          min: 0, // Y축의 최소값 설정
           
           grid: {
             drawBorder: false,
