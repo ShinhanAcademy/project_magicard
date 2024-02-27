@@ -34,7 +34,9 @@ function RequestApprove() {
               alignItems="flex-start"
               p={3}
             >
-              <SoftTypography variant="h4">승인 내역</SoftTypography>
+              <SoftTypography variant="h4" fontWeight="bold">
+                승인 내역
+              </SoftTypography>
               <SoftTypography variant="h6" fontWeight="light" color="secondary">
                 승인된 요청 내역을 볼 수 있습니다.
               </SoftTypography>

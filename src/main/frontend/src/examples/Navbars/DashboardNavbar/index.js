@@ -33,7 +33,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const user = useSelector((state) => state.user);
   const isLoggedIn = useSelector((state) => !!state.user.employeeCode);
   const loginName = useSelector((state) => state.user.employeeName);
-
+  const isAdmin = useSelector((state) => state.user.isAdmin);
   const navigate = useNavigate();
 
   console.log("유저유저", user);
@@ -136,12 +136,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SoftBox pr={5}>
+            {/* <SoftBox pr={5}>
               <SoftInput
                 placeholder="검색어를 입력하세요."
                 icon={{ component: "search", direction: "left" }}
               />
-            </SoftBox>
+            </SoftBox> */}
             <SoftBox color={light ? "white" : "inherit"}>
               {!isLoggedIn ? (
                 <>
@@ -185,18 +185,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
               ) : (
                 <IconButton sx={navbarIconButton} onClick={login}>
                   <SoftTypography
-                    style={{ maxWidth: "125px", minWidth: "125px" }}
-                    variant="button"
+                    mr={7}
+                    style={{ maxWidth: "210px", minWidth: "210px" }}
+                    variant="body2"
                     fontWeight="medium"
                   >
-                    <SoftTypography variant="button" fontWeight="medium" color="info">
-                      {loginName}
+                    <SoftTypography variant="body3" fontWeight="bold" color="dark">
+                      {"<"}
+                      {isAdmin ? "관리자" : "사용자"}
+                      {"> "}
+                    </SoftTypography>
+                    <SoftTypography variant="body3" fontWeight="medium" color="info">
+                      {loginName}{" "}
                     </SoftTypography>
                     님 환영합니다!
                   </SoftTypography>
                 </IconButton>
               )}
-
               <IconButton
                 size="small"
                 color="inherit"
