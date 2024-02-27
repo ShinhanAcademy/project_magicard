@@ -112,10 +112,11 @@ function CardIssueInputForm() {
         <SoftBox mt={1} mb={5}>
           <SoftInput
             className="input"
-            type="number"
+            type="text"
             placeholder="월 최대 사용 한도를 설정해 주세요."
+            value={maxLimit.toLocaleString()}
             onChange={(e) => {
-              setMaxLimit(e.target.value);
+              setMaxLimit(parseInt(e.target.value.replace(/,/g, "")));
             }}
           />
         </SoftBox>
