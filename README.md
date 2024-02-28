@@ -78,9 +78,16 @@
 
 ### 승인 요청 과정
 
+승인 요청 시 용도 선택의 어려움
+
 <p align="center">
-  <img src="image-8.png" width="41%">
-  <img src="image-10.png" width="40%">
+  <img src="./readmeimage/와리가리.gif" width="41%">
+</p>
+
+ai가 사용처와 금액을 통해 자동으로 용도 매핑!
+
+<p align="center">
+  <img src="./readmeimage/우리의자랑ai.gif" width="41%">
 </p>
 
 왼쪽고 같이 학습을 하면서 사용처에 맞는 용도를 추천해준다. <br>
