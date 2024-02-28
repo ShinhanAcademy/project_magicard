@@ -39,7 +39,10 @@ const EntireDepartmentData = () => {
 
   const spend = [
     220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 590, 149, 210, 122, 133, 334, 198, 123, 125,
-    220, 322, 249, 362, 205, 301, 242, 195, 151, 311, 278, 411, 221,
+    220,
+     322, 249, 362, 
+    205, 301, 242, 195,
+     151, 311, 278, 411, 221,
   ];
 
   const departmentCategoryData = departments.map((data, index) => ({
@@ -120,6 +123,7 @@ const EntireDepartmentData = () => {
         data: departmentCategoryData.map((data) => data.spend.행사비),
         stack: "비용",
         itemStyle: {
+           
           color: "#b0ddff",
         },
         emphasis: {
