@@ -4,7 +4,7 @@
 
 배포주소: https://magicard.azurewebsites.net
 
-<img src="image.png">
+<img src="./readmeimage/image.png">
 
 <br>
 <br>
@@ -43,36 +43,36 @@
 
 # 프로젝트 설명
 
-<img src="image-14.png">
+<img src="./readmeimage/image-14.png">
 
 ### 일반 사원
 
 결제 내역
-<img src="image-1.png">
+<img src="./readmeimage/image-1.png">
 결재 요청 내역
-<img src="image-2.png">
+<img src="./readmeimage/image-2.png">
 
 카드 사용 시작가이드
-<img src="image-3.png">
+<img src="./readmeimage/image-3.png">
 
 ### 상급자
 
 ### 관리자
 
 대시보드
-<img src="image-4.png">
+<img src="./readmeimage/image-4.png">
 결제 내역과 결재 처리된 승인 건들의 통계를 볼 수 있다.
 
 <br><br>
 
 용도 관리
-<img src="image-5.png">
+<img src="./readmeimage/image-5.png">
 각 회사에 맞는 용도를 설정할 수 있어, 개정처리에 용이하다.
 <br><br>
 
 카드 발급
-<img src="image-6.png">
-<img src="image-7.png">
+<img src="./readmeimage/image-6.png">
+<img src="./readmeimage/image-7.png">
 관리자는 새로 회사를 등록하거나, 신입사원이 들어왔을 때 알맞은 카드를 신청할 수 있게 된다.
 <br><br>
 
@@ -97,8 +97,8 @@ ai가 사용처와 금액을 통해 자동으로 용도 매핑!
 ### 승인, 반려
 
 <p align="center">
-  <img src="image-11.png" width="40%">
-  <img src="image-12.png" width="40%">
+  <img src="./readmeimage/image-11.png" width="40%">
+  <img src="./readmeimage/image-12.png" width="40%">
 </p>
 상급자, 관리자는 승인 요청을 받을 수도 있고, 반려를 할 수도 있게 된다.
 <br><br>
@@ -106,7 +106,7 @@ ai가 사용처와 금액을 통해 자동으로 용도 매핑!
 ### 수정
 
 <p>
-<img src="image-13.png" width="50%">
+<img src="./readmeimage/image-13.png" width="50%">
 </p>
 반려된 요청은 요청자가 수정하여 다시 요청할 수 있게 된다. <br>
 단, 반려가 2번 이상인 요청건은 요청을 할 수 없다.
