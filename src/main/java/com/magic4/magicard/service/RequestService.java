@@ -468,6 +468,7 @@ public class RequestService {
 
     if(employee.getDepartment().isAdminDepartment()){
       request.setApprovalSteps(approvalSteps5);
+
     } else {
       int refuseCount = request.getRefuseCount();
       request.setRefuseMessage(rejectFormDto.getRefuseMessage());
@@ -479,9 +480,9 @@ public class RequestService {
       else {
         request.setApprovalSteps(approvalSteps4);
       }
-      requestRepo.save(request);
 
     }
+      requestRepo.save(request);
       return 1;
     }
 
