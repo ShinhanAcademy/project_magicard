@@ -75,7 +75,7 @@ const StrategicBusinessData = () => {
             data: departmentCategoryData.map((data) => data.spend.인건비),
             stack: "비용",
             itemStyle: {
-            color: "#b7d7c8",
+            color: "#b0b0ff",
             },
             emphasis: {
             focus: "series",
@@ -93,7 +93,7 @@ const StrategicBusinessData = () => {
             data: departmentCategoryData.map((data) => data.spend.행사비),
             stack: "비용",
             itemStyle: {
-            color: "#ffd700",
+            color: "#b0ddff",
             },
             emphasis: {
             focus: "series",
@@ -110,7 +110,7 @@ const StrategicBusinessData = () => {
             data: departmentCategoryData.map((data) => data.spend.식비),
             stack: "비용",
             itemStyle: {
-            color: "#36454F",
+            color: "#e4b0d6",
             },
             emphasis: {
             focus: "series",
